@@ -40,86 +40,102 @@ class _SignupViewState extends State<SignupView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: double.infinity,
-      width: double.infinity,
-      child: Column(
-        children: [
-          Container(
-            alignment: Alignment.center,
-            width: MediaQuery.of(context).size.width * 0.8,
-            height: MediaQuery.of(context).size.width * 0.2,
-            child: Column(
-              children: [
-                LogoType(
-                  text: 'Registro',
-                  color: Colors.white,
-                  fontSize: 35,
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: constraints.maxHeight,
+              ),
+              child: IntrinsicHeight(
+                child: Center(
+                  child: Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        height: MediaQuery.of(context).size.width * 0.2,
+                        child: Column(
+                          children: [
+                            LogoType(
+                              text: 'Registro',
+                              color: Colors.white,
+                              fontSize: 35,
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Formulario de datos
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        height: MediaQuery.of(context).size.width * 0.8,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            AnimatedTextField(
+                              controller: user,
+                              labelText: 'Usuario',
+                              prefixIcon: Icons.person,
+                              isFocused: userFocusNode.hasFocus,
+                              onFocusChange: (hasFocus) {
+                                setState(() {});
+                              },
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.01,
+                            ),
+                            AnimatedTextField(
+                              controller: email,
+                              labelText: 'Correo electrónico',
+                              prefixIcon: Icons.email,
+                              isFocused: emailFocusNode.hasFocus,
+                              onFocusChange: (hasFocus) {
+                                setState(() {});
+                              },
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.01,
+                            ),
+                            AnimatedTextField(
+                              controller: pass,
+                              labelText: 'Contraseña',
+                              prefixIcon: Icons.lock,
+                              obscureText: true,
+                              isFocused: passFocusNode.hasFocus,
+                              onFocusChange: (hasFocus) {
+                                setState(() {});
+                              },
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.01,
+                            ),
+                            AnimatedTextField(
+                              controller: repeatPass,
+                              labelText: 'Repetir contraseña',
+                              prefixIcon: Icons.lock,
+                              obscureText: true,
+                              isFocused: repeatPassFocusNode.hasFocus,
+                              onFocusChange: (hasFocus) {
+                                setState(() {});
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 20),
+                        child: ButtonGradient(
+                            text: 'Registrarme', onPressed: () {}),
+                      ),
+                    ],
+                  ),
                 ),
-              ],
+              ),
             ),
-          ),
-          // Formulario de datos
-          Container(
-            width: MediaQuery.of(context).size.width * 0.8,
-            height: MediaQuery.of(context).size.width * 0.8,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                AnimatedTextField(
-                  controller: user,
-                  labelText: 'Usuario',
-                  prefixIcon: Icons.person,
-                  isFocused: userFocusNode.hasFocus,
-                  onFocusChange: (hasFocus) {
-                    setState(() {});
-                  },
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.01,
-                ),
-                AnimatedTextField(
-                  controller: email,
-                  labelText: 'Correo electrónico',
-                  prefixIcon: Icons.email,
-                  isFocused: emailFocusNode.hasFocus,
-                  onFocusChange: (hasFocus) {
-                    setState(() {});
-                  },
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.01,
-                ),
-                AnimatedTextField(
-                  controller: pass,
-                  labelText: 'Contraseña',
-                  prefixIcon: Icons.lock,
-                  obscureText: true,
-                  isFocused: passFocusNode.hasFocus,
-                  onFocusChange: (hasFocus) {
-                    setState(() {});
-                  },
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.01,
-                ),
-                AnimatedTextField(
-                  controller: repeatPass,
-                  labelText: 'Repetir contraseña',
-                  prefixIcon: Icons.lock,
-                  obscureText: true,
-                  isFocused: repeatPassFocusNode.hasFocus,
-                  onFocusChange: (hasFocus) {
-                    setState(() {});
-                  },
-                ),
-              ],
-            ),
-          ),
-          Container(
-            child: ButtonGradient(text: 'Registrarme', onPressed: () {}),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
