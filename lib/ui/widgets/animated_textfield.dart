@@ -53,6 +53,7 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
       onFocusChange: (isFocused) {
         setState(() {
           _isFocused = isFocused;
+          widget.onFocusChange(_isFocused); // Trigger callback
           if (_isFocused) {
             _controller.forward();
           } else {
@@ -113,14 +114,27 @@ class BorderPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    final rect = Rect.fromLTWH(0, 0, size.width, size.height);
+
+    // Define the gradient colors and create a shader
+    final gradient = LinearGradient(
+      colors: [
+        Color(0xFF0597F2),
+        Color(0xCC0597F2),
+        Color(0x990597F2),
+        Color(0x660597F2),
+        Color(0x330597F2),
+        Color(0x00333333),
+      ],
+    );
+
+    // Apply the gradient shader to the paint
     final paint = Paint()
-      ..color = Color(0xFF6BA5F2)
+      ..shader = gradient.createShader(rect)
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 
-    final rect = Rect.fromLTWH(0, 0, size.width, size.height);
     final path = Path();
-
     path.addRRect(RRect.fromRectAndRadius(rect, Radius.circular(10)));
 
     final pathMetrics = path.computeMetrics().first;
