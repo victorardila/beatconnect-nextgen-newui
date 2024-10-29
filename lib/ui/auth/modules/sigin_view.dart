@@ -1,9 +1,8 @@
+import 'package:beatconnect_app/ui/widgets/animated_textfield.dart';
 import 'package:beatconnect_app/ui/widgets/button_gradient.dart';
 import 'package:beatconnect_app/ui/widgets/logoimage.dart';
 import 'package:beatconnect_app/ui/widgets/logotype.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SigninView extends StatefulWidget {
   const SigninView({super.key});
@@ -15,7 +14,9 @@ class SigninView extends StatefulWidget {
 class _SigninViewState extends State<SigninView> {
   TextEditingController user = TextEditingController();
   TextEditingController pass = TextEditingController();
-  bool _rememberMe = false; // Estado del checkbox
+  bool _rememberMe = false;
+  bool _isUserFocused = false;
+  bool _isPassFocused = false;
 
   @override
   Widget build(BuildContext context) {
@@ -41,44 +42,38 @@ class _SigninViewState extends State<SigninView> {
               ],
             ),
           ),
-          // Formulario de datos
           Container(
             width: MediaQuery.of(context).size.width * 0.8,
-            height: MediaQuery.of(context).size.width * 0.65,
+            height: MediaQuery.of(context).size.width * 0.7,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TextFormField(
+                AnimatedTextField(
                   controller: user,
-                  enableSuggestions: true,
-                  decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Color(0xFF6BA5F2)),
-                    ),
-                    labelText: 'Correo electrónico',
-                    labelStyle: TextStyle(color: Colors.white),
-                    prefixIcon: Icon(Icons.email, color: Colors.white),
-                  ),
+                  labelText: 'Correo electrónico',
+                  prefixIcon: Icons.email,
+                  onFocusChange: (focused) {
+                    setState(() {
+                      _isUserFocused = focused;
+                    });
+                  },
+                  isFocused: _isUserFocused,
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.02,
+                  height: MediaQuery.of(context).size.height * 0.01,
                 ),
-                TextFormField(
-                  obscureText: true,
+                AnimatedTextField(
                   controller: pass,
-                  enableSuggestions: true,
-                  decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Color(0xFF6BA5F2)),
-                    ),
-                    labelText: 'Contraseña',
-                    labelStyle: TextStyle(color: Colors.white),
-                    prefixIcon: Icon(Icons.lock, color: Colors.white),
-                  ),
+                  labelText: 'Contraseña',
+                  obscureText: true,
+                  prefixIcon: Icons.lock,
+                  onFocusChange: (focused) {
+                    setState(() {
+                      _isPassFocused = focused;
+                    });
+                  },
+                  isFocused: _isPassFocused,
                 ),
-                // Opciones de sesión
                 Container(
                   margin: const EdgeInsets.only(top: 20),
                   child: Row(
@@ -93,8 +88,7 @@ class _SigninViewState extends State<SigninView> {
                                 _rememberMe = value ?? false;
                               });
                             },
-                            activeColor:
-                                Color(0xFF6BA5F2), // Color del checkbox
+                            activeColor: Color(0xFF6BA5F2),
                           ),
                           const Text(
                             'Remember me',
@@ -109,12 +103,10 @@ class _SigninViewState extends State<SigninView> {
                     ],
                   ),
                 ),
-                // Button gradient
                 ButtonGradient(text: 'Entrar', onPressed: () {}),
               ],
             ),
           ),
-          // Otras opciones de inicio de sesion
         ],
       ),
     );
