@@ -1,12 +1,12 @@
 import 'package:beatconnect_app/ui/widgets/animated_textfield.dart';
 import 'package:beatconnect_app/ui/widgets/button_gradient.dart';
-import 'package:beatconnect_app/ui/widgets/logoimage.dart';
 import 'package:beatconnect_app/ui/widgets/logotype.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SignupView extends StatefulWidget {
-  const SignupView({super.key});
+  final VoidCallback onSignupSuccess;
+  const SignupView({super.key, required this.onSignupSuccess});
 
   @override
   State<SignupView> createState() => _SignupViewState();
@@ -127,7 +127,12 @@ class _SignupViewState extends State<SignupView> {
                       Container(
                         margin: const EdgeInsets.only(top: 20),
                         child: ButtonGradient(
-                            text: 'Registrarme', onPressed: () {}),
+                          text: 'Registrarme',
+                          onPressed: () {
+                            // Aquí llamamos al callback al presionar el botón
+                            widget.onSignupSuccess();
+                          },
+                        ),
                       ),
                     ],
                   ),

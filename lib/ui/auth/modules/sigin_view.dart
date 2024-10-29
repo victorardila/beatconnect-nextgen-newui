@@ -1,3 +1,4 @@
+// SigninView.dart
 import 'package:beatconnect_app/ui/widgets/animated_textfield.dart';
 import 'package:beatconnect_app/ui/widgets/button_gradient.dart';
 import 'package:beatconnect_app/ui/widgets/button_otherlogins.dart';
@@ -6,7 +7,9 @@ import 'package:beatconnect_app/ui/widgets/logotype.dart';
 import 'package:flutter/material.dart';
 
 class SigninView extends StatefulWidget {
-  const SigninView({super.key});
+  final VoidCallback onForgotPassword; // Callback para olvidar la contraseña
+
+  const SigninView({super.key, required this.onForgotPassword});
 
   @override
   State<SigninView> createState() => _SigninViewState();
@@ -118,6 +121,10 @@ class _SigninViewState extends State<SigninView> {
                                       setState(() {
                                         _isForgotPasswordPressed = false;
                                       });
+                                    },
+                                    onTap: () {
+                                      widget
+                                          .onForgotPassword(); // Llamar al callback
                                     },
                                     child: ShaderMask(
                                       shaderCallback: (Rect bounds) {
