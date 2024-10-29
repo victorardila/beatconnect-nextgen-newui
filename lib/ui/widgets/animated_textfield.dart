@@ -119,6 +119,7 @@ class BorderPainter extends CustomPainter {
     // Define the gradient colors and create a shader
     final gradient = LinearGradient(
       colors: [
+        Color(0xFF333333),
         Color(0xFF0597F2),
         Color(0xCC0597F2),
         Color(0x990597F2),
