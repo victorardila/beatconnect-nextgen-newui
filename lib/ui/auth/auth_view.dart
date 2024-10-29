@@ -2,6 +2,7 @@ import 'package:beatconnect_app/ui/auth/modules/forgotpassword_view.dart';
 import 'package:beatconnect_app/ui/auth/modules/signup_view.dart';
 import 'package:beatconnect_app/ui/auth/modules/sigin_view.dart';
 import 'package:beatconnect_app/ui/auth/modules/profile_view.dart';
+import 'package:beatconnect_app/ui/widgets/animated_container_widget.dart';
 import 'package:beatconnect_app/ui/widgets/logotype.dart';
 import 'package:flutter/material.dart';
 
@@ -15,9 +16,8 @@ class AuthenticationView extends StatefulWidget {
 class _AuthenticationViewState extends State<AuthenticationView>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  bool _isProfileViewVisible = false; // Estado para mostrar ProfileView
-  bool _isForgotPasswordVisible =
-      false; // Estado para mostrar ForgotPasswordView
+  bool _isProfileViewVisible = false;
+  bool _isForgotPasswordVisible = false;
 
   @override
   void initState() {
@@ -36,27 +36,27 @@ class _AuthenticationViewState extends State<AuthenticationView>
 
   void _showProfileView() {
     setState(() {
-      _isProfileViewVisible =
-          true; // Cambiar el estado para mostrar ProfileView
+      _isProfileViewVisible = true;
+      _isForgotPasswordVisible = false; // Asegúrate de ocultar la otra vista
     });
   }
 
   void _hideProfileView() {
     setState(() {
-      _isProfileViewVisible =
-          false; // Cambiar el estado para ocultar ProfileView
+      _isProfileViewVisible = false;
     });
   }
 
   void _showForgotPasswordView() {
     setState(() {
-      _isForgotPasswordVisible = true; // Mostrar ForgotPasswordView
+      _isForgotPasswordVisible = true;
+      _isProfileViewVisible = false; // Asegúrate de ocultar la otra vista
     });
   }
 
   void _hideForgotPasswordView() {
     setState(() {
-      _isForgotPasswordVisible = false; // Ocultar ForgotPasswordView
+      _isForgotPasswordVisible = false;
     });
   }
 
@@ -66,7 +66,18 @@ class _AuthenticationViewState extends State<AuthenticationView>
       height: MediaQuery.of(context).size.height * 0.75,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: const Color(0xFF262626), // Color de fondo
+        gradient: LinearGradient(
+          colors: [
+            Color(0xFF262626),
+            Color(0xFF1F1F1F),
+            Color(0xFF1A1A1A),
+            Color(0xFF141414),
+            Color(0xFF101010),
+            Color(0xFF0C0C0C),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(30.0),
           topRight: Radius.circular(30.0),
@@ -79,7 +90,6 @@ class _AuthenticationViewState extends State<AuthenticationView>
         ),
         child: Column(
           children: [
-            // Solo muestra el TabBar si no se está mostrando ninguna de las vistas especiales
             if (!_isProfileViewVisible && !_isForgotPasswordVisible)
               TabBar(
                 controller: _tabController,
@@ -87,8 +97,6 @@ class _AuthenticationViewState extends State<AuthenticationView>
                 unselectedLabelColor: Colors.white,
                 indicatorColor: Color(0xFF6BA5F2),
                 indicatorWeight: 3,
-                dividerHeight: 0,
-                dividerColor: Colors.transparent,
                 tabs: [
                   Tab(
                     child: LogoType(
@@ -110,7 +118,6 @@ class _AuthenticationViewState extends State<AuthenticationView>
                   ),
                 ],
               ),
-            // Vista de inicio de sesión o registro
             Expanded(
               child: Stack(
                 children: [
@@ -121,26 +128,28 @@ class _AuthenticationViewState extends State<AuthenticationView>
                         padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
                         child: SigninView(
                           onForgotPassword: _showForgotPasswordView,
-                        ), // Vista de inicio de sesión
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
                         child: SignupView(
                           onSignupSuccess: _showProfileView,
-                        ), // Vista de registro
+                        ),
                       ),
                     ],
                   ),
-                  if (_isForgotPasswordVisible) // Mostrar ForgotPasswordView si es visible
-                    ForgotPasswordView(
-                      onClose:
-                          _hideForgotPasswordView, // Callback para cerrar ForgotPasswordView
+                  AnimatedContainerWidget(
+                    child: ForgotPasswordView(
+                      onClose: _hideForgotPasswordView,
                     ),
-                  if (_isProfileViewVisible) // Mostrar ProfileView si es visible
-                    ProfileView(
-                        // onClose:
-                        //     _hideProfileView, // Callback para cerrar ProfileView
-                        ),
+                    isVisible: _isForgotPasswordVisible,
+                  ),
+                  AnimatedContainerWidget(
+                    child: ProfileView(
+                      onClose: _hideProfileView,
+                    ),
+                    isVisible: _isProfileViewVisible,
+                  ),
                 ],
               ),
             ),

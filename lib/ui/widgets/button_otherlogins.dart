@@ -32,8 +32,8 @@ class _ButtonOtherLoginsState extends State<ButtonOtherLogins> {
     return GestureDetector(
       onTap: widget.onPressed,
       child: Container(
-        width: widget.width ?? 80,
-        height: widget.height ?? 80,
+        width: widget.width ?? 60,
+        height: widget.height ?? 60,
         decoration: BoxDecoration(
           gradient: widget.gradient ??
               LinearGradient(
@@ -43,30 +43,33 @@ class _ButtonOtherLoginsState extends State<ButtonOtherLogins> {
               ),
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (widget.svgPath != null)
-              SvgPicture.asset(
-                widget.svgPath!,
-                height: 35,
-                width: 35,
-                fit: BoxFit.contain,
-                color:
-                    widget.svgColor, // Aplica el color al SVG si está definido
-              ),
-            if (widget.text != null)
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: Text(
-                  widget.text!,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (widget.svgPath != null)
+                  SvgPicture.asset(
+                    widget.svgPath!,
+                    height: constraints.maxHeight *
+                        0.8, // 80% de la altura del contenedor
+                    fit: BoxFit.contain,
+                    color: widget.svgColor,
                   ),
-                ),
-              ),
-          ],
+                if (widget.text != null)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      widget.text!,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          },
         ),
       ),
     );

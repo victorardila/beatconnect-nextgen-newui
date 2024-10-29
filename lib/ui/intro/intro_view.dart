@@ -1,6 +1,5 @@
 import 'package:beatconnect_app/ui/auth/auth_view.dart';
 import 'package:beatconnect_app/ui/widgets/button_gradient.dart';
-import 'package:beatconnect_app/ui/widgets/logoimage.dart';
 import 'package:beatconnect_app/ui/widgets/logotype.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/cupertino.dart';

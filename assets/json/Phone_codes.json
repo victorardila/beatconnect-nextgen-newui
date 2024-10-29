@@ -1,0 +1,152 @@
+[
+    {
+        "name": "Colombia",
+        "code": "+57",
+        "iso": "CO",
+        "flag": "🇨🇴"
+    },
+    {
+        "name": "United States",
+        "code": "+1",
+        "iso": "US",
+        "flag": "🇺🇸"
+    },
+    {
+        "name": "Mexico",
+        "code": "+52",
+        "iso": "MX",
+        "flag": "🇲🇽"
+    },
+    {
+        "name": "Argentina",
+        "code": "+54",
+        "iso": "AR",
+        "flag": "🇦🇷"
+    },
+    {
+        "name": "Brazil",
+        "code": "+55",
+        "iso": "BR",
+        "flag": "🇧🇷"
+    },
+    {
+        "name": "Canada",
+        "code": "+1",
+        "iso": "CA",
+        "flag": "🇨🇦"
+    },
+    {
+        "name": "Chile",
+        "code": "+56",
+        "iso": "CL",
+        "flag": "🇨🇱"
+    },
+    {
+        "name": "Peru",
+        "code": "+51",
+        "iso": "PE",
+        "flag": "🇵🇪"
+    },
+    {
+        "name": "Venezuela",
+        "code": "+58",
+        "iso": "VE",
+        "flag": "🇻🇪"
+    },
+    {
+        "name": "Ecuador",
+        "code": "+593",
+        "iso": "EC",
+        "flag": "🇪🇨"
+    },
+    {
+        "name": "United Kingdom",
+        "code": "+44",
+        "iso": "GB",
+        "flag": "🇬🇧"
+    },
+    {
+        "name": "Spain",
+        "code": "+34",
+        "iso": "ES",
+        "flag": "🇪🇸"
+    },
+    {
+        "name": "France",
+        "code": "+33",
+        "iso": "FR",
+        "flag": "🇫🇷"
+    },
+    {
+        "name": "Germany",
+        "code": "+49",
+        "iso": "DE",
+        "flag": "🇩🇪"
+    },
+    {
+        "name": "Italy",
+        "code": "+39",
+        "iso": "IT",
+        "flag": "🇮🇹"
+    },
+    {
+        "name": "Australia",
+        "code": "+61",
+        "iso": "AU",
+        "flag": "🇦🇺"
+    },
+    {
+        "name": "New Zealand",
+        "code": "+64",
+        "iso": "NZ",
+        "flag": "🇳🇿"
+    },
+    {
+        "name": "China",
+        "code": "+86",
+        "iso": "CN",
+        "flag": "🇨🇳"
+    },
+    {
+        "name": "Japan",
+        "code": "+81",
+        "iso": "JP",
+        "flag": "🇯🇵"
+    },
+    {
+        "name": "South Korea",
+        "code": "+82",
+        "iso": "KR",
+        "flag": "🇰🇷"
+    },
+    {
+        "name": "India",
+        "code": "+91",
+        "iso": "IN",
+        "flag": "🇮🇳"
+    },
+    {
+        "name": "South Africa",
+        "code": "+27",
+        "iso": "ZA",
+        "flag": "🇿🇦"
+    },
+    {
+        "name": "Nigeria",
+        "code": "+234",
+        "iso": "NG",
+        "flag": "🇳🇬"
+    },
+    {
+        "name": "Egypt",
+        "code": "+20",
+        "iso": "EG",
+        "flag": "🇪🇬"
+    },
+    {
+        "name": "Russia",
+        "code": "+7",
+        "iso": "RU",
+        "flag": "🇷🇺"
+    }
+]

@@ -62,7 +62,8 @@ class _SignupViewState extends State<SignupView> {
                             LogoType(
                               text: 'Registro',
                               color: Colors.white,
-                              fontSize: 35,
+                              fontSize:
+                                  MediaQuery.of(context).size.height * 0.04,
                             ),
                           ],
                         ),

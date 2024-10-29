@@ -51,7 +51,8 @@ class _SigninViewState extends State<SigninView> {
                             LogoType(
                               text: 'Iniciar sesión',
                               color: Colors.white,
-                              fontSize: 35,
+                              fontSize:
+                                  MediaQuery.of(context).size.height * 0.04,
                             ),
                           ],
                         ),
@@ -175,27 +176,33 @@ class _SigninViewState extends State<SigninView> {
                                 svgPath: 'assets/svg/icon-google.svg',
                                 gradient: LinearGradient(
                                   colors: [
-                                    Color(0xFF262626),
-                                    Color(0xFF1C1C1C),
-                                    Color(0xFF333333),
-                                    Color(0xFF404040),
+                                    Color(0xFF262626), // Color base oscuro
+                                    Color(
+                                        0xFF1C1C1C), // Gris oscuro ligeramente más profundo
+                                    Color(
+                                        0xFF131313), // Gris oscuro más cercano al negro
+                                    Color(
+                                        0xFF0A0A0A), // Gris profundo y oscuro, casi negro
                                   ],
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                 ),
                                 onPressed: () {}),
                             SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.02,
+                              width: MediaQuery.of(context).size.width * 0.04,
                             ),
                             ButtonOtherLogins(
                                 svgPath: 'assets/svg/icon-spotify.svg',
                                 svgColor: Color(0xFF81b71a),
                                 gradient: LinearGradient(
                                   colors: [
-                                    Color(0xFF262626),
-                                    Color(0xFF1C1C1C),
-                                    Color(0xFF333333),
-                                    Color(0xFF404040),
+                                    Color(0xFF262626), // Color base oscuro
+                                    Color(
+                                        0xFF1C1C1C), // Gris oscuro ligeramente más profundo
+                                    Color(
+                                        0xFF131313), // Gris oscuro más cercano al negro
+                                    Color(
+                                        0xFF0A0A0A), // Gris profundo y oscuro, casi negro
                                   ],
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
