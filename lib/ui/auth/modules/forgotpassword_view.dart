@@ -225,9 +225,10 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                                                         MainAxisAlignment
                                                             .spaceBetween,
                                                     children: [
-                                                      Text('${country.code}'),
                                                       Text(country
-                                                          .flag), // Mostrar la bandera
+                                                          .flag), // Mostrar la bandera a la izquierda
+                                                      Text(
+                                                          '${country.code}'), // Mostrar el indicativo a la derecha
                                                     ],
                                                   ),
                                                 );
