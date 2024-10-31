@@ -1,4 +1,5 @@
 import 'dart:convert'; // Importar para trabajar con JSON
+import 'package:beatconnect_app/ui/widgets/animated_dropdown.dart';
 import 'package:beatconnect_app/ui/widgets/animated_textfield.dart';
 import 'package:beatconnect_app/ui/widgets/button_gradient.dart';
 import 'package:beatconnect_app/ui/widgets/logotype.dart';
@@ -111,6 +112,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
 
   @override
   Widget build(BuildContext context) {
+    Country? selectedCountry;
     final bool _isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       backgroundColor: const Color(0xFF262626),
@@ -166,81 +168,19 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                                 child: Row(
                                   children: [
                                     if (showDropdown)
-                                      Row(
-                                        children: [
-                                          Container(
-                                            margin: const EdgeInsets.only(
-                                                left: 8.0),
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 8.0),
-                                            width:
-                                                100, // Establecer un ancho fijo para el Dropdown
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: Colors.grey.shade500,
-                                                width: 1.0,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ),
-                                            child: DropdownButton<Country>(
-                                              hint: Text(
-                                                'Indicativo',
-                                                style: TextStyle(
-                                                  color: _isDarkMode
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                ),
-                                              ),
-                                              dropdownColor: _isDarkMode
-                                                  ? Colors.grey[800]
-                                                  : Colors.white,
-                                              icon: Icon(
-                                                Icons.arrow_drop_down,
-                                                color: _isDarkMode
-                                                    ? Colors.white
-                                                    : Colors.black,
-                                              ),
-                                              iconSize: 24,
-                                              isExpanded: true,
-                                              underline: SizedBox(),
-                                              style: TextStyle(
-                                                color: _isDarkMode
-                                                    ? Colors.white
-                                                    : Colors.black,
-                                              ),
-                                              value: countrySeleccionado,
-                                              onChanged: (newValue) {
-                                                setState(() {
-                                                  countrySeleccionado =
-                                                      newValue!;
-                                                });
-                                              },
-                                              items: countries.map((country) {
-                                                return DropdownMenuItem<
-                                                    Country>(
-                                                  value: country,
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text(country
-                                                          .flag), // Mostrar la bandera a la izquierda
-                                                      Text(
-                                                          '${country.code}'), // Mostrar el indicativo a la derecha
-                                                    ],
-                                                  ),
-                                                );
-                                              }).toList(),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.02),
-                                        ],
+                                      AnimatedDropdown<Country>(
+                                        hint: 'Seleccione un país',
+                                        items: countries,
+                                        selectedItem:
+                                            countrySeleccionado, // Usa countrySeleccionado aquí
+                                        onChanged: (value) {
+                                          setState(() {
+                                            countrySeleccionado =
+                                                value; // Actualiza el país seleccionado
+                                          });
+                                        },
+                                        itemLabelBuilder: (country) =>
+                                            '${country.flag} ${country.code}',
                                       ),
                                     Expanded(
                                       child: AnimatedTextField(

@@ -1,8 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Permisos requeridos para la aplicación -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <application
         android:label="beatconnect_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <!-- Actividad principal -->
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -40,6 +40,7 @@ dependencies:
   font_awesome_flutter: ^10.7.0
   flutter_svg: ^2.0.10+1
   country_picker: ^2.0.26
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:
