@@ -91,29 +91,55 @@ class _AuthenticationViewState extends State<AuthenticationView>
         child: Column(
           children: [
             if (!_isProfileViewVisible && !_isForgotPasswordVisible)
-              TabBar(
-                controller: _tabController,
-                labelColor: Color(0xFF6BA5F2),
-                unselectedLabelColor: Colors.white,
-                indicatorColor: Color(0xFF6BA5F2),
-                indicatorWeight: 3,
-                tabs: [
-                  Tab(
-                    child: LogoType(
-                      text: 'Iniciar sesión',
-                      color: _tabController.index == 0
-                          ? Color(0xFF6BA5F2)
-                          : Colors.white,
-                      fontSize: 15,
-                    ),
+              Stack(
+                children: [
+                  TabBar(
+                    controller: _tabController,
+                    labelColor: Color(0xFF6BA5F2),
+                    unselectedLabelColor: Colors.white,
+                    indicatorColor:
+                        Color(0xFF6BA5F2), // Oculta el indicador predeterminado
+                    indicatorWeight: 3,
+                    tabs: [
+                      Tab(
+                        child: LogoType(
+                          text: 'Iniciar sesión',
+                          color: _tabController.index == 0
+                              ? Color(0xFF6BA5F2)
+                              : Colors.white,
+                          fontSize: 15,
+                        ),
+                      ),
+                      Tab(
+                        child: LogoType(
+                          text: 'Regístrarme',
+                          color: _tabController.index == 1
+                              ? Color(0xFF6BA5F2)
+                              : Colors.white,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ],
                   ),
-                  Tab(
-                    child: LogoType(
-                      text: 'Regístrarme',
-                      color: _tabController.index == 1
-                          ? Color(0xFF6BA5F2)
-                          : Colors.white,
-                      fontSize: 15,
+                  Positioned(
+                    bottom: 0, // Coloca el gradiente en la parte inferior
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      height: 1.0, // Altura del indicador
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xFF333333),
+                            Color(0xFF0597F2),
+                            Color(0xCC0597F2),
+                            Color(0x990597F2),
+                            Color(0x660597F2),
+                            Color(0x330597F2),
+                            Color(0x00333333),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ],
