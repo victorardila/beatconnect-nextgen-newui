@@ -22,7 +22,7 @@ class _ItemTagState extends State<ItemTag> {
       margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.blueAccent,
+        color: Color(0xFF6BA5F2),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
