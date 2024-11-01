@@ -3,7 +3,7 @@ import 'package:beatconnect_app/ui/auth/modules/signup_view.dart';
 import 'package:beatconnect_app/ui/auth/modules/sigin_view.dart';
 import 'package:beatconnect_app/ui/auth/modules/profile_view.dart';
 import 'package:beatconnect_app/ui/widgets/animated_container_widget.dart';
-import 'package:beatconnect_app/ui/widgets/logotype.dart';
+import 'package:beatconnect_app/ui/widgets/logo_type.dart';
 import 'package:flutter/material.dart';
 
 class AuthenticationView extends StatefulWidget {

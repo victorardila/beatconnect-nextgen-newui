@@ -2,7 +2,7 @@ import 'dart:convert'; // Importar para trabajar con JSON
 import 'package:beatconnect_app/ui/widgets/animated_dropdown.dart';
 import 'package:beatconnect_app/ui/widgets/animated_textfield.dart';
 import 'package:beatconnect_app/ui/widgets/button_gradient.dart';
-import 'package:beatconnect_app/ui/widgets/logotype.dart';
+import 'package:beatconnect_app/ui/widgets/logo_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart'; // Importar para usar rootBundle

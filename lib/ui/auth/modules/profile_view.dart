@@ -1,7 +1,8 @@
+import 'package:beatconnect_app/ui/widgets/item_tag.dart';
 import 'package:beatconnect_app/ui/widgets/animated_dropdown.dart';
 import 'package:beatconnect_app/ui/widgets/animated_textfield.dart';
 import 'package:beatconnect_app/ui/widgets/button_gradient.dart';
-import 'package:beatconnect_app/ui/widgets/logotype.dart';
+import 'package:beatconnect_app/ui/widgets/logo_type.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -50,11 +51,14 @@ class _ProfileViewState extends State<ProfileView>
   FocusNode lastnameFocusNode = FocusNode();
   bool isPressedAvatar = false;
   bool isPressedCamera = false;
+  bool isDropdownItemSelected = false;
+
   String? avatarImagePath; // Para la imagen de perfil
   String? coverImagePath; // Para la imagen de portada
 
-  MusicalStyle? selectedMusicalStyle; // Para el género musical seleccionado
+  MusicalStyle? selectedMusicalStyle;
   List<MusicalStyle> musicalStyles = [];
+  List<MusicalStyle> selectedStyles = []; // Lista de estilos seleccionados
 
   double _scrollOffset = 0; // Para rastrear el desplazamiento
 
@@ -347,14 +351,62 @@ class _ProfileViewState extends State<ProfileView>
                           hint: 'Seleccione tu estilo musical de preferencia',
                           items: musicalStyles,
                           selectedItem: selectedMusicalStyle,
-                          enableScaleAnimation: false,
                           onChanged: (value) {
                             setState(() {
                               selectedMusicalStyle = value;
+                              isDropdownItemSelected = true;
+
+                              // Añade el estilo seleccionado si aún no está en la lista
+                              if (value != null &&
+                                  !selectedStyles.contains(value)) {
+                                selectedStyles.add(value);
+                              }
                             });
                           },
                           itemLabelBuilder: (style) => style.name,
                         ),
+                        if (isDropdownItemSelected)
+                          if (isDropdownItemSelected &&
+                              selectedStyles.isNotEmpty)
+                            AnimatedContainer(
+                              duration: Duration(milliseconds: 300),
+                              height: selectedStyles.isNotEmpty
+                                  ? 100
+                                  : 0, // Se oculta si está vacío
+                              width: double.infinity,
+                              margin: EdgeInsets.only(top: 10),
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.white12,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: LayoutBuilder(
+                                builder: (context, constraints) {
+                                  return SingleChildScrollView(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Wrap(
+                                          spacing:
+                                              8.0, // Espaciado entre los elementos del Wrap
+                                          children: selectedStyles.map((style) {
+                                            return ItemTag(
+                                              text: style.name,
+                                              onRemove: () {
+                                                setState(() {
+                                                  selectedStyles.remove(
+                                                      style); // Eliminar estilo al hacer clic
+                                                });
+                                              },
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
                         SizedBox(
                             height: MediaQuery.of(context).size.height * 0.05),
                         ButtonGradient(text: 'Crear', onPressed: () {}),
@@ -367,7 +419,7 @@ class _ProfileViewState extends State<ProfileView>
           ),
           // IconButton con efecto BoxShadow
           Positioned(
-            top: 40, // Ajusta la posición vertical según tus necesidades
+            top: 20, // Ajusta la posición vertical según tus necesidades
             right: 20,
             child: AnimatedContainer(
               duration: Duration(milliseconds: 300),
@@ -375,7 +427,7 @@ class _ProfileViewState extends State<ProfileView>
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(30),
                 boxShadow: _scrollOffset >
-                        100 // Cambia 100 según el desplazamiento deseado
+                        5 // Cambia 100 según el desplazamiento deseado
                     ? [
                         BoxShadow(
                           color: Colors.black54,
