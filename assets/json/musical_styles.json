@@ -1,0 +1,239 @@
+{
+    "musical_styles": [
+        {
+            "id": 1,
+            "name": "Electronic Dance Music (EDM)",
+            "description": "Ritmos enérgicos y sonidos sintetizados, populares en festivales y discotecas."
+        },
+        {
+            "id": 2,
+            "name": "House",
+            "description": "Caracterizado por ritmos repetitivos y patrones de cuatro por cuatro, a menudo con voces melódicas."
+        },
+        {
+            "id": 3,
+            "name": "Techno",
+            "description": "Sonidos de alta velocidad y percusión electrónica, popular en la escena underground."
+        },
+        {
+            "id": 4,
+            "name": "Reggaeton",
+            "description": "Mezcla de ritmos latinos y caribeños con elementos urbanos, muy popular en América Latina."
+        },
+        {
+            "id": 5,
+            "name": "Hip-Hop",
+            "description": "Con fuertes ritmos y rap, originado en la cultura urbana y los estilos callejeros."
+        },
+        {
+            "id": 6,
+            "name": "Trap",
+            "description": "Subgénero del hip-hop con bajos pesados y ritmos acelerados, popular en los clubes."
+        },
+        {
+            "id": 7,
+            "name": "Pop",
+            "description": "Éxitos principales y canciones pegajosas con melodías accesibles para una audiencia amplia."
+        },
+        {
+            "id": 8,
+            "name": "Rock",
+            "description": "Basado en guitarras y sonidos energéticos, que abarca desde el rock clásico hasta estilos alternativos."
+        },
+        {
+            "id": 9,
+            "name": "Latin Pop",
+            "description": "Ritmos latinos con influencia pop, ampliamente popular en culturas hispanas."
+        },
+        {
+            "id": 10,
+            "name": "R&B",
+            "description": "Ritmos suaves y melódicos con énfasis en las voces y el ritmo."
+        },
+        {
+            "id": 11,
+            "name": "Dancehall",
+            "description": "Género originado en Jamaica con ritmos tropicales, similar al reggae."
+        },
+        {
+            "id": 12,
+            "name": "K-Pop",
+            "description": "Música pop de Corea del Sur, conocida por sus melodías pegajosas, visuales y actuaciones vibrantes."
+        },
+        {
+            "id": 13,
+            "name": "Afrobeats",
+            "description": "Fusión de ritmos africanos con elementos pop modernos, ganando popularidad mundial."
+        },
+        {
+            "id": 14,
+            "name": "Jazz",
+            "description": "Sonidos suaves y frecuentemente improvisados, ideal para ambientes lounge y sofisticados."
+        },
+        {
+            "id": 15,
+            "name": "Disco",
+            "description": "Música de baile clásica con elementos de funk y soul, popular en fiestas de temática retro."
+        },
+        {
+            "id": 16,
+            "name": "Bachata",
+            "description": "Género de la República Dominicana con ritmos románticos y bailables."
+        },
+        {
+            "id": 17,
+            "name": "Salsa",
+            "description": "Género latino con un ritmo animado, perfecto para bailar y socializar."
+        },
+        {
+            "id": 18,
+            "name": "Country",
+            "description": "Música de raíces americanas con melodías de guitarra y enfoque en las voces."
+        },
+        {
+            "id": 19,
+            "name": "Funk",
+            "description": "Ritmos pegajosos y sonidos centrados en el bajo, ideal para pistas de baile energéticas."
+        },
+        {
+            "id": 20,
+            "name": "Ambient",
+            "description": "Música tranquila y atmosférica, a menudo utilizada en áreas de descanso o lounges."
+        },
+        {
+            "id": 21,
+            "name": "Vallenato",
+            "description": "Género musical colombiano con raíces en la costa caribeña, que utiliza acordeón, caja y guacharaca para crear melodías narrativas y emotivas."
+        },
+        {
+            "id": 22,
+            "name": "Champeta",
+            "description": "Género musical y baile originado en la costa caribeña de Colombia, caracterizado por ritmos africanos y latinos, popular en fiestas y celebraciones."
+        },
+        {
+            "id": 23,
+            "name": "Merengue",
+            "description": "Género musical bailable de origen dominicano, caracterizado por su ritmo rápido y alegre, común en celebraciones y fiestas."
+        },
+        {
+            "id": 24,
+            "name": "Cumbia",
+            "description": "Género musical y baile tradicional de Colombia, con raíces indígenas, africanas y españolas, muy popular en Latinoamérica."
+        },
+        {
+            "id": 25,
+            "name": "Bolero",
+            "description": "Estilo musical romántico de origen cubano, conocido por su tono melódico y letras apasionadas, muy popular en toda Latinoamérica."
+        },
+        {
+            "id": 26,
+            "name": "Tango",
+            "description": "Género musical y baile de origen argentino, conocido por su estilo elegante y apasionado, que representa la cultura porteña de Buenos Aires."
+        },
+        {
+            "id": 27,
+            "name": "Torbellino",
+            "description": "Género musical y baile tradicional colombiano de la región andina, caracterizado por ritmos rápidos y letras sobre temas de la vida rural."
+        },
+        {
+            "id": 28,
+            "name": "Guabina",
+            "description": "Estilo musical andino colombiano, con raíces indígenas y españolas, asociado a danzas tradicionales de la región andina de Colombia."
+        },
+        {
+            "id": 29,
+            "name": "Carranga",
+            "description": "Género musical de la región andina colombiana, que combina elementos de música campesina, con temas sobre el campo, la vida rural y el medio ambiente."
+        },
+        {
+            "id": 30,
+            "name": "Bambuco",
+            "description": "Uno de los géneros tradicionales más importantes de la región andina colombiana, conocido por su compás ternario y temas románticos o patrióticos."
+        },
+        {
+            "id": 31,
+            "name": "Pasillo",
+            "description": "Género musical colombiano influenciado por el vals europeo, caracterizado por su estilo melódico y usado en danzas de salón en la región andina."
+        },
+        {
+            "id": 32,
+            "name": "Danza",
+            "description": "Género musical y de baile de origen cubano y popular en toda Latinoamérica, a menudo interpretado con maracas y flautas."
+        },
+        {
+            "id": 33,
+            "name": "Rumba Criolla",
+            "description": "Estilo de música colombiana festiva, que mezcla elementos africanos, indígenas y españoles, popular en celebraciones de la región andina."
+        },
+        {
+            "id": 34,
+            "name": "Rumba Campesina",
+            "description": "Música festiva de origen campesino en Colombia, donde predominan instrumentos de percusión y se celebra la vida rural y sus tradiciones."
+        },
+        {
+            "id": 35,
+            "name": "Música Carranguera",
+            "description": "Estilo de música folclórica colombiana, originario de la región andina, que destaca temas de la vida campesina y el medio ambiente, interpretado con guitarras, tiple y requinto."
+        },
+        {
+            "id": 36,
+            "name": "Fandango",
+            "description": "Género musical y baile popular en la región caribeña de Colombia, caracterizado por su ritmo alegre y el uso de instrumentos como el acordeón y la percusión."
+        },
+        {
+            "id": 37,
+            "name": "Bullerengue",
+            "description": "Estilo musical y danza de origen afrocolombiano, típico de la región del Caribe, con ritmos vibrantes y letras que expresan la vida cotidiana."
+        },
+        {
+            "id": 38,
+            "name": "Mapalé",
+            "description": "Género de música y danza afrocolombiana que destaca por sus ritmos rápidos y movimientos enérgicos, originario de la región caribeña."
+        },
+        {
+            "id": 39,
+            "name": "Merecumbé",
+            "description": "Estilo de música y baile de origen afrocolombiano, con influencias de la cumbia y el porro, que se caracteriza por su ritmo pegajoso y alegre."
+        },
+        {
+            "id": 40,
+            "name": "Porro",
+            "description": "Género musical tradicional de la región caribeña de Colombia, que combina ritmos de origen africano y español, frecuentemente interpretado con instrumentos de viento y percusión."
+        },
+        {
+            "id": 41,
+            "name": "Sanjuanero",
+            "description": "Género musical folclórico de la región de los Llanos, que se caracteriza por su ritmo alegre y es frecuentemente bailado en fiestas y celebraciones."
+        },
+        {
+            "id": 42,
+            "name": "Flamenco",
+            "description": "Género musical y baile tradicional de Andalucía, España, que se caracteriza por su intensidad emocional, el uso de la guitarra y el cante, así como por sus movimientos rítmicos y apasionados."
+        },
+        {
+            "id": 43,
+            "name": "Folklore",
+            "description": "Conjunto de tradiciones, música y danzas que reflejan la cultura popular de un pueblo, transmitidas de generación en generación, con una rica variedad en los diferentes países y regiones."
+        },
+        {
+            "id": 44,
+            "name": "Gospel",
+            "description": "Género musical cristiano que se originó en las comunidades afroamericanas en los Estados Unidos, caracterizado por sus letras espirituales, armonías vocales y ritmos contagiosos."
+        },
+        {
+            "id": 45,
+            "name": "Electrónica",
+            "description": "Género musical que utiliza tecnología electrónica y sintetizadores para crear una amplia variedad de sonidos y ritmos, abarcando subgéneros como house, techno, y dubstep."
+        },
+        {
+            "id": 46,
+            "name": "Funk brasileño",
+            "description": "Estilo musical que fusiona ritmos de funk con influencias brasileñas, caracterizado por sus líneas de bajo groovy y ritmos bailables, muy popular en las fiestas y el ambiente urbano."
+        },
+        {
+            "id": 47,
+            "name": "Metal",
+            "description": "Género musical caracterizado por su uso de guitarras eléctricas distorsionadas, ritmos contundentes y letras a menudo agresivas o introspectivas. Incluye subgéneros como heavy metal, thrash metal y death metal."
+        }
+    ]
+}

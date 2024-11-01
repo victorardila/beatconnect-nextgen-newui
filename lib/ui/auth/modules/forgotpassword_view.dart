@@ -77,7 +77,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   Future<void> loadCountries() async {
     // Cargar el archivo JSON desde los assets
     final String response =
-        await rootBundle.loadString('assets/json/Phone_codes.json');
+        await rootBundle.loadString('assets/json/phone_codes.json');
     final List<dynamic> data = json.decode(response);
 
     setState(() {
@@ -169,6 +169,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                                   children: [
                                     if (showDropdown)
                                       AnimatedDropdown<Country>(
+                                        width: 112.0,
                                         hint: 'Seleccione un país',
                                         items: countries,
                                         selectedItem:

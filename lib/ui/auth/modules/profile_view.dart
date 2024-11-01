@@ -1,10 +1,33 @@
+import 'package:beatconnect_app/ui/widgets/animated_dropdown.dart';
 import 'package:beatconnect_app/ui/widgets/animated_textfield.dart';
 import 'package:beatconnect_app/ui/widgets/logotype.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/services.dart';
+import 'dart:convert';
 import 'dart:io';
+
+class MusicalStyle {
+  final int id;
+  final String name;
+  final String description;
+
+  MusicalStyle({
+    required this.id,
+    required this.name,
+    required this.description,
+  });
+
+  factory MusicalStyle.fromJson(Map<String, dynamic> json) {
+    return MusicalStyle(
+      id: json['id'],
+      name: json['name'],
+      description: json['description'],
+    );
+  }
+}
 
 class ProfileView extends StatefulWidget {
   final VoidCallback onClose;
@@ -27,6 +50,29 @@ class _ProfileViewState extends State<ProfileView>
   bool isPressedCamera = false;
   String? avatarImagePath; // Para la imagen de perfil
   String? coverImagePath; // Para la imagen de portada
+
+  MusicalStyle? selectedMusicalStyle; // Para el género musical seleccionado
+  List<MusicalStyle> musicalStyles = [];
+
+  Future<void> loadMusicalStyles() async {
+    try {
+      final String response =
+          await rootBundle.loadString('assets/json/musical_styles.json');
+      final Map<String, dynamic> data = json.decode(response);
+
+      setState(() {
+        musicalStyles = (data['musical_styles'] as List)
+            .map((style) => MusicalStyle.fromJson(style))
+            .toList();
+
+        if (musicalStyles.isNotEmpty) {
+          selectedMusicalStyle = musicalStyles.first;
+        }
+      });
+    } catch (e) {
+      print("Error loading musical styles: $e");
+    }
+  }
 
   Future<void> _pickAvatarImage() async {
     final ImagePicker _picker = ImagePicker();
@@ -65,6 +111,7 @@ class _ProfileViewState extends State<ProfileView>
       duration: Duration(seconds: 1),
       vsync: this,
     )..repeat(reverse: true);
+    loadMusicalStyles(); // Cargar los estilos musicales
   }
 
   @override
@@ -72,6 +119,8 @@ class _ProfileViewState extends State<ProfileView>
     _animationController.dispose();
     name.dispose();
     lastname.dispose();
+    nameFocusNode.dispose();
+    lastnameFocusNode.dispose();
     super.dispose();
   }
 
@@ -80,7 +129,7 @@ class _ProfileViewState extends State<ProfileView>
     return Scaffold(
       backgroundColor: Color(0xFF262626),
       body: LayoutBuilder(
-        builder: (context, raints) {
+        builder: (context, constraints) {
           return SingleChildScrollView(
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 20),
@@ -119,8 +168,7 @@ class _ProfileViewState extends State<ProfileView>
                           Container(
                             decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: FileImage(File(
-                                    coverImagePath!)), // Cambia a FileImage
+                                image: FileImage(File(coverImagePath!)),
                                 fit: BoxFit.cover,
                               ),
                               borderRadius:
@@ -159,36 +207,28 @@ class _ProfileViewState extends State<ProfileView>
                                 isPressedAvatar = false;
                               });
                             },
-                            onTap:
-                                _pickAvatarImage, // Cambia a _pickAvatarImage
+                            onTap: _pickAvatarImage,
                             child: Stack(
                               alignment: Alignment.center,
                               children: [
-                                // Contenedor que envuelve el CircleAvatar
                                 Container(
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors
-                                        .white, // Color de fondo del borde
+                                    color: Colors.white,
                                     boxShadow: [
                                       BoxShadow(
                                         color: isPressedAvatar
-                                            ? Color.fromRGBO(0, 0, 0,
-                                                0.7) // Aumenta la opacidad de la sombra
-                                            : Color.fromRGBO(0, 0, 0,
-                                                0.3), // Aumenta la opacidad de la sombra
-                                        blurRadius:
-                                            12.0, // Aumenta el radio de difuminado
-                                        spreadRadius:
-                                            4.0, // Aumenta el tamaño de la sombra
-                                        offset: Offset(0,
-                                            4), // Aumenta la dirección de la sombra
+                                            ? Color.fromRGBO(0, 0, 0, 0.7)
+                                            : Color.fromRGBO(0, 0, 0, 0.3),
+                                        blurRadius: 12.0,
+                                        spreadRadius: 4.0,
+                                        offset: Offset(0, 4),
                                       ),
                                     ],
                                     border: Border.all(
                                       color: Color.fromRGBO(158, 158, 158, .2)
-                                          .withOpacity(0.5), // Color del borde
-                                      width: 1.0, // Ancho del borde
+                                          .withOpacity(0.5),
+                                      width: 1.0,
                                     ),
                                   ),
                                   child: CircleAvatar(
@@ -203,8 +243,7 @@ class _ProfileViewState extends State<ProfileView>
                                 Positioned(
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: Colors
-                                          .transparent, // Asegúrate de establecer un color de fondo
+                                      color: Colors.transparent,
                                       shape: BoxShape.circle,
                                     ),
                                     padding: EdgeInsets.all(6),
@@ -221,7 +260,7 @@ class _ProfileViewState extends State<ProfileView>
                             ),
                           ),
                         ),
-                        //Imagen de portada
+                        // Imagen de portada
                         Positioned(
                           right: 10,
                           bottom: 10,
@@ -241,7 +280,7 @@ class _ProfileViewState extends State<ProfileView>
                                 isPressedCamera = false;
                               });
                             },
-                            onTap: _pickCoverImage, // Cambia a _pickCoverImage
+                            onTap: _pickCoverImage,
                             child: Container(
                               decoration: BoxDecoration(
                                 color: isPressedCamera
@@ -291,6 +330,26 @@ class _ProfileViewState extends State<ProfileView>
                           },
                         ),
                         SizedBox(height: 10),
+                        Text(
+                          'Selecciona tu genero musical favorito',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                        AnimatedDropdown(
+                          hint: 'Seleccione tu estilo musical de preferencia',
+                          items:
+                              musicalStyles, // Cambia 'countries' a 'musicalStyles'
+                          selectedItem:
+                              selectedMusicalStyle, // Usa 'selectedMusicalStyle' aquí
+                          enableScaleAnimation: false,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedMusicalStyle =
+                                  value; // Actualiza el estilo musical seleccionado
+                            });
+                          },
+                          itemLabelBuilder: (style) => style
+                              .name, // Muestra el nombre del estilo musical
+                        ),
                       ],
                     ),
                   ),

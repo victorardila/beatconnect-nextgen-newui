@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
 
 class AnimatedDropdown<T> extends StatefulWidget {
+  final double height;
+  final double width;
   final String hint;
   final List<T> items;
   final T? selectedItem;
   final Function(T?) onChanged;
   final String Function(T) itemLabelBuilder;
+  final bool enableScaleAnimation;
 
   const AnimatedDropdown({
     super.key,
+    this.height = 0.0,
+    this.width = 0.0,
     required this.hint,
     required this.items,
     required this.selectedItem,
     required this.onChanged,
     required this.itemLabelBuilder,
+    this.enableScaleAnimation = true,
   });
 
   @override
@@ -33,7 +39,7 @@ class _AnimatedDropdownState<T> extends State<AnimatedDropdown<T>>
     _focusNode = FocusNode();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 300), // Duración de ambas animaciones
+      duration: Duration(milliseconds: 300),
     );
 
     // Animación de escala
@@ -49,7 +55,7 @@ class _AnimatedDropdownState<T> extends State<AnimatedDropdown<T>>
 
     _focusNode.addListener(() {
       if (!_focusNode.hasFocus) {
-        _controller.reverse(); // Revertir ambas animaciones al perder foco
+        _controller.reverse();
       }
     });
   }
@@ -65,7 +71,7 @@ class _AnimatedDropdownState<T> extends State<AnimatedDropdown<T>>
     setState(() {
       widget.onChanged(newValue);
       if (newValue != null) {
-        _controller.forward(); // Inicia ambas animaciones
+        _controller.forward();
       } else {
         _controller.reverse();
       }
@@ -76,71 +82,88 @@ class _AnimatedDropdownState<T> extends State<AnimatedDropdown<T>>
   Widget build(BuildContext context) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    return Row(
-      children: [
-        ScaleTransition(
-          scale: _scaleAnimation,
-          child: Container(
-            margin: const EdgeInsets.only(left: 8.0),
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            width: 100,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.0),
+    final double width =
+        widget.width != 0.0 ? widget.width : MediaQuery.of(context).size.width;
+    final double height = widget.height == 0.0 ? 56.0 : widget.height;
+
+    final animatedContent = Container(
+      decoration: BoxDecoration(
+        color: Color(0xFF3C3C3C),
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: AnimatedBuilder(
+        animation: _borderAnimation,
+        builder: (context, child) {
+          return ClipRect(
+            // Agregar ClipRect aquí
+            child: CustomPaint(
+              painter: BorderPainter(_borderAnimation.value),
+              child: child,
             ),
-            child: AnimatedBuilder(
-              animation: _borderAnimation,
-              builder: (context, child) {
-                return CustomPaint(
-                  painter: BorderPainter(_borderAnimation.value),
-                  child: child,
-                );
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                width: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  border: Border.all(color: Colors.transparent),
-                ),
-                child: Focus(
-                  focusNode: _focusNode,
-                  child: DropdownButton<T>(
-                    hint: Text(
-                      widget.hint,
-                      style: TextStyle(
-                        color: isDarkMode ? Colors.white : Colors.black,
-                      ),
-                    ),
-                    dropdownColor: isDarkMode ? Colors.grey[800] : Colors.white,
-                    icon: Icon(
-                      Icons.arrow_drop_down,
-                      color: isDarkMode ? Colors.white : Colors.black,
-                    ),
-                    iconSize: 24,
-                    isExpanded: true,
-                    underline: SizedBox(),
-                    style: TextStyle(
-                      color: isDarkMode ? Colors.white : Colors.black,
-                    ),
-                    value: widget.selectedItem,
-                    onChanged: (newValue) {
-                      _onChanged(newValue);
-                      _focusNode.requestFocus();
-                    },
-                    items: widget.items.map((item) {
-                      return DropdownMenuItem<T>(
-                        value: item,
-                        child: Text(widget.itemLabelBuilder(item)),
-                      );
-                    }).toList(),
-                  ),
+          );
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            border: Border.all(color: Colors.transparent),
+          ),
+          child: Focus(
+            focusNode: _focusNode,
+            child: DropdownButton<T>(
+              borderRadius: BorderRadius.circular(10),
+              padding: EdgeInsets.only(left: 10),
+              hint: Text(
+                widget.hint,
+                style: TextStyle(
+                  color: isDarkMode ? Colors.white : Colors.black,
                 ),
               ),
+              dropdownColor: isDarkMode ? Colors.grey[800] : Colors.white,
+              icon: Icon(
+                Icons.arrow_drop_down,
+                color: isDarkMode ? Colors.white : Colors.black,
+              ),
+              iconSize: 24,
+              isExpanded: true,
+              underline: SizedBox(),
+              style: TextStyle(
+                color: isDarkMode ? Colors.white : Colors.black,
+              ),
+              value: widget.selectedItem,
+              onChanged: (newValue) {
+                _onChanged(newValue);
+                _focusNode.requestFocus();
+              },
+              items: widget.items.map((item) {
+                return DropdownMenuItem<T>(
+                  value: item,
+                  child: Text(widget.itemLabelBuilder(item)),
+                );
+              }).toList(),
             ),
           ),
         ),
-        SizedBox(width: MediaQuery.of(context).size.width * 0.02),
-      ],
+      ),
+    );
+
+    return Container(
+      width: width,
+      height: height,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          widget.enableScaleAnimation
+              ? Expanded(
+                  // Agrega Expanded aquí para limitar el ancho y evitar desbordamiento
+                  child: ScaleTransition(
+                      scale: _scaleAnimation, child: animatedContent),
+                )
+              : Expanded(
+                  // Agrega Expanded aquí también si la animación está deshabilitada
+                  child: animatedContent,
+                ),
+        ],
+      ),
     );
   }
 }
@@ -152,13 +175,15 @@ class BorderPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final rect = Rect.fromLTWH(0, 0, size.width, size.height);
+    final rect = Rect.fromLTWH(1, 1, size.width - 2, size.height - 2);
 
+    // Definir borde blanco
     final whiteBorderPaint = Paint()
-      ..color = Colors.white
+      ..color = const Color.fromRGBO(188, 188, 188, 1)
       ..strokeWidth = 0.5
       ..style = PaintingStyle.stroke;
 
+    // Definir borde con gradiente
     final gradientPaint = Paint()
       ..shader = LinearGradient(
         colors: [
@@ -174,15 +199,19 @@ class BorderPainter extends CustomPainter {
       ..strokeWidth = 2.0
       ..style = PaintingStyle.stroke;
 
+    // Crear el Path para el borde redondeado
     final path = Path();
-    path.addRRect(RRect.fromRectAndRadius(rect, Radius.circular(8)));
+    path.addRRect(RRect.fromRectAndRadius(rect, Radius.circular(10)));
 
+    // Verificar el estado de la animación para decidir qué borde mostrar
     if (progress > 0) {
+      // Dibujar el borde gradiente durante la interacción
       final pathMetrics = path.computeMetrics().first;
       final animatedPath =
           pathMetrics.extractPath(0, pathMetrics.length * progress);
       canvas.drawPath(animatedPath, gradientPaint);
     } else {
+      // Dibujar el borde blanco cuando no hay interacción
       canvas.drawPath(path, whiteBorderPaint);
     }
   }
