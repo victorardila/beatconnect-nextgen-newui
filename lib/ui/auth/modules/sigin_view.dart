@@ -1,4 +1,4 @@
-// SigninView.dart
+// Agrega esta importación al principio de tu archivo
 import 'package:beatconnect_app/ui/widgets/animated_textfield.dart';
 import 'package:beatconnect_app/ui/widgets/button_gradient.dart';
 import 'package:beatconnect_app/ui/widgets/button_otherlogins.dart';
@@ -23,6 +23,13 @@ class _SigninViewState extends State<SigninView> {
   bool _isPassFocused = false;
   bool _isForgotPasswordPressed = false;
 
+  // Método para manejar la navegación al iniciar sesión
+  void _handleSignIn() {
+    // Aquí puedes agregar la lógica para verificar las credenciales de usuario
+    // Si las credenciales son válidas, navega a la ruta /root
+    Navigator.pushNamed(context, '/root');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,9 +52,9 @@ class _SigninViewState extends State<SigninView> {
                         child: Column(
                           children: [
                             LogoImage(
-                                assets: 'assets/icon/logo.png',
-                                height:
-                                    MediaQuery.of(context).size.height * 0.12),
+                              assets: 'assets/icon/logo.png',
+                              height: MediaQuery.of(context).size.height * 0.12,
+                            ),
                             LogoType(
                               text: 'Iniciar sesión',
                               color: Colors.white,
@@ -146,7 +153,7 @@ class _SigninViewState extends State<SigninView> {
                                             : LinearGradient(
                                                 colors: [
                                                   Colors.white,
-                                                  Colors.white
+                                                  Colors.white,
                                                 ],
                                               ).createShader(bounds);
                                       },
@@ -161,7 +168,11 @@ class _SigninViewState extends State<SigninView> {
                                 ],
                               ),
                             ),
-                            ButtonGradient(text: 'Entrar', onPressed: () {}),
+                            // Modifica el onPressed del botón para que llame a _handleSignIn
+                            ButtonGradient(
+                              text: 'Entrar',
+                              onPressed: _handleSignIn,
+                            ),
                           ],
                         ),
                       ),
@@ -173,41 +184,37 @@ class _SigninViewState extends State<SigninView> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ButtonOtherLogins(
-                                svgPath: 'assets/svg/icon-google.svg',
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Color(0xFF262626), // Color base oscuro
-                                    Color(
-                                        0xFF1C1C1C), // Gris oscuro ligeramente más profundo
-                                    Color(
-                                        0xFF131313), // Gris oscuro más cercano al negro
-                                    Color(
-                                        0xFF0A0A0A), // Gris profundo y oscuro, casi negro
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                                onPressed: () {}),
+                              svgPath: 'assets/svg/icon-google.svg',
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color(0xFF262626),
+                                  Color(0xFF1C1C1C),
+                                  Color(0xFF131313),
+                                  Color(0xFF0A0A0A),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              onPressed: () {},
+                            ),
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.04,
                             ),
                             ButtonOtherLogins(
-                                svgPath: 'assets/svg/icon-spotify.svg',
-                                svgColor: Color(0xFF08EB61),
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Color(0xFF262626), // Color base oscuro
-                                    Color(
-                                        0xFF1C1C1C), // Gris oscuro ligeramente más profundo
-                                    Color(
-                                        0xFF131313), // Gris oscuro más cercano al negro
-                                    Color(
-                                        0xFF0A0A0A), // Gris profundo y oscuro, casi negro
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                                onPressed: () {}),
+                              svgPath: 'assets/svg/icon-spotify.svg',
+                              svgColor: Color(0xFF08EB61),
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color(0xFF262626),
+                                  Color(0xFF1C1C1C),
+                                  Color(0xFF131313),
+                                  Color(0xFF0A0A0A),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              onPressed: () {},
+                            ),
                           ],
                         ),
                       ),
