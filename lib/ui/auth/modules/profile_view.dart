@@ -1,5 +1,6 @@
 import 'package:beatconnect_app/ui/widgets/animated_dropdown.dart';
 import 'package:beatconnect_app/ui/widgets/animated_textfield.dart';
+import 'package:beatconnect_app/ui/widgets/button_gradient.dart';
 import 'package:beatconnect_app/ui/widgets/logotype.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,7 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  late ScrollController _scrollController;
 
   TextEditingController name = TextEditingController();
   TextEditingController lastname = TextEditingController();
@@ -53,6 +55,8 @@ class _ProfileViewState extends State<ProfileView>
 
   MusicalStyle? selectedMusicalStyle; // Para el género musical seleccionado
   List<MusicalStyle> musicalStyles = [];
+
+  double _scrollOffset = 0; // Para rastrear el desplazamiento
 
   Future<void> loadMusicalStyles() async {
     try {
@@ -107,10 +111,18 @@ class _ProfileViewState extends State<ProfileView>
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(() {
+      setState(() {
+        _scrollOffset = _scrollController.offset;
+      });
+    });
+
     _animationController = AnimationController(
       duration: Duration(seconds: 1),
       vsync: this,
     )..repeat(reverse: true);
+
     loadMusicalStyles(); // Cargar los estilos musicales
   }
 
@@ -121,6 +133,7 @@ class _ProfileViewState extends State<ProfileView>
     lastname.dispose();
     nameFocusNode.dispose();
     lastnameFocusNode.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -128,22 +141,16 @@ class _ProfileViewState extends State<ProfileView>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF262626),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
+      body: Stack(
+        children: [
+          // Contenido desplazable
+          SingleChildScrollView(
+            controller: _scrollController,
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  IconButton(
-                    onPressed: widget.onClose,
-                    icon: Icon(
-                      FontAwesomeIcons.caretDown,
-                      color: Colors.white,
-                      size: 18,
-                    ),
-                  ),
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 20),
                     child: Center(
@@ -243,7 +250,9 @@ class _ProfileViewState extends State<ProfileView>
                                 Positioned(
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: Colors.transparent,
+                                      color: isPressedAvatar
+                                          ? const Color.fromRGBO(0, 0, 0, 0.08)
+                                          : Color.fromRGBO(0, 0, 0, 0.1),
                                       shape: BoxShape.circle,
                                     ),
                                     padding: EdgeInsets.all(6),
@@ -251,7 +260,7 @@ class _ProfileViewState extends State<ProfileView>
                                       FontAwesomeIcons.camera,
                                       color: isPressedAvatar
                                           ? Color.fromRGBO(255, 255, 255, .8)
-                                          : Color.fromARGB(102, 252, 227, 227),
+                                          : Color.fromRGBO(0, 0, 0, 0.1),
                                       size: 26,
                                     ),
                                   ),
@@ -336,28 +345,59 @@ class _ProfileViewState extends State<ProfileView>
                         ),
                         AnimatedDropdown(
                           hint: 'Seleccione tu estilo musical de preferencia',
-                          items:
-                              musicalStyles, // Cambia 'countries' a 'musicalStyles'
-                          selectedItem:
-                              selectedMusicalStyle, // Usa 'selectedMusicalStyle' aquí
+                          items: musicalStyles,
+                          selectedItem: selectedMusicalStyle,
                           enableScaleAnimation: false,
                           onChanged: (value) {
                             setState(() {
-                              selectedMusicalStyle =
-                                  value; // Actualiza el estilo musical seleccionado
+                              selectedMusicalStyle = value;
                             });
                           },
-                          itemLabelBuilder: (style) => style
-                              .name, // Muestra el nombre del estilo musical
+                          itemLabelBuilder: (style) => style.name,
                         ),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.05),
+                        ButtonGradient(text: 'Crear', onPressed: () {}),
                       ],
                     ),
                   ),
                 ],
               ),
             ),
-          );
-        },
+          ),
+          // IconButton con efecto BoxShadow
+          Positioned(
+            top: 40, // Ajusta la posición vertical según tus necesidades
+            right: 20,
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: 300),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: _scrollOffset >
+                        100 // Cambia 100 según el desplazamiento deseado
+                    ? [
+                        BoxShadow(
+                          color: Colors.black54,
+                          blurRadius: 8.0,
+                          spreadRadius: 1.0,
+                          offset: Offset(0, 2),
+                        ),
+                      ]
+                    : [],
+              ),
+              child: IconButton(
+                icon: Icon(
+                  Icons.close,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  widget.onClose();
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

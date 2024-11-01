@@ -27,11 +27,30 @@ class ButtonOtherLogins extends StatefulWidget {
 }
 
 class _ButtonOtherLoginsState extends State<ButtonOtherLogins> {
+  bool _isPressed = false; // Variable para controlar el estado de presión
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.onPressed,
-      child: Container(
+      onTapDown: (_) {
+        setState(() {
+          _isPressed = true; // Cambia el estado al presionar
+        });
+      },
+      onTapUp: (_) {
+        setState(() {
+          _isPressed = false; // Cambia el estado al soltar
+        });
+        widget.onPressed(); // Llama a la función onPressed al soltar
+      },
+      onTapCancel: () {
+        setState(() {
+          _isPressed = false; // Cambia el estado si se cancela el toque
+        });
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200), // Duración de la animación
+        curve: Curves.easeInOut, // Curva de la animación
         width: widget.width ?? 60,
         height: widget.height ?? 60,
         decoration: BoxDecoration(
@@ -43,6 +62,11 @@ class _ButtonOtherLoginsState extends State<ButtonOtherLogins> {
               ),
           borderRadius: BorderRadius.circular(10),
         ),
+        transform: _isPressed
+            ? Matrix4(0.95, 0, 0, 0, 0, 0.95, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+                1) // Crea la matriz de escala manualmente
+            : Matrix4.identity(),
+
         child: LayoutBuilder(
           builder: (context, constraints) {
             return Row(

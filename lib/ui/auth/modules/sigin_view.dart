@@ -193,7 +193,7 @@ class _SigninViewState extends State<SigninView> {
                             ),
                             ButtonOtherLogins(
                                 svgPath: 'assets/svg/icon-spotify.svg',
-                                svgColor: Color(0xFF81b71a),
+                                svgColor: Color(0xFF08EB61),
                                 gradient: LinearGradient(
                                   colors: [
                                     Color(0xFF262626), // Color base oscuro
