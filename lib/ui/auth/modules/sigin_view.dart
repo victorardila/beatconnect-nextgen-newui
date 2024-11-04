@@ -1,4 +1,5 @@
 // Agrega esta importación al principio de tu archivo
+import 'package:beatconnect_app/ui/constants.dart';
 import 'package:beatconnect_app/ui/widgets/animated_textfield.dart';
 import 'package:beatconnect_app/ui/widgets/button_gradient.dart';
 import 'package:beatconnect_app/ui/widgets/button_otherlogins.dart';
@@ -33,7 +34,6 @@ class _SigninViewState extends State<SigninView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
       body: LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
@@ -57,7 +57,7 @@ class _SigninViewState extends State<SigninView> {
                             ),
                             LogoType(
                               text: 'Iniciar sesión',
-                              color: Colors.white,
+                              color: letterColor,
                               fontSize:
                                   MediaQuery.of(context).size.height * 0.04,
                             ),
@@ -111,11 +111,11 @@ class _SigninViewState extends State<SigninView> {
                                             _rememberMe = value ?? false;
                                           });
                                         },
-                                        activeColor: Color(0xFF6BA5F2),
+                                        activeColor: colorApp,
                                       ),
                                       const Text(
                                         'Remember me',
-                                        style: TextStyle(color: Colors.white),
+                                        style: TextStyle(color: letterColor),
                                       ),
                                     ],
                                   ),
@@ -137,30 +137,18 @@ class _SigninViewState extends State<SigninView> {
                                     child: ShaderMask(
                                       shaderCallback: (Rect bounds) {
                                         return _isForgotPasswordPressed
-                                            ? LinearGradient(
-                                                colors: [
-                                                  Color(0xFF333333),
-                                                  Color(0xFF0597F2),
-                                                  Color(0xCC0597F2),
-                                                  Color(0x990597F2),
-                                                  Color(0x660597F2),
-                                                  Color(0x330597F2),
-                                                  Color(0x00333333),
-                                                ],
-                                                begin: Alignment.topLeft,
-                                                end: Alignment.bottomRight,
-                                              ).createShader(bounds)
+                                            ? gradientApp.createShader(bounds)
                                             : LinearGradient(
                                                 colors: [
-                                                  Colors.white,
-                                                  Colors.white,
+                                                  letterColor,
+                                                  letterColor,
                                                 ],
                                               ).createShader(bounds);
                                       },
                                       child: Text(
                                         'Forgot password?',
                                         style: TextStyle(
-                                          color: Colors.white,
+                                          color: letterColor,
                                         ),
                                       ),
                                     ),
@@ -185,16 +173,7 @@ class _SigninViewState extends State<SigninView> {
                           children: [
                             ButtonOtherLogins(
                               svgPath: 'assets/svg/icon-google.svg',
-                              gradient: LinearGradient(
-                                colors: [
-                                  Color(0xFF262626),
-                                  Color(0xFF1C1C1C),
-                                  Color(0xFF131313),
-                                  Color(0xFF0A0A0A),
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
+                              gradient: buttonOtherLogins,
                               onPressed: () {},
                             ),
                             SizedBox(
@@ -202,17 +181,8 @@ class _SigninViewState extends State<SigninView> {
                             ),
                             ButtonOtherLogins(
                               svgPath: 'assets/svg/icon-spotify.svg',
-                              svgColor: Color(0xFF08EB61),
-                              gradient: LinearGradient(
-                                colors: [
-                                  Color(0xFF262626),
-                                  Color(0xFF1C1C1C),
-                                  Color(0xFF131313),
-                                  Color(0xFF0A0A0A),
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
+                              svgColor: colorSpotify,
+                              gradient: buttonOtherLogins,
                               onPressed: () {},
                             ),
                           ],

@@ -1,3 +1,4 @@
+import 'package:beatconnect_app/ui/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -31,7 +32,7 @@ class _ItemTagState extends State<ItemTag> {
           Flexible(
             child: Text(
               widget.text,
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: letterColor),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -41,7 +42,7 @@ class _ItemTagState extends State<ItemTag> {
             child: Icon(
               FontAwesomeIcons.times, // Icono de la 'X' para eliminar
               size: 16,
-              color: Colors.white,
+              color: letterColor,
             ),
           ),
         ],

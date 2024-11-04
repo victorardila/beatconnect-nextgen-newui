@@ -1,3 +1,4 @@
+import 'package:beatconnect_app/ui/constants.dart';
 import 'package:flutter/material.dart';
 
 class ButtonGradient extends StatelessWidget {
@@ -73,7 +74,7 @@ class ButtonGradient extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: Colors.white, // Color del ícono
+              color: letterColor, // Color del ícono
               size: 18, // Tamaño del ícono
             ),
             SizedBox(width: 8), // Espacio entre ícono y texto
@@ -81,7 +82,7 @@ class ButtonGradient extends StatelessWidget {
                 ? Text(
                     text!,
                     style: TextStyle(
-                      color: Colors.white, // color: "white"
+                      color: letterColor, // color: "white"
                       fontWeight: FontWeight.bold, // fontWeight: "bold"
                       fontSize: 18, // Tamaño del texto
                     ),

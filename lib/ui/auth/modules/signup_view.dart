@@ -1,3 +1,4 @@
+import 'package:beatconnect_app/ui/constants.dart';
 import 'package:beatconnect_app/ui/widgets/animated_textfield.dart';
 import 'package:beatconnect_app/ui/widgets/button_gradient.dart';
 import 'package:beatconnect_app/ui/widgets/logo_type.dart';
@@ -61,7 +62,7 @@ class _SignupViewState extends State<SignupView> {
                           children: [
                             LogoType(
                               text: 'Registro',
-                              color: Colors.white,
+                              color: letterColor,
                               fontSize:
                                   MediaQuery.of(context).size.height * 0.04,
                             ),

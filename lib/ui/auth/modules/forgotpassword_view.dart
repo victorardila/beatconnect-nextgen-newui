@@ -1,4 +1,5 @@
 import 'dart:convert'; // Importar para trabajar con JSON
+import 'package:beatconnect_app/ui/constants.dart';
 import 'package:beatconnect_app/ui/widgets/animated_dropdown.dart';
 import 'package:beatconnect_app/ui/widgets/animated_textfield.dart';
 import 'package:beatconnect_app/ui/widgets/button_gradient.dart';
@@ -127,7 +128,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                       widget.onClose, // Llama al callback para cerrar la vista
                   icon: Icon(
                     FontAwesomeIcons.caretDown,
-                    color: Colors.white,
+                    color: letterColor,
                     size: 18,
                   ),
                 ),
@@ -143,7 +144,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                           width: MediaQuery.of(context).size.width * 0.8,
                           child: LogoType(
                             text: 'Restablecer acceso',
-                            color: Colors.white,
+                            color: letterColor,
                             fontSize: MediaQuery.of(context).size.height * 0.04,
                           ),
                         ),
@@ -153,7 +154,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                             'Ingrese el correo electrónico asociado a su cuenta para recibir un código de recuperación.',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: letterColor,
                               fontSize: 16,
                             ),
                           ),

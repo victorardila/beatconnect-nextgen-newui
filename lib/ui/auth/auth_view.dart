@@ -2,6 +2,7 @@ import 'package:beatconnect_app/ui/auth/modules/forgotpassword_view.dart';
 import 'package:beatconnect_app/ui/auth/modules/signup_view.dart';
 import 'package:beatconnect_app/ui/auth/modules/sigin_view.dart';
 import 'package:beatconnect_app/ui/auth/modules/profile_view.dart';
+import 'package:beatconnect_app/ui/constants.dart';
 import 'package:beatconnect_app/ui/widgets/animated_container_widget.dart';
 import 'package:beatconnect_app/ui/widgets/logo_type.dart';
 import 'package:flutter/material.dart';
@@ -66,18 +67,7 @@ class _AuthenticationViewState extends State<AuthenticationView>
       height: MediaQuery.of(context).size.height * 0.75,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Color(0xFF262626),
-            Color(0xFF1F1F1F),
-            Color(0xFF1A1A1A),
-            Color(0xFF141414),
-            Color(0xFF101010),
-            Color(0xFF0C0C0C),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        gradient: backgroundGradient,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(30.0),
           topRight: Radius.circular(30.0),
@@ -95,18 +85,18 @@ class _AuthenticationViewState extends State<AuthenticationView>
                 children: [
                   TabBar(
                     controller: _tabController,
-                    labelColor: Color(0xFF6BA5F2),
-                    unselectedLabelColor: Colors.white,
+                    labelColor: colorApp,
+                    unselectedLabelColor: letterColor,
                     indicatorColor:
-                        Color(0xFF6BA5F2), // Oculta el indicador predeterminado
+                        colorApp, // Oculta el indicador predeterminado
                     indicatorWeight: 3,
                     tabs: [
                       Tab(
                         child: LogoType(
                           text: 'Iniciar sesión',
                           color: _tabController.index == 0
-                              ? Color(0xFF6BA5F2)
-                              : Colors.white,
+                              ? colorApp
+                              : letterColor,
                           fontSize: 15,
                         ),
                       ),
@@ -114,8 +104,8 @@ class _AuthenticationViewState extends State<AuthenticationView>
                         child: LogoType(
                           text: 'Regístrarme',
                           color: _tabController.index == 1
-                              ? Color(0xFF6BA5F2)
-                              : Colors.white,
+                              ? colorApp
+                              : letterColor,
                           fontSize: 15,
                         ),
                       ),
@@ -127,19 +117,7 @@ class _AuthenticationViewState extends State<AuthenticationView>
                     right: 0,
                     child: Container(
                       height: 1.0, // Altura del indicador
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xFF333333),
-                            Color(0xFF0597F2),
-                            Color(0xCC0597F2),
-                            Color(0x990597F2),
-                            Color(0x660597F2),
-                            Color(0x330597F2),
-                            Color(0x00333333),
-                          ],
-                        ),
-                      ),
+                      decoration: BoxDecoration(gradient: gradientApp),
                     ),
                   ),
                 ],

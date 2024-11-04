@@ -1,3 +1,4 @@
+import 'package:beatconnect_app/ui/constants.dart';
 import 'package:flutter/material.dart';
 
 class AnimatedDropdown<T> extends StatefulWidget {
@@ -88,7 +89,7 @@ class _AnimatedDropdownState<T> extends State<AnimatedDropdown<T>>
 
     final animatedContent = Container(
       decoration: BoxDecoration(
-        color: Color(0xFF3C3C3C),
+        color: bgComponents,
         borderRadius: BorderRadius.circular(8.0),
       ),
       child: AnimatedBuilder(
@@ -115,19 +116,19 @@ class _AnimatedDropdownState<T> extends State<AnimatedDropdown<T>>
               hint: Text(
                 widget.hint,
                 style: TextStyle(
-                  color: isDarkMode ? Colors.white : Colors.black,
+                  color: isDarkMode ? letterColor : Colors.black,
                 ),
               ),
-              dropdownColor: isDarkMode ? Colors.grey[800] : Colors.white,
+              dropdownColor: isDarkMode ? Colors.grey[800] : letterColor,
               icon: Icon(
                 Icons.arrow_drop_down,
-                color: isDarkMode ? Colors.white : Colors.black,
+                color: isDarkMode ? letterColor : Colors.black,
               ),
               iconSize: 24,
               isExpanded: true,
               underline: SizedBox(),
               style: TextStyle(
-                color: isDarkMode ? Colors.white : Colors.black,
+                color: isDarkMode ? letterColor : Colors.black,
               ),
               value: widget.selectedItem,
               onChanged: (newValue) {
@@ -185,17 +186,7 @@ class BorderPainter extends CustomPainter {
 
     // Definir borde con gradiente
     final gradientPaint = Paint()
-      ..shader = LinearGradient(
-        colors: [
-          Color(0xFF333333),
-          Color(0xFF0597F2),
-          Color(0xCC0597F2),
-          Color(0x990597F2),
-          Color(0x660597F2),
-          Color(0x330597F2),
-          Color(0x00333333),
-        ],
-      ).createShader(rect)
+      ..shader = gradientApp.createShader(rect)
       ..strokeWidth = 2.0
       ..style = PaintingStyle.stroke;
 

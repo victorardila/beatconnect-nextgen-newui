@@ -1,3 +1,4 @@
+import 'package:beatconnect_app/ui/constants.dart';
 import 'package:beatconnect_app/ui/widgets/animated_tooltip.dart';
 import 'package:beatconnect_app/ui/widgets/emoji_selector.dart';
 import 'package:beatconnect_app/ui/widgets/item_tag.dart';
@@ -170,7 +171,7 @@ class _ProfileViewState extends State<ProfileView>
                     child: Center(
                       child: LogoType(
                         text: 'Crear Perfil',
-                        color: Colors.white,
+                        color: letterColor,
                         fontSize: MediaQuery.of(context).size.height * 0.04,
                       ),
                     ),
@@ -204,7 +205,7 @@ class _ProfileViewState extends State<ProfileView>
                             child: Text(
                               'Portada',
                               style:
-                                  TextStyle(fontSize: 20, color: Colors.white),
+                                  TextStyle(fontSize: 20, color: letterColor),
                             ),
                           ),
                         ),
@@ -235,7 +236,7 @@ class _ProfileViewState extends State<ProfileView>
                                 Container(
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.white,
+                                    color: letterColor,
                                     boxShadow: [
                                       BoxShadow(
                                         color: isPressedAvatar
@@ -345,7 +346,7 @@ class _ProfileViewState extends State<ProfileView>
                       children: [
                         Text(
                           'Más información sobre tu perfil',
-                          style: TextStyle(color: Colors.white, fontSize: 16),
+                          style: TextStyle(color: letterColor, fontSize: 16),
                         ),
                         AnimatedTextField(
                           controller: name,
@@ -369,7 +370,7 @@ class _ProfileViewState extends State<ProfileView>
                         SizedBox(height: 10),
                         Text(
                           'Selecciona tus generos musicales favorito',
-                          style: TextStyle(color: Colors.white, fontSize: 16),
+                          style: TextStyle(color: letterColor, fontSize: 16),
                           textAlign: TextAlign.center,
                         ),
                         AnimatedDropdown(
@@ -403,7 +404,7 @@ class _ProfileViewState extends State<ProfileView>
                               margin: EdgeInsets.only(top: 10),
                               padding: EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: Colors.white12,
+                                color: letterColorUniform,
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: LayoutBuilder(
@@ -450,7 +451,7 @@ class _ProfileViewState extends State<ProfileView>
             child: AnimatedContainer(
               duration: Duration(milliseconds: 300),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: letterColor,
                 borderRadius: BorderRadius.circular(30),
                 boxShadow: _scrollOffset >
                         5 // Cambia 100 según el desplazamiento deseado

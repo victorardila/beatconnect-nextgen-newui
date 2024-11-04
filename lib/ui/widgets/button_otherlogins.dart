@@ -1,3 +1,4 @@
+import 'package:beatconnect_app/ui/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -86,7 +87,7 @@ class _ButtonOtherLoginsState extends State<ButtonOtherLogins> {
                     child: Text(
                       widget.text!,
                       style: TextStyle(
-                        color: Colors.white,
+                        color: letterColor,
                         fontSize: 16,
                       ),
                     ),

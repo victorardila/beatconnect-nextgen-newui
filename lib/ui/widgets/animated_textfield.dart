@@ -1,3 +1,4 @@
+import 'package:beatconnect_app/ui/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -116,22 +117,9 @@ class BorderPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final rect = Rect.fromLTWH(0, 0, size.width, size.height);
 
-    // Define the gradient colors and create a shader
-    final gradient = LinearGradient(
-      colors: [
-        Color(0xFF333333),
-        Color(0xFF0597F2),
-        Color(0xCC0597F2),
-        Color(0x990597F2),
-        Color(0x660597F2),
-        Color(0x330597F2),
-        Color(0x00333333),
-      ],
-    );
-
-    // Apply the gradient shader to the paint
+    // Apply the gradientApp shader to the paint
     final paint = Paint()
-      ..shader = gradient.createShader(rect)
+      ..shader = gradientApp.createShader(rect)
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 
