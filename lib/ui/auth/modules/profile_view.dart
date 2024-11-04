@@ -1,3 +1,4 @@
+import 'package:beatconnect_app/ui/widgets/animated_tooltip.dart';
 import 'package:beatconnect_app/ui/widgets/emoji_selector.dart';
 import 'package:beatconnect_app/ui/widgets/item_tag.dart';
 import 'package:beatconnect_app/ui/widgets/animated_dropdown.dart';
@@ -282,72 +283,20 @@ class _ProfileViewState extends State<ProfileView>
                             ),
                           ),
                         ),
-                        // Selector de emojis sobre el avatar
-                        Positioned(
-                          bottom: MediaQuery.of(context).size.height * 0,
-                          left: MediaQuery.of(context).size.width * 0.28,
-                          child: Container(
-                            height: 100,
-                            width: 100,
-                            color: Colors.transparent,
-                            child: Stack(alignment: Alignment(0, 0), children: [
-                              Align(
-                                  alignment: Alignment(.5, .1),
-                                  child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 5, vertical: 5),
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            Colors.grey[100]!, // Gris muy claro
-                                            Colors.grey[300]!, // Gris claro
-                                            Colors.grey[
-                                                400]!, // Gris un poco más oscuro
-                                            Colors.grey[500]!, // Gris medio
-                                          ],
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomRight,
-                                        ),
-                                        borderRadius: BorderRadius.circular(5),
-                                        border: Border.all(
-                                          color: Colors
-                                              .grey[400]!, // Color del borde
-                                          width: 0.5, // Ancho del borde
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black.withOpacity(
-                                                0.2), // Color de la sombra
-                                            spreadRadius:
-                                                1, // Radio de expansión de la sombra
-                                            blurRadius:
-                                                5, // Radio de difuminado de la sombra
-                                            offset: Offset(0,
-                                                3), // Desplazamiento de la sombra
-                                          ),
-                                        ],
-                                      ),
-                                      child: Text(
-                                        "Test flotante",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                      ))),
-                              Align(
-                                alignment: Alignment(-1, 1),
-                                child: EmojiSelector(
-                                  onEmojiSelected: (emoji) {
-                                    // Aquí puedes manejar el emoji seleccionado
-                                    setState(() {
-                                      selectedEmoji = emoji;
-                                    });
-                                  },
-                                ),
-                              ),
-                            ]),
+                        // En ProfileView, dentro de `Stack`
+                        AnimatedTooltip(
+                          tooltipText: "Selecciona un estado",
+                          bottomOffset:
+                              MediaQuery.of(context).size.height * 0.01,
+                          leftOffset: MediaQuery.of(context).size.width * 0.28,
+                          child: EmojiSelector(
+                            onEmojiSelected: (emoji) {
+                              setState(() {
+                                selectedEmoji = emoji;
+                              });
+                            },
                           ),
                         ),
-
                         // Selector de emojis sobre el avatar
                         Positioned(
                           right: 10,
@@ -421,11 +370,13 @@ class _ProfileViewState extends State<ProfileView>
                         Text(
                           'Selecciona tus generos musicales favorito',
                           style: TextStyle(color: Colors.white, fontSize: 16),
+                          textAlign: TextAlign.center,
                         ),
                         AnimatedDropdown(
                           hint: 'Seleccione tu estilo musical de preferencia',
                           items: musicalStyles,
                           selectedItem: selectedMusicalStyle,
+                          enableScaleAnimation: false,
                           onChanged: (value) {
                             setState(() {
                               selectedMusicalStyle = value;
