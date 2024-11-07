@@ -67,7 +67,7 @@ class _AuthenticationViewState extends State<AuthenticationView>
       height: MediaQuery.of(context).size.height * 0.75,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        gradient: backgroundGradient,
+        gradient: backgroundGradientDark(1),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(30.0),
           topRight: Radius.circular(30.0),
