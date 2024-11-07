@@ -155,328 +155,338 @@ class _ProfileViewState extends State<ProfileView>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF262626),
-      body: Stack(
-        children: [
-          // Contenido desplazable
-          SingleChildScrollView(
-            controller: _scrollController,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    child: Center(
-                      child: LogoType(
-                        text: 'Crear Perfil',
-                        color: letterColor,
-                        fontSize: MediaQuery.of(context).size.height * 0.04,
+      backgroundColor: Colors.transparent,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: backgroundGradientDark(1),
+        ),
+        child: Stack(
+          children: [
+            // Contenido desplazable
+            SingleChildScrollView(
+              controller: _scrollController,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: Center(
+                        child: LogoType(
+                          text: 'Crear Perfil',
+                          color: letterColor,
+                          fontSize: MediaQuery.of(context).size.height * 0.04,
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.25,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Color.fromRGBO(0, 0, 0, .2),
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                    ),
-                    child: Stack(
-                      alignment: Alignment.bottomLeft,
-                      children: [
-                        if (coverImagePath != null)
-                          Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: FileImage(File(coverImagePath!)),
-                                fit: BoxFit.cover,
-                              ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
-                            ),
-                          ),
-                        Positioned(
-                          top: 10,
-                          right: 10,
-                          child: FadeTransition(
-                            opacity: _animationController,
-                            child: Text(
-                              'Portada',
-                              style:
-                                  TextStyle(fontSize: 20, color: letterColor),
-                            ),
-                          ),
-                        ),
-                        // Imagen del perfil
-                        Positioned(
-                          left: 0,
-                          bottom: 0,
-                          child: GestureDetector(
-                            onTapDown: (_) {
-                              setState(() {
-                                isPressedAvatar = true;
-                              });
-                            },
-                            onTapUp: (_) {
-                              setState(() {
-                                isPressedAvatar = false;
-                              });
-                            },
-                            onTapCancel: () {
-                              setState(() {
-                                isPressedAvatar = false;
-                              });
-                            },
-                            onTap: _pickAvatarImage,
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: letterColor,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: isPressedAvatar
-                                            ? Color.fromRGBO(0, 0, 0, 0.7)
-                                            : Color.fromRGBO(0, 0, 0, 0.3),
-                                        blurRadius: 12.0,
-                                        spreadRadius: 4.0,
-                                        offset: Offset(0, 4),
-                                      ),
-                                    ],
-                                    border: Border.all(
-                                      color: Color.fromRGBO(158, 158, 158, .2)
-                                          .withOpacity(0.5),
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  child: CircleAvatar(
-                                    radius: MediaQuery.of(context).size.height *
-                                        0.09,
-                                    backgroundImage: avatarImagePath != null
-                                        ? FileImage(File(avatarImagePath!))
-                                        : AssetImage('assets/img/user.png')
-                                            as ImageProvider,
-                                  ),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.25,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Color.fromRGBO(0, 0, 0, .2),
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Stack(
+                        alignment: Alignment.bottomLeft,
+                        children: [
+                          if (coverImagePath != null)
+                            Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: FileImage(File(coverImagePath!)),
+                                  fit: BoxFit.cover,
                                 ),
-                                Positioned(
-                                  child: Container(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                              ),
+                            ),
+                          Positioned(
+                            top: 10,
+                            right: 10,
+                            child: FadeTransition(
+                              opacity: _animationController,
+                              child: Text(
+                                'Portada',
+                                style:
+                                    TextStyle(fontSize: 20, color: letterColor),
+                              ),
+                            ),
+                          ),
+                          // Imagen del perfil
+                          Positioned(
+                            left: 0,
+                            bottom: 0,
+                            child: GestureDetector(
+                              onTapDown: (_) {
+                                setState(() {
+                                  isPressedAvatar = true;
+                                });
+                              },
+                              onTapUp: (_) {
+                                setState(() {
+                                  isPressedAvatar = false;
+                                });
+                              },
+                              onTapCancel: () {
+                                setState(() {
+                                  isPressedAvatar = false;
+                                });
+                              },
+                              onTap: _pickAvatarImage,
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Container(
                                     decoration: BoxDecoration(
-                                      color: isPressedAvatar
-                                          ? const Color.fromRGBO(0, 0, 0, 0.08)
-                                          : Color.fromRGBO(0, 0, 0, 0.1),
                                       shape: BoxShape.circle,
-                                    ),
-                                    padding: EdgeInsets.all(6),
-                                    child: Icon(
-                                      FontAwesomeIcons.camera,
-                                      color: isPressedAvatar
-                                          ? Color.fromRGBO(255, 255, 255, .8)
-                                          : Color.fromRGBO(0, 0, 0, 0.1),
-                                      size: 26,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        // En ProfileView, dentro de `Stack`
-                        AnimatedTooltip(
-                          tooltipText: "Selecciona un estado",
-                          bottomOffset:
-                              MediaQuery.of(context).size.height * 0.01,
-                          leftOffset: MediaQuery.of(context).size.width * 0.28,
-                          child: EmojiSelector(
-                            onEmojiSelected: (emoji) {
-                              setState(() {
-                                selectedEmoji = emoji;
-                              });
-                            },
-                          ),
-                        ),
-                        // Selector de emojis sobre el avatar
-                        Positioned(
-                          right: 10,
-                          bottom: 10,
-                          child: GestureDetector(
-                            onTapDown: (_) {
-                              setState(() {
-                                isPressedCamera = true;
-                              });
-                            },
-                            onTapUp: (_) {
-                              setState(() {
-                                isPressedCamera = false;
-                              });
-                            },
-                            onTapCancel: () {
-                              setState(() {
-                                isPressedCamera = false;
-                              });
-                            },
-                            onTap: _pickCoverImage,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: isPressedCamera
-                                    ? Color.fromRGBO(0, 0, 0, .8)
-                                    : Color.fromRGBO(0, 0, 0, .3),
-                                shape: BoxShape.circle,
-                              ),
-                              padding: EdgeInsets.all(6),
-                              child: Icon(
-                                FontAwesomeIcons.camera,
-                                color: isPressedCamera
-                                    ? Color.fromRGBO(255, 255, 255, .6)
-                                    : Color.fromRGBO(255, 255, 255, .4),
-                                size: 26,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Más información sobre tu perfil',
-                          style: TextStyle(color: letterColor, fontSize: 16),
-                        ),
-                        AnimatedTextField(
-                          controller: name,
-                          labelText: 'Nombres',
-                          prefixIcon: Icons.person,
-                          isFocused: nameFocusNode.hasFocus,
-                          onFocusChange: (hasFocus) {
-                            setState(() {});
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        AnimatedTextField(
-                          controller: lastname,
-                          labelText: 'Apellidos',
-                          prefixIcon: Icons.person,
-                          isFocused: lastnameFocusNode.hasFocus,
-                          onFocusChange: (hasFocus) {
-                            setState(() {});
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          'Selecciona tus generos musicales favorito',
-                          style: TextStyle(color: letterColor, fontSize: 16),
-                          textAlign: TextAlign.center,
-                        ),
-                        AnimatedDropdown(
-                          hint: 'Seleccione tu estilo musical de preferencia',
-                          items: musicalStyles,
-                          selectedItem: selectedMusicalStyle,
-                          enableScaleAnimation: false,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedMusicalStyle = value;
-                              isDropdownItemSelected = true;
-
-                              // Añade el estilo seleccionado si aún no está en la lista
-                              if (value != null &&
-                                  !selectedStyles.contains(value)) {
-                                selectedStyles.add(value);
-                              }
-                            });
-                          },
-                          itemLabelBuilder: (style) => style.name,
-                        ),
-                        if (isDropdownItemSelected)
-                          if (isDropdownItemSelected &&
-                              selectedStyles.isNotEmpty)
-                            AnimatedContainer(
-                              duration: Duration(milliseconds: 300),
-                              height: selectedStyles.isNotEmpty
-                                  ? 100
-                                  : 0, // Se oculta si está vacío
-                              width: double.infinity,
-                              margin: EdgeInsets.only(top: 10),
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: letterColorUniform,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: LayoutBuilder(
-                                builder: (context, constraints) {
-                                  return SingleChildScrollView(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Wrap(
-                                          spacing:
-                                              8.0, // Espaciado entre los elementos del Wrap
-                                          children: selectedStyles.map((style) {
-                                            return ItemTag(
-                                              text: style.name,
-                                              onRemove: () {
-                                                setState(() {
-                                                  selectedStyles.remove(
-                                                      style); // Eliminar estilo al hacer clic
-                                                });
-                                              },
-                                            );
-                                          }).toList(),
+                                      color: letterColor,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: isPressedAvatar
+                                              ? Color.fromRGBO(0, 0, 0, 0.7)
+                                              : Color.fromRGBO(0, 0, 0, 0.3),
+                                          blurRadius: 12.0,
+                                          spreadRadius: 4.0,
+                                          offset: Offset(0, 4),
                                         ),
                                       ],
+                                      border: Border.all(
+                                        color: Color.fromRGBO(158, 158, 158, .2)
+                                            .withOpacity(0.5),
+                                        width: 1.0,
+                                      ),
                                     ),
-                                  );
-                                },
+                                    child: CircleAvatar(
+                                      radius:
+                                          MediaQuery.of(context).size.height *
+                                              0.09,
+                                      backgroundImage: avatarImagePath != null
+                                          ? FileImage(File(avatarImagePath!))
+                                          : AssetImage('assets/img/user.png')
+                                              as ImageProvider,
+                                    ),
+                                  ),
+                                  Positioned(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: isPressedAvatar
+                                            ? const Color.fromRGBO(
+                                                0, 0, 0, 0.08)
+                                            : Color.fromRGBO(0, 0, 0, 0.1),
+                                        shape: BoxShape.circle,
+                                      ),
+                                      padding: EdgeInsets.all(6),
+                                      child: Icon(
+                                        FontAwesomeIcons.camera,
+                                        color: isPressedAvatar
+                                            ? Color.fromRGBO(255, 255, 255, .8)
+                                            : Color.fromRGBO(0, 0, 0, 0.1),
+                                        size: 26,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.05),
-                        ButtonGradient(text: 'Crear', onPressed: () {}),
-                      ],
+                          ),
+                          // En ProfileView, dentro de `Stack`
+                          AnimatedTooltip(
+                            tooltipText: "Selecciona un estado",
+                            bottomOffset:
+                                MediaQuery.of(context).size.height * 0.01,
+                            leftOffset:
+                                MediaQuery.of(context).size.width * 0.28,
+                            child: EmojiSelector(
+                              onEmojiSelected: (emoji) {
+                                setState(() {
+                                  selectedEmoji = emoji;
+                                });
+                              },
+                            ),
+                          ),
+                          // Selector de emojis sobre el avatar
+                          Positioned(
+                            right: 10,
+                            bottom: 10,
+                            child: GestureDetector(
+                              onTapDown: (_) {
+                                setState(() {
+                                  isPressedCamera = true;
+                                });
+                              },
+                              onTapUp: (_) {
+                                setState(() {
+                                  isPressedCamera = false;
+                                });
+                              },
+                              onTapCancel: () {
+                                setState(() {
+                                  isPressedCamera = false;
+                                });
+                              },
+                              onTap: _pickCoverImage,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: isPressedCamera
+                                      ? Color.fromRGBO(0, 0, 0, .8)
+                                      : Color.fromRGBO(0, 0, 0, .3),
+                                  shape: BoxShape.circle,
+                                ),
+                                padding: EdgeInsets.all(6),
+                                child: Icon(
+                                  FontAwesomeIcons.camera,
+                                  color: isPressedCamera
+                                      ? Color.fromRGBO(255, 255, 255, .6)
+                                      : Color.fromRGBO(255, 255, 255, .4),
+                                  size: 26,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          // IconButton con efecto BoxShadow
-          Positioned(
-            top: 20, // Ajusta la posición vertical según tus necesidades
-            right: 20,
-            child: AnimatedContainer(
-              duration: Duration(milliseconds: 300),
-              decoration: BoxDecoration(
-                color: letterColor,
-                borderRadius: BorderRadius.circular(30),
-                boxShadow: _scrollOffset >
-                        5 // Cambia 100 según el desplazamiento deseado
-                    ? [
-                        BoxShadow(
-                          color: Colors.black54,
-                          blurRadius: 8.0,
-                          spreadRadius: 1.0,
-                          offset: Offset(0, 2),
-                        ),
-                      ]
-                    : [],
-              ),
-              child: IconButton(
-                icon: Icon(
-                  Icons.close,
-                  color: Colors.black,
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Más información sobre tu perfil',
+                            style: TextStyle(color: letterColor, fontSize: 16),
+                          ),
+                          AnimatedTextField(
+                            controller: name,
+                            labelText: 'Nombres',
+                            prefixIcon: Icons.person,
+                            isFocused: nameFocusNode.hasFocus,
+                            onFocusChange: (hasFocus) {
+                              setState(() {});
+                            },
+                          ),
+                          SizedBox(height: 10),
+                          AnimatedTextField(
+                            controller: lastname,
+                            labelText: 'Apellidos',
+                            prefixIcon: Icons.person,
+                            isFocused: lastnameFocusNode.hasFocus,
+                            onFocusChange: (hasFocus) {
+                              setState(() {});
+                            },
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'Selecciona tus generos musicales favorito',
+                            style: TextStyle(color: letterColor, fontSize: 16),
+                            textAlign: TextAlign.center,
+                          ),
+                          AnimatedDropdown(
+                            hint: 'Seleccione tu estilo musical de preferencia',
+                            items: musicalStyles,
+                            selectedItem: selectedMusicalStyle,
+                            enableScaleAnimation: false,
+                            onChanged: (value) {
+                              setState(() {
+                                selectedMusicalStyle = value;
+                                isDropdownItemSelected = true;
+
+                                // Añade el estilo seleccionado si aún no está en la lista
+                                if (value != null &&
+                                    !selectedStyles.contains(value)) {
+                                  selectedStyles.add(value);
+                                }
+                              });
+                            },
+                            itemLabelBuilder: (style) => style.name,
+                          ),
+                          if (isDropdownItemSelected)
+                            if (isDropdownItemSelected &&
+                                selectedStyles.isNotEmpty)
+                              AnimatedContainer(
+                                duration: Duration(milliseconds: 300),
+                                height: selectedStyles.isNotEmpty
+                                    ? 100
+                                    : 0, // Se oculta si está vacío
+                                width: double.infinity,
+                                margin: EdgeInsets.only(top: 10),
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: letterColorUniform,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: LayoutBuilder(
+                                  builder: (context, constraints) {
+                                    return SingleChildScrollView(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Wrap(
+                                            spacing:
+                                                8.0, // Espaciado entre los elementos del Wrap
+                                            children:
+                                                selectedStyles.map((style) {
+                                              return ItemTag(
+                                                text: style.name,
+                                                onRemove: () {
+                                                  setState(() {
+                                                    selectedStyles.remove(
+                                                        style); // Eliminar estilo al hacer clic
+                                                  });
+                                                },
+                                              );
+                                            }).toList(),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                          SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.05),
+                          ButtonGradient(text: 'Crear', onPressed: () {}),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                onPressed: () {
-                  widget.onClose();
-                },
               ),
             ),
-          ),
-        ],
+            // IconButton con efecto BoxShadow
+            Positioned(
+              top: 20, // Ajusta la posición vertical según tus necesidades
+              right: 20,
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 300),
+                decoration: BoxDecoration(
+                  color: letterColor,
+                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: _scrollOffset >
+                          5 // Cambia 100 según el desplazamiento deseado
+                      ? [
+                          BoxShadow(
+                            color: Colors.black54,
+                            blurRadius: 8.0,
+                            spreadRadius: 1.0,
+                            offset: Offset(0, 2),
+                          ),
+                        ]
+                      : [],
+                ),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.close,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    widget.onClose();
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

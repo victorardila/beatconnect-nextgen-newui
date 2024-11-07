@@ -113,125 +113,134 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
 
   @override
   Widget build(BuildContext context) {
-    Country? selectedCountry;
-    final bool _isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: const Color(0xFF262626),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min, // Cambiado para ajustar la altura
-              children: [
-                IconButton(
-                  onPressed:
-                      widget.onClose, // Llama al callback para cerrar la vista
-                  icon: Icon(
-                    FontAwesomeIcons.caretDown,
-                    color: letterColor,
-                    size: 18,
-                  ),
-                ),
-                Container(
-                  // Eliminada la altura fija y sustituida por un margen
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          width: MediaQuery.of(context).size.width * 0.8,
-                          child: LogoType(
-                            text: 'Restablecer acceso',
-                            color: letterColor,
-                            fontSize: MediaQuery.of(context).size.height * 0.04,
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Text(
-                            'Ingrese el correo electrónico asociado a su cuenta para recibir un código de recuperación.',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: letterColor,
-                              fontSize: 16,
+      backgroundColor: Colors.transparent,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: backgroundGradientDark(1),
+        ),
+        height: MediaQuery.of(context).size.height,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return Container(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize:
+                      MainAxisSize.min, // Cambiado para ajustar la altura
+                  children: [
+                    IconButton(
+                      onPressed: widget
+                          .onClose, // Llama al callback para cerrar la vista
+                      icon: Icon(
+                        FontAwesomeIcons.caretDown,
+                        color: letterColor,
+                        size: 18,
+                      ),
+                    ),
+                    Container(
+                      // Eliminada la altura fija y sustituida por un margen
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              alignment: Alignment.center,
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              child: LogoType(
+                                text: 'Restablecer acceso',
+                                color: letterColor,
+                                fontSize:
+                                    MediaQuery.of(context).size.height * 0.04,
+                              ),
                             ),
-                          ),
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.8,
-                          height: MediaQuery.of(context).size.width * 0.4,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                child: Row(
-                                  children: [
-                                    if (showDropdown)
-                                      AnimatedDropdown<Country>(
-                                        width: 112.0,
-                                        hint: 'Seleccione un país',
-                                        items: countries,
-                                        selectedItem:
-                                            countrySeleccionado, // Usa countrySeleccionado aquí
-                                        onChanged: (value) {
-                                          setState(() {
-                                            countrySeleccionado =
-                                                value; // Actualiza el país seleccionado
-                                          });
-                                        },
-                                        itemLabelBuilder: (country) =>
-                                            '${country.flag} ${country.code}',
-                                      ),
-                                    Expanded(
+                            Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: Text(
+                                'Ingrese el correo electrónico asociado a su cuenta para recibir un código de recuperación.',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: letterColor,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              height: MediaQuery.of(context).size.width * 0.4,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    child: Row(
+                                      children: [
+                                        if (showDropdown)
+                                          AnimatedDropdown<Country>(
+                                            width: 112.0,
+                                            hint: 'Seleccione un país',
+                                            items: countries,
+                                            selectedItem:
+                                                countrySeleccionado, // Usa countrySeleccionado aquí
+                                            onChanged: (value) {
+                                              setState(() {
+                                                countrySeleccionado =
+                                                    value; // Actualiza el país seleccionado
+                                              });
+                                            },
+                                            itemLabelBuilder: (country) =>
+                                                '${country.flag} ${country.code}',
+                                          ),
+                                        Expanded(
+                                          child: AnimatedTextField(
+                                            controller: email,
+                                            labelText: 'Correo electronico',
+                                            prefixIcon:
+                                                textFieldIcon, // Cambiar icono aquí
+                                            isFocused: emailFocusNode.hasFocus,
+                                            onFocusChange: (hasFocus) {
+                                              setState(() {});
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  // Mostrar el campo para ingresar el código si es necesario
+                                  if (showCodeField && showDropdown)
+                                    Container(
+                                      margin: const EdgeInsets.only(top: 20),
                                       child: AnimatedTextField(
-                                        controller: email,
-                                        labelText: 'Correo electronico',
+                                        controller: codeController,
+                                        labelText: 'Escribir código',
                                         prefixIcon:
-                                            textFieldIcon, // Cambiar icono aquí
-                                        isFocused: emailFocusNode.hasFocus,
+                                            Icons.lock, // Cambiar icono aquí
+                                        isFocused: codeFocusNode.hasFocus,
                                         onFocusChange: (hasFocus) {
                                           setState(() {});
                                         },
                                       ),
                                     ),
-                                  ],
-                                ),
+                                ],
                               ),
-                              // Mostrar el campo para ingresar el código si es necesario
-                              if (showCodeField && showDropdown)
-                                Container(
-                                  margin: const EdgeInsets.only(top: 20),
-                                  child: AnimatedTextField(
-                                    controller: codeController,
-                                    labelText: 'Escribir código',
-                                    prefixIcon:
-                                        Icons.lock, // Cambiar icono aquí
-                                    isFocused: codeFocusNode.hasFocus,
-                                    onFocusChange: (hasFocus) {
-                                      setState(() {});
-                                    },
-                                  ),
-                                ),
-                            ],
-                          ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(top: 20),
+                              child: ButtonGradient(
+                                text: showCodeField ? 'Validar' : 'Enviar',
+                                onPressed: handleSubmit,
+                              ),
+                            ),
+                          ],
                         ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 20),
-                          child: ButtonGradient(
-                            text: showCodeField ? 'Validar' : 'Enviar',
-                            onPressed: handleSubmit,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          );
-        },
+              ),
+            );
+          },
+        ),
       ),
     );
   }

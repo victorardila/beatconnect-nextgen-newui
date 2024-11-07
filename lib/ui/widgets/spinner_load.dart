@@ -12,16 +12,7 @@ class _SpinnerLoadState extends State<SpinnerLoad> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Color(0xFF262626),
-            Color(0xFF1F1F1F),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
+      decoration: BoxDecoration(gradient: backgroundGradientDark(1)),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
