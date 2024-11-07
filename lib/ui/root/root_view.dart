@@ -1,7 +1,7 @@
 import 'package:beatconnect_app/ui/constants.dart';
 import 'package:beatconnect_app/ui/widgets/logo_image.dart';
 import 'package:beatconnect_app/ui/widgets/logo_type.dart';
-import 'package:beatconnect_app/ui/widgets/spinner_load.dart';
+import 'package:beatconnect_app/ui/root/views/spinner_load_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
@@ -82,7 +82,7 @@ class _RootViewState extends State<RootView>
   @override
   Widget build(BuildContext context) {
     // Coponentes visuales del RootView
-    final loadview = SpinnerLoad();
+    final loadview = SpinnerLoadView();
     final MenuSidebar = Container(
       decoration: BoxDecoration(
           image: DecorationImage(

@@ -1,14 +1,14 @@
 import 'package:beatconnect_app/ui/constants.dart';
 import 'package:flutter/material.dart';
 
-class SpinnerLoad extends StatefulWidget {
-  const SpinnerLoad({super.key});
+class SpinnerLoadView extends StatefulWidget {
+  const SpinnerLoadView({super.key});
 
   @override
-  State<SpinnerLoad> createState() => _SpinnerLoadState();
+  State<SpinnerLoadView> createState() => _SpinnerLoadViewState();
 }
 
-class _SpinnerLoadState extends State<SpinnerLoad> {
+class _SpinnerLoadViewState extends State<SpinnerLoadView> {
   @override
   Widget build(BuildContext context) {
     return Container(
