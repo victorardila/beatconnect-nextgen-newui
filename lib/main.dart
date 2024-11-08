@@ -9,6 +9,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
   runZonedGuarded(
@@ -21,8 +23,8 @@ void main() async {
 
       // Inicializa Firebase
       await Firebase.initializeApp(
-          // Puedes especificar opciones aquí si es necesario
-          );
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
 
       // Activa Firebase App Check
       await FirebaseAppCheck.instance.activate(
@@ -43,7 +45,6 @@ void main() async {
     },
     (error, stackTrace) {
       // Manejo de excepciones globales Enviar el error a Firebase Crashlytics
-      // Cargar la vista de error
       runApp(MaterialApp(
         home: ErrorView(message: 'Ocurrió un error inesperado.'),
       ));

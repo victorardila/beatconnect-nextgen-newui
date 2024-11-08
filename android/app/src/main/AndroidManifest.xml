@@ -5,7 +5,7 @@
     <application
         android:label="beatconnect_app"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher">
         <!-- Actividad principal -->
         <activity
             android:name=".MainActivity"
