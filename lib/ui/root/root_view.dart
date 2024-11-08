@@ -105,7 +105,7 @@ class _RootViewState extends State<RootView>
                     : MainAxisAlignment.start,
                 children: <Widget>[
                   LogoImage(
-                    assets: 'assets/icon/logo.png',
+                    assets: 'assets/icon/icon.png',
                     height: 50,
                     width: 50,
                   ),

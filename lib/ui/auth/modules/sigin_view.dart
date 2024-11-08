@@ -53,7 +53,7 @@ class _SigninViewState extends State<SigninView> {
                         child: Column(
                           children: [
                             LogoImage(
-                              assets: 'assets/icon/logo.png',
+                              assets: 'assets/icon/icon.png',
                               height: MediaQuery.of(context).size.height * 0.12,
                             ),
                             LogoType(
