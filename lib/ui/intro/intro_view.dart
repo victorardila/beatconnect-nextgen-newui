@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:beatconnect_app/ui/auth/auth_view.dart';
 import 'package:beatconnect_app/ui/widgets/button_gradient.dart';
 import 'package:beatconnect_app/ui/widgets/logo_type.dart';
@@ -19,6 +20,7 @@ class _IntroViewState extends State<IntroView>
   bool _showAuthView = false;
   late AnimationController _animationController;
   late Animation<Offset> _offsetAnimation;
+  bool _isFaded = false; // Controla la visibilidad del logo
 
   @override
   void initState() {
@@ -28,12 +30,14 @@ class _IntroViewState extends State<IntroView>
       duration: const Duration(milliseconds: 800),
     );
     _offsetAnimation = Tween<Offset>(
-      begin: const Offset(0, 1), // Empieza desde abajo de la pantalla
-      end: Offset.zero, // Termina en su posición normal
+      begin: const Offset(0, 1),
+      end: Offset.zero,
     ).animate(CurvedAnimation(
       parent: _animationController,
       curve: Curves.easeInOutCubic,
     ));
+
+    _startFadeAnimationLoop(); // Inicia el bucle de animación
   }
 
   @override
@@ -42,18 +46,28 @@ class _IntroViewState extends State<IntroView>
     super.dispose();
   }
 
+  void _startFadeAnimationLoop() {
+    // Configura un bucle de animación cada 5 segundos
+    Future.delayed(Duration(seconds: 5), () {
+      setState(() {
+        _isFaded = !_isFaded; // Alterna la visibilidad del logo
+      });
+
+      // Reinicia el bucle para la próxima animación después de 5 segundos
+      _startFadeAnimationLoop();
+    });
+  }
+
   void _toggleAuthView() {
     setState(() {
       if (_showAuthView) {
-        // Si la vista de autenticación está activa, revertir la animación
         _animationController.reverse().then((_) {
           setState(() {
-            _showAuthView =
-                false; // Cambiar el estado después de que la animación se complete
+            _showAuthView = false;
           });
         });
       } else {
-        _showAuthView = true; // Cambiar el estado inmediatamente al abrir
+        _showAuthView = true;
         _animationController.forward();
       }
     });
@@ -62,11 +76,9 @@ class _IntroViewState extends State<IntroView>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-          const Color(0xFF262626), // Cambia a cualquier color que desees
+      backgroundColor: const Color(0xFF262626),
       body: Stack(
         children: [
-          // Fondo de IntroView con imagen
           Container(
             height: double.infinity,
             width: double.infinity,
@@ -77,7 +89,6 @@ class _IntroViewState extends State<IntroView>
               ),
             ),
           ),
-          // Gradiente vertical
           Container(
             height: double.infinity,
             decoration: BoxDecoration(
@@ -91,7 +102,6 @@ class _IntroViewState extends State<IntroView>
               ),
             ),
           ),
-          // Contenido inferior con texto y botón
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -101,7 +111,7 @@ class _IntroViewState extends State<IntroView>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     FadeOutParticle(
-                      disappear: true,
+                      disappear: _isFaded,
                       child: LogoType(
                         text: 'BeatConnect',
                         color: const Color(0xFF418EF2),
@@ -119,7 +129,7 @@ class _IntroViewState extends State<IntroView>
                     ),
                     const SizedBox(height: 20),
                     ButtonGradient(
-                      icon: FontAwesomeIcons.angleRight,
+                      icon: FontAwesomeIcons.play,
                       onPressed: _toggleAuthView,
                     ),
                   ],
@@ -127,31 +137,25 @@ class _IntroViewState extends State<IntroView>
               ),
             ),
           ),
-          // Efecto de desenfoque sobre el fondo solo si se muestra la vista de autenticación
-          if (_showAuthView) // Verifica si la vista de autenticación está activa
+          if (_showAuthView)
             GestureDetector(
-              onTap:
-                  _toggleAuthView, // Cierra la vista de autenticación al tocar
+              onTap: _toggleAuthView,
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                 child: Container(
                   width: double.infinity,
                   height: double.infinity,
-                  color:
-                      Colors.black.withOpacity(0.5), // Ajuste de fondo oscuro
+                  color: Colors.black.withOpacity(0.5),
                 ),
               ),
             ),
-          // Vista de autenticación en superposición con animación de desplazamiento desde la parte inferior
           Align(
             alignment: Alignment.bottomCenter,
             child: SlideTransition(
               position: _offsetAnimation,
               child: FractionallySizedBox(
                 heightFactor: 0.75,
-                child: _showAuthView // Solo muestra la vista de autenticación si está activa
-                    ? AuthenticationView()
-                    : Container(), // Muestra un contenedor vacío si no está activa
+                child: _showAuthView ? AuthenticationView() : Container(),
               ),
             ),
           ),
