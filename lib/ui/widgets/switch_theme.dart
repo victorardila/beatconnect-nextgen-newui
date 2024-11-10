@@ -18,18 +18,17 @@ class _ToggleSwitchState extends State<ToggleSwitch> {
   }
 
   void _startOpacityTimer() {
-    // Cancela cualquier temporizador anterior antes de iniciar uno nuevo
     _timer?.cancel();
     _timer = Timer(Duration(seconds: 2), () {
       setState(() {
-        opacity = 0.2; // Cambiar opacidad al 50% después de 2 segundos
+        opacity = 0.2; // Cambiar opacidad después de 2 segundos
       });
     });
   }
 
   @override
   void dispose() {
-    _timer?.cancel(); // Cancelar el temporizador al eliminar el widget
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -39,9 +38,9 @@ class _ToggleSwitchState extends State<ToggleSwitch> {
       onTap: () {
         setState(() {
           isDarkMode = !isDarkMode; // Cambia el estado al tocar
-          opacity = 1.0; // Restablece la opacidad a 100% al interactuar
+          opacity = 1.0; // Restablece la opacidad al interactuar
         });
-        _startOpacityTimer(); // Reinicia el temporizador
+        _startOpacityTimer();
       },
       child: Opacity(
         opacity: opacity,
@@ -54,26 +53,34 @@ class _ToggleSwitchState extends State<ToggleSwitch> {
           ),
           child: Stack(
             children: [
-              CustomPaint(
-                painter: TogglePainter(isDarkMode),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        spreadRadius: 1,
-                        blurRadius: 10,
-                        offset: Offset(0, 4),
+              if (opacity == 1.0) // Estilo original
+                CustomPaint(
+                  painter: TogglePainter(isDarkMode),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          spreadRadius: 1,
+                          blurRadius: 10,
+                          offset: Offset(0, 4),
+                        ),
+                      ],
+                      border: Border.all(
+                        color: const Color.fromARGB(255, 216, 216, 216),
+                        width: 0.8,
                       ),
-                    ],
-                    border: Border.all(
-                      color: const Color.fromARGB(255, 216, 216, 216),
-                      width: 0.8,
                     ),
                   ),
+                )
+              else // Nuevo estilo cuando esté opaco
+                Container(
+                  decoration: BoxDecoration(
+                    color: isDarkMode ? Colors.black : Colors.grey[300],
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                 ),
-              ),
               AnimatedAlign(
                 alignment:
                     isDarkMode ? Alignment.centerRight : Alignment.centerLeft,
@@ -84,22 +91,23 @@ class _ToggleSwitchState extends State<ToggleSwitch> {
                   decoration: BoxDecoration(
                     color: isDarkMode
                         ? const Color(0xFFD0D8E1)
-                        : Color(0xFFF2C12E),
+                        : (opacity == 1.0 ? Color(0xFFF2C12E) : Colors.white),
                     borderRadius: BorderRadius.circular(18),
                     boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
-                      ),
+                      if (opacity == 1.0) // Solo sombra en diseño original
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
                     ],
                     border: Border.all(
                       color: Colors.white,
                       width: 1,
                     ),
                   ),
-                  child: isDarkMode
+                  child: isDarkMode && opacity == 1.0
                       ? CustomPaint(
                           painter: CraterPainter(),
                           child: Container(),
@@ -124,19 +132,16 @@ class TogglePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final Paint paint = Paint();
 
-    // Fondo del toggle switch
     paint.color = isDarkMode ? Colors.black : Colors.lightBlue;
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromLTRB(0, 0, size.width, size.height),
-        Radius.circular(20), // Bordes redondeados
+        Radius.circular(20),
       ),
       paint,
     );
 
-    // Detalles: Estrellas o nubes
     if (isDarkMode) {
-      // Estrellas
       paint.color = const Color.fromARGB(255, 239, 239, 239);
       canvas.drawCircle(Offset(size.width * 0.12, size.height * 0.3), 4, paint);
       canvas.drawCircle(Offset(size.width * 0.45, size.height * 0.6), 3, paint);
@@ -146,7 +151,6 @@ class TogglePainter extends CustomPainter {
       canvas.drawCircle(Offset(size.width * 0.6, size.height * 0.7), 1, paint);
       canvas.drawCircle(Offset(size.width * 0.2, size.height * 0.8), 3, paint);
     } else {
-      // Nubes claras
       paint.color = const Color.fromRGBO(255, 255, 255, .5);
       canvas.drawCircle(
           Offset(size.width * 0.84, size.height * 0.35), 8, paint);
@@ -156,7 +160,6 @@ class TogglePainter extends CustomPainter {
           Offset(size.width * 0.70, size.height * 0.66), 7, paint);
       canvas.drawCircle(
           Offset(size.width * 0.55, size.height * 0.72), 7.2, paint);
-      //Nubes espesas
       paint.color = Colors.white;
       canvas.drawCircle(
           Offset(size.width * 0.88, size.height * 0.45), 7, paint);
@@ -182,7 +185,6 @@ class CraterPainter extends CustomPainter {
       ..color = const Color(0xFFA8B1C6)
       ..style = PaintingStyle.fill;
 
-    // Dibujar cráteres en posiciones relativas al círculo principal
     canvas.drawCircle(
         Offset(size.width * 0.3, size.height * 0.3), 2, craterPaint);
     canvas.drawCircle(
