@@ -114,8 +114,8 @@ class _SigninViewState extends State<SigninView> {
                                         },
                                         activeColor: colorApp,
                                       ),
-                                      const Text(
-                                        'Remember me',
+                                      Text(
+                                        'Recordarme',
                                         style: TextStyle(color: letterColor),
                                       ),
                                     ],
@@ -147,7 +147,7 @@ class _SigninViewState extends State<SigninView> {
                                               ).createShader(bounds);
                                       },
                                       child: Text(
-                                        'Forgot password?',
+                                        '¿Olvidé mi contraseña?',
                                         style: TextStyle(
                                           color: letterColor,
                                         ),

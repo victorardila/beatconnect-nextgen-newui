@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:beatconnect_app/ui/auth/auth_view.dart';
 import 'package:beatconnect_app/ui/widgets/button_gradient.dart';
 import 'package:beatconnect_app/ui/widgets/logo_type.dart';
+import 'package:beatconnect_app/ui/widgets/switch_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fade_out_particle/fade_out_particle.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,7 +49,7 @@ class _IntroViewState extends State<IntroView>
 
   void _startFadeAnimationLoop() {
     // Configura un bucle de animación cada 5 segundos
-    Future.delayed(Duration(seconds: 5), () {
+    Future.delayed(Duration(seconds: 3), () {
       setState(() {
         _isFaded = !_isFaded; // Alterna la visibilidad del logo
       });
@@ -79,6 +80,7 @@ class _IntroViewState extends State<IntroView>
       backgroundColor: const Color(0xFF262626),
       body: Stack(
         children: [
+          // Fondo de imagen
           Container(
             height: double.infinity,
             width: double.infinity,
@@ -89,6 +91,7 @@ class _IntroViewState extends State<IntroView>
               ),
             ),
           ),
+          // Gradiente de fondo
           Container(
             height: double.infinity,
             decoration: BoxDecoration(
@@ -102,6 +105,13 @@ class _IntroViewState extends State<IntroView>
               ),
             ),
           ),
+          // ToggleSwitch en la esquina superior derecha
+          Positioned(
+            top: 40,
+            right: 20,
+            child: ToggleSwitch(),
+          ),
+          // Contenido principal
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -137,6 +147,7 @@ class _IntroViewState extends State<IntroView>
               ),
             ),
           ),
+          // Vista de autenticación superpuesta
           if (_showAuthView)
             GestureDetector(
               onTap: _toggleAuthView,
@@ -149,6 +160,7 @@ class _IntroViewState extends State<IntroView>
                 ),
               ),
             ),
+          // Animación deslizante de la vista de autenticación
           Align(
             alignment: Alignment.bottomCenter,
             child: SlideTransition(
