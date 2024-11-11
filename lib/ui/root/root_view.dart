@@ -82,8 +82,8 @@ class _RootViewState extends State<RootView>
   @override
   Widget build(BuildContext context) {
     // Coponentes visuales del RootView
-    final loadview = SpinnerLoadView();
-    final MenuSidebar = Container(
+    final spinnerLoad = SpinnerLoadView();
+    final menuSidebar = Container(
       decoration: BoxDecoration(
           image: DecorationImage(
               image: AssetImage(
@@ -92,7 +92,7 @@ class _RootViewState extends State<RootView>
               fit: BoxFit.cover)),
       child: Container(
         decoration: BoxDecoration(
-          gradient: backgroundGradientDark(0.96),
+          gradient: backgroundGradientDark(0.92),
         ),
         child: Column(
           children: [
@@ -123,7 +123,7 @@ class _RootViewState extends State<RootView>
         ),
       ),
     );
-    final ChildContainer = AnimatedContainer(
+    final childContainer = AnimatedContainer(
         transform: handedMode
             ? Matrix4.translationValues(-xOffset, yOffset, 0.5)
             : Matrix4.translationValues(xOffset, yOffset, 0.5)
@@ -212,7 +212,7 @@ class _RootViewState extends State<RootView>
     return Scaffold(
       body: Container(
         child: Stack(
-          children: [MenuSidebar, ChildContainer],
+          children: [menuSidebar, childContainer],
         ),
       ),
     );
@@ -290,7 +290,7 @@ class CustomRow extends StatelessWidget {
         margin: EdgeInsets.symmetric(vertical: 1),
         padding: EdgeInsets.only(left: paddingLeft, right: paddingRight),
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(33, 33, 33, 0.4),
+          color: Color.fromRGBO(33, 33, 33, 0.4),
         ),
         child: TextButton(
           onPressed: () {
