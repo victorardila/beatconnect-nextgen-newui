@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 class AnimatedContainerImage extends StatefulWidget {
   final String image;
   final String text;
-  final VoidCallback onTap;
+  final onTap;
 
   const AnimatedContainerImage({
     super.key,
     required this.image,
     required this.text,
-    required this.onTap,
+    this.onTap,
   });
 
   @override

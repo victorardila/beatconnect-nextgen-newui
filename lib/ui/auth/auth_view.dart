@@ -19,6 +19,7 @@ class _AuthenticationViewState extends State<AuthenticationView>
   late TabController _tabController;
   bool _isProfileViewVisible = false;
   bool _isForgotPasswordVisible = false;
+  bool isCompany = false; // Variable para almacenar si es negocio
 
   @override
   void initState() {
@@ -35,10 +36,11 @@ class _AuthenticationViewState extends State<AuthenticationView>
     super.dispose();
   }
 
-  void _showProfileView() {
+  void _showProfileView(bool isCompany) {
     setState(() {
       _isProfileViewVisible = true;
-      _isForgotPasswordVisible = false; // Asegúrate de ocultar la otra vista
+      _isForgotPasswordVisible = false;
+      this.isCompany = isCompany; // Asigna el valor
     });
   }
 
@@ -151,6 +153,7 @@ class _AuthenticationViewState extends State<AuthenticationView>
                   AnimatedContainerWidget(
                     child: ProfileView(
                       onClose: _hideProfileView,
+                      isCompany: isCompany, // Pasa el valor a ProfileView
                     ),
                     isVisible: _isProfileViewVisible,
                   ),

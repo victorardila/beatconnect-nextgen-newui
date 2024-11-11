@@ -6,7 +6,7 @@ import 'package:beatconnect_app/ui/widgets/logo_type.dart';
 import 'package:flutter/material.dart';
 
 class SignupView extends StatefulWidget {
-  final VoidCallback onSignupSuccess;
+  final Function(bool isCompany) onSignupSuccess;
   const SignupView({super.key, required this.onSignupSuccess});
 
   @override
@@ -49,7 +49,8 @@ class _SignupViewState extends State<SignupView> {
 
   @override
   Widget build(BuildContext context) {
-    final formRegister = Container(
+    // Formularios de registro
+    final registrationForm = Container(
       width: MediaQuery.of(context).size.width * 0.8,
       height: MediaQuery.of(context).size.width * 0.8,
       child: Column(
@@ -105,8 +106,8 @@ class _SignupViewState extends State<SignupView> {
         ],
       ),
     );
-
-    final selectTypeUser = Container(
+    // Seleccion de tipo de usuario
+    final userTypeselection = Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.width,
       child: Column(
@@ -186,8 +187,8 @@ class _SignupViewState extends State<SignupView> {
                       ),
                       Stack(
                         children: [
-                          if (!isTypeSelected) selectTypeUser,
-                          if (isTypeSelected) formRegister,
+                          if (!isTypeSelected) userTypeselection,
+                          if (isTypeSelected) registrationForm,
                         ],
                       ),
                       isTypeSelected
@@ -197,7 +198,7 @@ class _SignupViewState extends State<SignupView> {
                                 text: 'Registrarme',
                                 onPressed: () {
                                   // Aquí llamamos al callback al presionar el botón
-                                  widget.onSignupSuccess();
+                                  widget.onSignupSuccess(isCompany);
                                 },
                               ),
                             )
