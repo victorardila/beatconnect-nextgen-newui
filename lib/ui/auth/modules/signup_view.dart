@@ -22,11 +22,20 @@ class _SignupViewState extends State<SignupView> {
   bool isCompany = false; // Para rastrear si el usuario seleccionó "Empresa"
   bool isTypeSelected =
       false; // Para rastrear si se seleccionó un tipo de usuario
+  bool showRepeatPass =
+      false; // Para mostrar/ocultar el campo "Repetir contraseña"
 
   FocusNode userFocusNode = FocusNode();
   FocusNode emailFocusNode = FocusNode();
   FocusNode passFocusNode = FocusNode();
   FocusNode repeatPassFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    // Agregamos un listener al campo de contraseña para mostrar/ocultar el campo "Repetir contraseña"
+    pass.addListener(_toggleRepeatPassVisibility);
+  }
 
   @override
   void dispose() {
@@ -39,6 +48,12 @@ class _SignupViewState extends State<SignupView> {
     passFocusNode.dispose();
     repeatPassFocusNode.dispose();
     super.dispose();
+  }
+
+  void _toggleRepeatPassVisibility() {
+    setState(() {
+      showRepeatPass = pass.text.isNotEmpty;
+    });
   }
 
   void selectUserType(bool company) {
@@ -59,10 +74,11 @@ class _SignupViewState extends State<SignupView> {
         children: [
           TextButton(
               onPressed: () {
-                isTypeSelected = !isTypeSelected;
+                setState(() {
+                  isTypeSelected = !isTypeSelected;
+                });
               },
-              child: Container(
-                  child: Row(
+              child: Row(
                 children: [
                   Icon(
                     FontAwesomeIcons.caretLeft,
@@ -75,7 +91,7 @@ class _SignupViewState extends State<SignupView> {
                     ),
                   ),
                 ],
-              ))),
+              )),
           AnimatedTextField(
             controller: user,
             labelText: isCompany ? 'Nombre de negocio' : 'Usuario',
@@ -113,19 +129,22 @@ class _SignupViewState extends State<SignupView> {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.01,
           ),
-          AnimatedTextField(
-            controller: repeatPass,
-            labelText: 'Repetir contraseña',
-            prefixIcon: Icons.lock,
-            obscureText: true,
-            isFocused: repeatPassFocusNode.hasFocus,
-            onFocusChange: (hasFocus) {
-              setState(() {});
-            },
-          ),
+          // Solo mostramos el campo "Repetir contraseña" si `showRepeatPass` es true
+          if (showRepeatPass)
+            AnimatedTextField(
+              controller: repeatPass,
+              labelText: 'Repetir contraseña',
+              prefixIcon: Icons.lock,
+              obscureText: true,
+              isFocused: repeatPassFocusNode.hasFocus,
+              onFocusChange: (hasFocus) {
+                setState(() {});
+              },
+            ),
         ],
       ),
     );
+
     // Seleccion de tipo de usuario
     final userTypeselection = Container(
       width: MediaQuery.of(context).size.width,
@@ -134,13 +153,11 @@ class _SignupViewState extends State<SignupView> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            child: Text(
-              'Elija el tipo de usuario',
-              style: TextStyle(
-                color: letterColor,
-                fontSize: MediaQuery.of(context).size.height * 0.022,
-              ),
+          Text(
+            'Elija el tipo de usuario',
+            style: TextStyle(
+              color: letterColor,
+              fontSize: MediaQuery.of(context).size.height * 0.022,
             ),
           ),
           Expanded(
@@ -219,7 +236,6 @@ class _SignupViewState extends State<SignupView> {
                               child: ButtonGradient(
                                 text: 'Registrarme',
                                 onPressed: () {
-                                  // Aquí llamamos al callback al presionar el botón
                                   widget.onSignupSuccess(isCompany);
                                 },
                               ),
