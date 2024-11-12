@@ -33,44 +33,66 @@ class _SigninViewState extends State<SigninView> {
     // Validación de los campos
     if (user.text.isEmpty || !user.text.contains('@')) {
       final snackBar = SnackBar(
-        /// need to set following properties for best effect of awesome_snackbar_content
         elevation: 0,
         behavior: SnackBarBehavior.floating,
         backgroundColor: Colors.transparent,
         content: AwesomeSnackbarContent(
           title: 'Error de campos',
-          message:
-              'Por favor ingresa un correo electrónico válido.', // set your message here
-
-          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+          message: 'Por favor ingresa un correo electrónico válido.',
           contentType: ContentType.failure,
         ),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    } else {
-      if (pass.text.isEmpty || pass.text.length < 6) {
-        final snackBar = SnackBar(
-          /// need to set following properties for best effect of awesome_snackbar_content
+      return; // Termina la ejecución si hay error
+    } else if (pass.text.isEmpty || pass.text.length < 6) {
+      final snackBar = SnackBar(
+        elevation: 0,
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.transparent,
+        content: AwesomeSnackbarContent(
+          title: 'Error de campos',
+          message: 'La contraseña debe tener al menos 6 caracteres.',
+          contentType: ContentType.failure,
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return; // Termina la ejecución si hay error
+    }
+
+    // Intento de login
+    _userAuthC.login(user.text, pass.text).then((value) {
+      if (_userAuthC.validUser != null &&
+          _userAuthC.userMessage.contains('exitoso')) {
+        // Mostrar Snackbar de éxito
+        final successSnackbar = SnackBar(
           elevation: 0,
           behavior: SnackBarBehavior.floating,
           backgroundColor: Colors.transparent,
           content: AwesomeSnackbarContent(
-            title: 'Error de campos',
-            message:
-                'La contraseña debe tener al menos 6 caracteres.', // set your message here
+            title: 'Inicio de sesión exitoso',
+            message: 'Has iniciado sesión correctamente.',
+            contentType: ContentType.success,
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(successSnackbar);
 
-            /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+        // Navegar a la ruta principal
+        Navigator.pushNamed(context, '/root');
+      } else {
+        // Manejar el caso de error en autenticación
+        final errorSnackbar = SnackBar(
+          elevation: 0,
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.transparent,
+          content: AwesomeSnackbarContent(
+            title: 'Error de autenticación',
+            message: 'Usuario o contraseña incorrectos.',
             contentType: ContentType.failure,
           ),
         );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        ScaffoldMessenger.of(context).showSnackBar(errorSnackbar);
       }
-    }
-
-    // Aquí puedes agregar la lógica para verificar las credenciales de usuario
-    // Si las credenciales son válidas, navega a la ruta /root
-    _userAuthC.login(user.text, pass.text);
-    Navigator.pushNamed(context, '/root');
+    });
   }
 
   @override
