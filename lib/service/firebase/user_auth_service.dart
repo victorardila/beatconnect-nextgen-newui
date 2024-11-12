@@ -1,26 +1,30 @@
-import 'dart:typed_data';
-
 import 'package:beatconnect_app/service/secure/password_security_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:argon2/argon2.dart'; // Importar la biblioteca Argon
 
 class UserAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   List<dynamic> response = [null, ""];
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<List<dynamic>> login(String email, String password) async {
-    if (!_isValidEmail(email) || !_isValidPassword(password)) {
+  Future<List<dynamic>> login(String usernameOrEmail, String password) async {
+    if (!_isValidInput(usernameOrEmail) || !_isValidPassword(password)) {
       return [null, "Email o contraseña no válidos."];
     }
 
     try {
-      // Intentar obtener el usuario con el correo electrónico
+      // Intentar obtener el usuario por email o username
       QuerySnapshot querySnapshot = await _firestore
           .collection('users')
-          .where('email', isEqualTo: email)
+          .where('email', isEqualTo: usernameOrEmail)
           .get();
+
+      if (querySnapshot.docs.isEmpty) {
+        querySnapshot = await _firestore
+            .collection('users')
+            .where('username', isEqualTo: usernameOrEmail)
+            .get();
+      }
 
       if (querySnapshot.docs.isEmpty) {
         return [null, "Usuario no encontrado."];
@@ -58,9 +62,13 @@ class UserAuthService {
   }
 
   // Método para registrar un nuevo usuario con sal aleatoria
-  Future<List<dynamic>> register(String email, String password) async {
-    if (!_isValidEmail(email) || !_isValidPassword(password)) {
-      return [null, "Email o contraseña no válidos."];
+  Future<List<dynamic>> register(
+      String userId, String username, String email, String password) async {
+    // Validar email, username y contraseña
+    if (!_isValidEmail(email) ||
+        !_isValidPassword(password) ||
+        !_isValidUsername(username)) {
+      return [null, "Email, usuario o contraseña no válidos."];
     }
 
     try {
@@ -79,10 +87,12 @@ class UserAuthService {
         String encryptedPassword =
             await PasswordSecurityService.encryptPassword(password, salt);
 
-        // Guarda los datos en Firestore con el hash y la sal
+        // Guarda los datos en Firestore con el hash, la sal y el username
         await _firestore.collection('users').doc(user.uid).set({
+          'uid': userId,
+          'username': username,
           'email': email,
-          'password': encryptedPassword, // Contraseña cifrada con Argon2
+          'password': encryptedPassword, // Contraseña cifrada
           'salt': salt, // Almacena la sal
           'createdAt': FieldValue.serverTimestamp(),
         });
@@ -176,10 +186,20 @@ class UserAuthService {
     return response;
   }
 
-  // Validaciones de email y contraseña
+// Validación para email o username
+  bool _isValidInput(String input) {
+    return _isValidEmail(input) || _isValidUsername(input);
+  }
+
+// Validación de email
   bool _isValidEmail(String email) {
     return RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
         .hasMatch(email);
+  }
+
+// Validación de username
+  bool _isValidUsername(String username) {
+    return username.isNotEmpty && username.length >= 3;
   }
 
   bool _isValidPassword(String password) {

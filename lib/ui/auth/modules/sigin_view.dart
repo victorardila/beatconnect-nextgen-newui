@@ -9,7 +9,6 @@ import 'package:beatconnect_app/ui/widgets/logo_image.dart';
 import 'package:beatconnect_app/ui/widgets/logo_type.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:uuid/uuid.dart';
 
 class SigninView extends StatefulWidget {
   final VoidCallback onForgotPassword; // Callback para olvidar la contraseña
@@ -79,18 +78,33 @@ class _SigninViewState extends State<SigninView> {
         // Navegar a la ruta principal
         Navigator.pushNamed(context, '/root');
       } else {
-        // Manejar el caso de error en autenticación
-        final errorSnackbar = SnackBar(
-          elevation: 0,
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: Colors.transparent,
-          content: AwesomeSnackbarContent(
-            title: 'Error de autenticación',
-            message: 'Usuario o contraseña incorrectos.',
-            contentType: ContentType.failure,
-          ),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(errorSnackbar);
+        if (_userAuthC.userMessage.contains('incorrecta')) {
+          // Manejar el caso de error en autenticación
+          final errorSnackbar = SnackBar(
+            elevation: 0,
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.transparent,
+            content: AwesomeSnackbarContent(
+              title: 'Usuario o contraseña incorrectos.',
+              message: _userAuthC.userMessage,
+              contentType: ContentType.failure,
+            ),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(errorSnackbar);
+        } else {
+          // Manejar el caso de error en autenticación
+          final errorSnackbar = SnackBar(
+            elevation: 0,
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.transparent,
+            content: AwesomeSnackbarContent(
+              title: 'Error de autenticación',
+              message: 'Usuario o contraseña incorrectos.',
+              contentType: ContentType.failure,
+            ),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(errorSnackbar);
+        }
       }
     });
   }

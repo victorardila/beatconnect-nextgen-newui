@@ -34,10 +34,12 @@ class UserAuthController extends GetxController {
     }
   }
 
-  Future<void> createUser(String email, String password) async {
+  Future<void> createUser(
+      String userId, String username, String email, String password) async {
     _isLoading.value = true;
     try {
-      _response.value = await _userAuthService.register(email, password);
+      _response.value =
+          await _userAuthService.register(userId, username, email, password);
       await handleUserResponse(_response.value);
     } catch (e) {
       _handleError(e);

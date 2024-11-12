@@ -1,3 +1,5 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:beatconnect_app/controller/user_auth_controller.dart';
 import 'package:beatconnect_app/ui/constants.dart';
 import 'package:beatconnect_app/ui/widgets/animated_container_image.dart';
 import 'package:beatconnect_app/ui/widgets/animated_textfield.dart';
@@ -5,6 +7,8 @@ import 'package:beatconnect_app/ui/widgets/button_gradient.dart';
 import 'package:beatconnect_app/ui/widgets/logo_type.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:uuid/uuid.dart';
 
 class SignupView extends StatefulWidget {
   final Function(bool isCompany) onSignupSuccess;
@@ -15,6 +19,7 @@ class SignupView extends StatefulWidget {
 }
 
 class _SignupViewState extends State<SignupView> {
+  UserAuthController _userAuthC = Get.put(UserAuthController());
   TextEditingController user = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController pass = TextEditingController();
@@ -29,6 +34,76 @@ class _SignupViewState extends State<SignupView> {
   FocusNode emailFocusNode = FocusNode();
   FocusNode passFocusNode = FocusNode();
   FocusNode repeatPassFocusNode = FocusNode();
+
+  void _handleSignUp() {
+    if (repeatPass.text != pass.text) {
+      // Validación de los campos
+      if (user.text.isEmpty || !user.text.contains('@')) {
+        final snackBar = SnackBar(
+          elevation: 0,
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.transparent,
+          content: AwesomeSnackbarContent(
+            title: 'Error de campos',
+            message: 'Por favor ingresa un correo electrónico válido.',
+            contentType: ContentType.failure,
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        return; // Termina la ejecución si hay error
+      } else if (pass.text.isEmpty || pass.text.length < 6) {
+        final snackBar = SnackBar(
+          elevation: 0,
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.transparent,
+          content: AwesomeSnackbarContent(
+            title: 'Error de campos',
+            message: 'La contraseña debe tener al menos 6 caracteres.',
+            contentType: ContentType.failure,
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        return; // Termina la ejecución si hay error
+      }
+    }
+    final userId =
+        Uuid().v4(); // Genera un UUID único para el usuario en una sola línea
+
+    // Intento de login
+    _userAuthC
+        .createUser(userId, user.text, email.text, pass.text)
+        .then((value) {
+      if (_userAuthC.validUser != null &&
+          _userAuthC.userMessage.contains('exitoso')) {
+        // Mostrar Snackbar de éxito
+        final successSnackbar = SnackBar(
+          elevation: 0,
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.transparent,
+          content: AwesomeSnackbarContent(
+            title: 'Registro de usuario exitoso',
+            message: 'Se ha creado el usuario correctamente.',
+            contentType: ContentType.success,
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(successSnackbar);
+        widget.onSignupSuccess(isCompany);
+      } else {
+        // Manejar el caso de error en autenticación
+        final errorSnackbar = SnackBar(
+          elevation: 0,
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.transparent,
+          content: AwesomeSnackbarContent(
+            title: 'No se pudo crear el usuario.',
+            message: _userAuthC.userMessage,
+            contentType: ContentType.failure,
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(errorSnackbar);
+      }
+    });
+  }
 
   @override
   void initState() {
@@ -235,9 +310,7 @@ class _SignupViewState extends State<SignupView> {
                               margin: const EdgeInsets.only(top: 20),
                               child: ButtonGradient(
                                 text: 'Registrarme',
-                                onPressed: () {
-                                  widget.onSignupSuccess(isCompany);
-                                },
+                                onPressed: _handleSignUp,
                               ),
                             )
                           : Container(),
