@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:beatconnect_app/provider/error_provider.dart';
 import 'package:beatconnect_app/ui/root/views/error_view.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,65 +10,76 @@ import 'package:get_storage/get_storage.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:flutter/foundation.dart'; // Importa esta librería
+import 'package:flutter/foundation.dart';
 import 'firebase_options.dart';
+import 'package:provider/provider.dart';
 
-void main() async {
+Future<void> initializeApp() async {
+  await GetStorage.init();
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  if (kReleaseMode) {
+    await FirebaseAppCheck.instance.activate(
+      androidProvider: AndroidProvider.playIntegrity,
+    );
+  } else {
+    await FirebaseAppCheck.instance.activate(
+      androidProvider: AndroidProvider.debug,
+    );
+  }
+
+  initializeDateFormatting('es');
+  timeago.setLocaleMessages('es', timeago.EsMessages());
+
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+  );
+}
+
+String getErrorMessage(dynamic error) {
+  if (error.toString().contains("Firebase")) {
+    return "Hubo un problema con la conexión a los servicios. Intenta más tarde.";
+  } else if (error.toString().contains("Network")) {
+    return "Error de conexión. Verifica tu conexión a internet.";
+  } else {
+    return "Algo salió mal. Por favor, intenta de nuevo.";
+  }
+}
+
+void main() {
+  final errorProvider = ErrorProvider();
+
   runZonedGuarded(
     () async {
-      // Inicializa GetStorage
-      await GetStorage.init();
+      await initializeApp();
 
-      // Asegura que los widgets estén inicializados
-      WidgetsFlutterBinding.ensureInitialized();
-
-      // Inicializa Firebase
-      await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
+      runApp(
+        ChangeNotifierProvider(
+          create: (_) => errorProvider,
+          child: const App(),
+        ),
       );
-
-      // Activa Firebase App Check
-      if (kReleaseMode) {
-        await FirebaseAppCheck.instance.activate(
-          androidProvider: AndroidProvider.playIntegrity,
-        );
-      } else {
-        await FirebaseAppCheck.instance.activate(
-          androidProvider: AndroidProvider.debug,
-        );
-      }
-
-      // Inicializa la localización para fechas
-      initializeDateFormatting('es');
-      timeago.setLocaleMessages('es', timeago.EsMessages());
-
-      // Configura el estilo de la barra de estado
-      SystemChrome.setSystemUIOverlayStyle(
-          const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-
-      // Inicia la aplicación
-      runApp(const App());
     },
     (error, stackTrace) {
-      // Definir el mensaje que se mostrará al usuario según el tipo de error
-      String userMessage = "Algo salió mal. Por favor, intenta de nuevo.";
+      final userMessage =
+          getErrorMessage(error); // Usar la función para obtener el mensaje
 
-      // Ejemplo: Manejo específico de errores
-      if (error.toString().contains("Firebase")) {
-        userMessage =
-            "Hubo un problema con la conexión a los servicios. Intenta más tarde.";
-      } else if (error.toString().contains("Network")) {
-        userMessage = "Error de conexión. Verifica tu conexión a internet.";
-      }
+      errorProvider.setErrorMessage(userMessage);
 
-      // Inicia la aplicación mostrando un mensaje de error amigable
-      runApp(MaterialApp(
-        debugShowCheckedModeBanner: false, // Desactiva el banner de depuración
-        home: ErrorView(
-            message: userMessage), // Muestra un mensaje claro al usuario
-      ));
+      runApp(
+        ChangeNotifierProvider.value(
+          value: errorProvider,
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: ErrorView(message: userMessage),
+          ),
+        ),
+      );
 
-      // Enviar el error a Firebase Crashlytics para análisis
       FirebaseCrashlytics.instance.recordError(error, stackTrace);
     },
   );
