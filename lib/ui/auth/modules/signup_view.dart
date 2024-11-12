@@ -3,6 +3,7 @@ import 'package:beatconnect_app/ui/widgets/animated_container_image.dart';
 import 'package:beatconnect_app/ui/widgets/animated_textfield.dart';
 import 'package:beatconnect_app/ui/widgets/button_gradient.dart';
 import 'package:beatconnect_app/ui/widgets/logo_type.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 
 class SignupView extends StatefulWidget {
@@ -52,10 +53,29 @@ class _SignupViewState extends State<SignupView> {
     // Formularios de registro
     final registrationForm = Container(
       width: MediaQuery.of(context).size.width * 0.8,
-      height: MediaQuery.of(context).size.width * 0.8,
+      height: MediaQuery.of(context).size.width * 0.9,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          TextButton(
+              onPressed: () {
+                isTypeSelected = !isTypeSelected;
+              },
+              child: Container(
+                  child: Row(
+                children: [
+                  Icon(
+                    FontAwesomeIcons.caretLeft,
+                    color: colorApp,
+                  ),
+                  Text(
+                    'Seleccionar otro tipo',
+                    style: TextStyle(
+                      color: colorApp,
+                    ),
+                  ),
+                ],
+              ))),
           AnimatedTextField(
             controller: user,
             labelText: isCompany ? 'Nombre de negocio' : 'Usuario',
@@ -167,13 +187,15 @@ class _SignupViewState extends State<SignupView> {
                 minHeight: constraints.maxHeight,
               ),
               child: IntrinsicHeight(
-                child: Center(
+                child: Container(
+                  alignment: Alignment.center,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
                         alignment: Alignment.center,
                         width: MediaQuery.of(context).size.width * 0.8,
-                        height: MediaQuery.of(context).size.width * 0.2,
                         child: Column(
                           children: [
                             LogoType(
