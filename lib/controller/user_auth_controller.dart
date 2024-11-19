@@ -34,12 +34,12 @@ class UserAuthController extends GetxController {
     }
   }
 
-  Future<void> createUser(
-      String userId, String username, String email, String password) async {
+  Future<void> createUser(String userId, String userType, String username,
+      String email, String password) async {
     _isLoading.value = true;
     try {
-      _response.value =
-          await _userAuthService.register(userId, username, email, password);
+      _response.value = await _userAuthService.register(
+          userId, userType, username, email, password);
       await handleUserResponse(_response.value);
     } catch (e) {
       _handleError(e);
@@ -88,6 +88,19 @@ class UserAuthController extends GetxController {
     _isLoading.value = true;
     try {
       _response.value = await _userAuthService.updateUser(email, password);
+      await handleUserResponse(_response.value);
+    } catch (e) {
+      _handleError(e);
+    } finally {
+      _isLoading.value = false;
+    }
+  }
+
+  Future<void> updateProfile(Map<String, dynamic> user) async {
+    var uid = user['uid'];
+    _isLoading.value = true;
+    try {
+      _response.value = await _userAuthService.updateProfile(uid, user);
       await handleUserResponse(_response.value);
     } catch (e) {
       _handleError(e);

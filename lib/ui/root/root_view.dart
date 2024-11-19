@@ -1,3 +1,5 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:beatconnect_app/controller/user_auth_controller.dart';
 import 'package:beatconnect_app/ui/constants.dart';
 import 'package:beatconnect_app/ui/widgets/logo_image.dart';
 import 'package:beatconnect_app/ui/widgets/logo_type.dart';
@@ -5,6 +7,8 @@ import 'package:beatconnect_app/ui/root/views/spinner_load_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
+
+import 'package:get/get.dart';
 
 class RootView extends StatefulWidget {
   const RootView({super.key});
@@ -15,11 +19,32 @@ class RootView extends StatefulWidget {
 
 class _RootViewState extends State<RootView>
     with SingleTickerProviderStateMixin {
+  UserAuthController _userAuthC = Get.put(UserAuthController());
   late AnimationController _controller;
   double xOffset = 0;
   double yOffset = 0;
   bool handedMode = true;
   bool isDrawerOpen = false;
+
+  void _handleLogout() {
+    _userAuthC.logout().then((value) {
+      if (_userAuthC.userMessage.contains('correctamente')) {
+        // Mostrar Snackbar de éxito
+        final successSnackbar = SnackBar(
+          elevation: 0,
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.transparent,
+          content: AwesomeSnackbarContent(
+            title: _userAuthC.userMessage,
+            message: '¡Vuelve pronto!',
+            contentType: ContentType.success,
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(successSnackbar);
+        Navigator.pop(context);
+      }
+    });
+  }
 
   final List<Map<String, dynamic>> items = [
     {
@@ -118,7 +143,8 @@ class _RootViewState extends State<RootView>
                 ],
               ),
             ),
-            MenuItems(items: items, handedMode: handedMode),
+            MenuItems(
+                items: items, handedMode: handedMode, onLogout: _handleLogout),
           ],
         ),
       ),
@@ -222,8 +248,14 @@ class _RootViewState extends State<RootView>
 class MenuItems extends StatelessWidget {
   final List<Map<String, dynamic>> items;
   final bool handedMode; // Recibimos xOffset.
+  final VoidCallback
+      onLogout; // Nuevo parámetro para la función de cierre de sesión
 
-  MenuItems({Key? key, required this.items, required this.handedMode})
+  MenuItems(
+      {Key? key,
+      required this.items,
+      required this.handedMode,
+      required this.onLogout})
       : super(key: key);
 
   @override
@@ -238,6 +270,7 @@ class MenuItems extends StatelessWidget {
               img: 'assets/img/user.png',
               username: 'Victor',
               handedMode: handedMode,
+              onLogout: onLogout, // Pasa la función de cierre de sesión aquí
             ),
             Container(
               child: LayoutBuilder(builder: (context, constraints) {
@@ -366,13 +399,15 @@ class CustomProfile extends StatelessWidget {
   final String img;
   final String username;
   final bool handedMode; // Recibimos xOffset.
+  final VoidCallback onLogout; // Parámetro para la función de cierre de sesión
 
-  CustomProfile(
-      {Key? key,
-      required this.img,
-      required this.username,
-      required this.handedMode})
-      : super(key: key);
+  CustomProfile({
+    Key? key,
+    required this.img,
+    required this.username,
+    required this.handedMode,
+    required this.onLogout, // Recibe la función de cierre de sesión
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -418,9 +453,8 @@ class CustomProfile extends StatelessWidget {
             color: colorApp,
           ),
           IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed:
+                  onLogout, // Llama a la función de cierre de sesión aquí
               icon: Icon(
                 FontAwesomeIcons.signOutAlt,
               ))

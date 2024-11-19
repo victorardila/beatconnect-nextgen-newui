@@ -1,3 +1,5 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:beatconnect_app/controller/user_auth_controller.dart';
 import 'package:beatconnect_app/ui/constants.dart';
 import 'package:beatconnect_app/ui/widgets/animated_tooltip.dart';
 import 'package:beatconnect_app/ui/widgets/emoji_selector.dart';
@@ -10,6 +12,7 @@ import 'package:beatconnect_app/ui/widgets/map_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert';
@@ -46,8 +49,10 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView>
     with SingleTickerProviderStateMixin {
+  UserAuthController _userAuthC = Get.put(UserAuthController());
   late AnimationController _animationController;
   late ScrollController _scrollController;
+  var user;
 
   TextEditingController name = TextEditingController();
   TextEditingController lastname = TextEditingController();
@@ -123,6 +128,85 @@ class _ProfileViewState extends State<ProfileView>
       selectedEmoji = emoji; // Actualiza el emoji seleccionado en el estado
       print(selectedEmoji);
     });
+  }
+
+  void handleProfile() {
+    print('Vino aca a profile');
+    user = _userAuthC.validUser;
+    // Asegúrate de que user no sea nulo
+    if (user != null) {
+      // Crear un nuevo mapa para el perfil
+      Map<String, dynamic> newUser = {
+        ...user, // Expande las propiedades de user
+        'profile': {
+          'name': name
+              .text, // Asumiendo que estás utilizando un TextEditingController
+          'lastname': lastname.text,
+          'avatarImagePath': avatarImagePath ??
+              '', // Proporciona un valor por defecto si es nulo
+          'coverImagePath': coverImagePath ??
+              '', // Proporciona un valor por defecto si es nulo
+          'selectedEmoji': selectedEmoji ??
+              '', // Proporciona un valor por defecto si es nulo
+          'musicalStyles': [
+            ...selectedStyles.map((style) => {
+                  'id': style.id,
+                  'name': style.name,
+                  'description': style.description,
+                })
+          ],
+        }
+      };
+      print(newUser);
+      _userAuthC.updateProfile(user).then((value) {
+        if (_userAuthC.validUser != null &&
+            _userAuthC.userMessage.contains('exitosamente')) {
+          // Mostrar Snackbar de éxito
+          final successSnackbar = SnackBar(
+            elevation: 0,
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.transparent,
+            content: AwesomeSnackbarContent(
+              title: _userAuthC.userMessage,
+              message: 'Puedes revisar tu perfil mas adelante',
+              contentType: ContentType.success,
+            ),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(successSnackbar);
+
+          // Navegar a la ruta principal
+          Navigator.pushNamed(context, '/root');
+        }
+      });
+    } else {
+      if (_userAuthC.userMessage.contains('existe')) {
+        // Manejar el caso de error en autenticación
+        final errorSnackbar = SnackBar(
+          elevation: 0,
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.transparent,
+          content: AwesomeSnackbarContent(
+            title: _userAuthC.userMessage,
+            message: 'Por favor verifique y vuelva a intentarlo',
+            contentType: ContentType.failure,
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(errorSnackbar);
+      } else {
+        // Manejar el caso de error en autenticación
+        final errorSnackbar = SnackBar(
+          elevation: 0,
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.transparent,
+          content: AwesomeSnackbarContent(
+            title: 'Ocurrio un error interno',
+            message: _userAuthC.userMessage,
+            contentType: ContentType.failure,
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(errorSnackbar);
+      }
+    }
   }
 
   @override
@@ -338,7 +422,7 @@ class _ProfileViewState extends State<ProfileView>
                 ),
                 SizedBox(height: 10),
                 Text(
-                  'Selecciona tus generos musicales favorito',
+                  'Selecciona tus generos musicales favoritos',
                   style: TextStyle(color: letterColor, fontSize: 16),
                   textAlign: TextAlign.center,
                 ),
@@ -713,7 +797,7 @@ class _ProfileViewState extends State<ProfileView>
                       margin: EdgeInsets.only(top: 10, bottom: 20),
                       child: ButtonGradient(
                         text: 'Crear',
-                        onPressed: () {},
+                        onPressed: handleProfile,
                       ),
                     )
                   ],

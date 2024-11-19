@@ -34,6 +34,8 @@ class _SignupViewState extends State<SignupView> {
   FocusNode emailFocusNode = FocusNode();
   FocusNode passFocusNode = FocusNode();
   FocusNode repeatPassFocusNode = FocusNode();
+  // Nueva variable para guardar el tipo de usuario
+  String userType = 'personal';
 
   void _handleSignUp() {
     if (repeatPass.text != pass.text) {
@@ -69,12 +71,12 @@ class _SignupViewState extends State<SignupView> {
     final userId =
         Uuid().v4(); // Genera un UUID único para el usuario en una sola línea
 
-    // Intento de login
+    // Intento de registro
     _userAuthC
-        .createUser(userId, user.text, email.text, pass.text)
+        .createUser(userId, userType, user.text, email.text, pass.text)
         .then((value) {
       if (_userAuthC.validUser != null &&
-          _userAuthC.userMessage.contains('exitoso')) {
+          _userAuthC.userMessage.contains('exitosamente')) {
         // Mostrar Snackbar de éxito
         final successSnackbar = SnackBar(
           elevation: 0,
@@ -82,7 +84,7 @@ class _SignupViewState extends State<SignupView> {
           backgroundColor: Colors.transparent,
           content: AwesomeSnackbarContent(
             title: 'Registro de usuario exitoso',
-            message: 'Se ha creado el usuario correctamente.',
+            message: _userAuthC.userMessage,
             contentType: ContentType.success,
           ),
         );
@@ -134,7 +136,8 @@ class _SignupViewState extends State<SignupView> {
   void selectUserType(bool company) {
     setState(() {
       isCompany = company;
-      isTypeSelected = true; // Oculta `selectTypeUser` y muestra `formRegister`
+      isTypeSelected = true;
+      userType = company ? 'business' : 'personal'; // Asigna el tipo de usuario
     });
   }
 

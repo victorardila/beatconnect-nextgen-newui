@@ -31,15 +31,14 @@ class UserAuthService {
       }
 
       var userDoc = querySnapshot.docs.first;
-      String storedHash = userDoc['password']; // Contraseña cifrada almacenada
-      String salt = userDoc['salt']; // Sal almacenada
+      String storedHash = userDoc['password'];
+      String salt = userDoc['salt'];
 
       // Verificar la contraseña ingresada con la almacenada
       bool isPasswordValid = await PasswordSecurityService.verifyPassword(
           password, storedHash, salt);
 
       if (isPasswordValid) {
-        // Contraseña válida, proceder con la autenticación del usuario
         return [userDoc.data(), "Inicio de sesión exitoso."];
       } else {
         return [null, "Contraseña incorrecta."];
@@ -62,8 +61,8 @@ class UserAuthService {
   }
 
   // Método para registrar un nuevo usuario con sal aleatoria
-  Future<List<dynamic>> register(
-      String userId, String username, String email, String password) async {
+  Future<List<dynamic>> register(String userId, String userType,
+      String username, String email, String password) async {
     // Validar email, username y contraseña
     if (!_isValidEmail(email) ||
         !_isValidPassword(password) ||
@@ -79,6 +78,8 @@ class UserAuthService {
       );
 
       final User? user = userCredential.user;
+      print("Usuario creado: $user"); // Agregar esta línea para depuración
+
       if (user != null) {
         // Genera una sal aleatoria única
         String salt = PasswordSecurityService.generateSalt();
@@ -90,6 +91,7 @@ class UserAuthService {
         // Guarda los datos en Firestore con el hash, la sal y el username
         await _firestore.collection('users').doc(user.uid).set({
           'uid': userId,
+          'accountType': userType,
           'username': username,
           'email': email,
           'password': encryptedPassword, // Contraseña cifrada
@@ -186,12 +188,34 @@ class UserAuthService {
     return response;
   }
 
-// Validación para email o username
-  bool _isValidInput(String input) {
-    return _isValidEmail(input) || _isValidUsername(input);
+  // Método para actualizar la información del usuario
+  Future<List<dynamic>> updateProfile(
+      String uid, Map<String, dynamic> newUser) async {
+    try {
+      final user = _auth.currentUser;
+      if (user != null && user.uid == uid) {
+        // Actualiza los datos del usuario en Firestore
+        await _firestore.collection('users').doc(uid).update(newUser);
+
+        return [
+          newUser, // Retorna el nuevo objeto de usuario
+          "Perfil creado exitosamente."
+        ];
+      } else {
+        return [null, "Error ya este perfil existe"];
+      }
+    } catch (e) {
+      return [null, "Ocurrió un error al actualizar el usuario."];
+    }
   }
 
-// Validación de email
+  // Método de validación para el input
+  bool _isValidInput(String input) {
+    final userRegex = RegExp(r'^[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)?$');
+    return input.contains('@') || userRegex.hasMatch(input);
+  }
+
+  // Validación de email
   bool _isValidEmail(String email) {
     return RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
         .hasMatch(email);
@@ -203,7 +227,7 @@ class UserAuthService {
   }
 
   bool _isValidPassword(String password) {
-    return password.length >= 6;
+    return password.length >= 8;
   }
 
   // Método para manejar errores de Firebase

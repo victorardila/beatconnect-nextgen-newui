@@ -29,21 +29,26 @@ class _SigninViewState extends State<SigninView> {
   bool _isForgotPasswordPressed = false;
 
   void _handleSignIn() {
-    // Validación de los campos
-    if (user.text.isEmpty || !user.text.contains('@')) {
+    // Expresión regular para validar un nombre de usuario (letras, números y un punto opcional)
+    final userRegex = RegExp(r'^[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)?$');
+
+    // Validación para correo o nombre de usuario
+    if (user.text.isEmpty ||
+        (!user.text.contains('@') && !userRegex.hasMatch(user.text))) {
       final snackBar = SnackBar(
         elevation: 0,
         behavior: SnackBarBehavior.floating,
         backgroundColor: Colors.transparent,
         content: AwesomeSnackbarContent(
           title: 'Error de campos',
-          message: 'Por favor ingresa un correo electrónico válido.',
+          message:
+              'Por favor ingresa un correo electrónico o un nombre de usuario válido.',
           contentType: ContentType.failure,
         ),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       return; // Termina la ejecución si hay error
-    } else if (pass.text.isEmpty || pass.text.length < 6) {
+    } else if (pass.text.isEmpty || pass.text.length <= 8) {
       final snackBar = SnackBar(
         elevation: 0,
         behavior: SnackBarBehavior.floating,
@@ -68,7 +73,7 @@ class _SigninViewState extends State<SigninView> {
           behavior: SnackBarBehavior.floating,
           backgroundColor: Colors.transparent,
           content: AwesomeSnackbarContent(
-            title: 'Inicio de sesión exitoso',
+            title: _userAuthC.userMessage,
             message: 'Has iniciado sesión correctamente.',
             contentType: ContentType.success,
           ),
@@ -85,8 +90,8 @@ class _SigninViewState extends State<SigninView> {
             behavior: SnackBarBehavior.floating,
             backgroundColor: Colors.transparent,
             content: AwesomeSnackbarContent(
-              title: 'Usuario o contraseña incorrectos.',
-              message: _userAuthC.userMessage,
+              title: _userAuthC.userMessage,
+              message: 'Por favor verifique y vuelva a intentarlo',
               contentType: ContentType.failure,
             ),
           );
