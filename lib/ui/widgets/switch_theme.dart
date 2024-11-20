@@ -1,5 +1,4 @@
-import 'dart:async';
-import 'package:flutter/material.dart';
+import 'package:beatconnect_app/imports.dart';
 
 class ToggleSwitch extends StatefulWidget {
   @override

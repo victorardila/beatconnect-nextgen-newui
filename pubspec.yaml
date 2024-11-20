@@ -60,6 +60,8 @@ dependencies:
   argon2: ^1.0.1
   awesome_snackbar_content: ^0.1.4
   uuid: ^4.5.1
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
 
 dev_dependencies:
   flutter_test:

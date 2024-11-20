@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:beatconnect_app/imports.dart';
 
 class LogoImage extends StatefulWidget {
   final double? height; // Cambiado a nullable

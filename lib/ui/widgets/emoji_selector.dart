@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:beatconnect_app/imports.dart';
 
 class EmojiSelector extends StatefulWidget {
   final Function(String) onEmojiSelected;

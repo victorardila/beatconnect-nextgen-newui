@@ -1,5 +1,4 @@
-import 'package:beatconnect_app/ui/constants.dart';
-import 'package:flutter/material.dart';
+import 'package:beatconnect_app/imports.dart';
 
 class ButtonGradient extends StatelessWidget {
   final String? text;

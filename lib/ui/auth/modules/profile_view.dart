@@ -1,22 +1,4 @@
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:beatconnect_app/controller/user_auth_controller.dart';
-import 'package:beatconnect_app/ui/constants.dart';
-import 'package:beatconnect_app/ui/widgets/animated_tooltip.dart';
-import 'package:beatconnect_app/ui/widgets/emoji_selector.dart';
-import 'package:beatconnect_app/ui/widgets/item_tag.dart';
-import 'package:beatconnect_app/ui/widgets/animated_dropdown.dart';
-import 'package:beatconnect_app/ui/widgets/animated_textfield.dart';
-import 'package:beatconnect_app/ui/widgets/button_gradient.dart';
-import 'package:beatconnect_app/ui/widgets/logo_type.dart';
-import 'package:beatconnect_app/ui/widgets/map_container.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:flutter/services.dart';
-import 'dart:convert';
-import 'dart:io';
+import 'package:beatconnect_app/imports.dart';
 
 class MusicalStyle {
   final int id;
@@ -40,7 +22,7 @@ class MusicalStyle {
 
 class ProfileView extends StatefulWidget {
   final VoidCallback onClose;
-  final bool isCompany; // Nuevo parámetro
+  final bool isCompany; // Nuevo parámetroy
   ProfileView({super.key, required this.onClose, this.isCompany = false});
 
   @override

@@ -1,5 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:beatconnect_app/imports.dart';
 
 class LogoType extends StatefulWidget {
   final String text; // Texto requerido

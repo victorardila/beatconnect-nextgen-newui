@@ -1,18 +1,5 @@
-import 'dart:async';
-import 'package:beatconnect_app/provider/error_provider.dart';
-import 'package:beatconnect_app/ui/root/views/error_view.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:beatconnect_app/ui/app.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'imports.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:flutter/foundation.dart';
-import 'firebase_options.dart';
-import 'package:provider/provider.dart';
 
 Future<void> initializeApp() async {
   await GetStorage.init();
@@ -56,6 +43,8 @@ void main() {
   runZonedGuarded(
     () async {
       await initializeApp();
+      await Hive.initFlutter();
+      await Hive.openBox('sesion');
 
       runApp(
         ChangeNotifierProvider(
@@ -63,10 +52,16 @@ void main() {
           child: const App(),
         ),
       );
+
+      // Cerrar las cajas al terminar la aplicación.
+      WidgetsBinding.instance.addObserver(
+        LifecycleEventHandler(onAppExit: () async {
+          await Hive.close();
+        }),
+      );
     },
     (error, stackTrace) {
-      final userMessage =
-          getErrorMessage(error); // Usar la función para obtener el mensaje
+      final userMessage = getErrorMessage(error);
 
       errorProvider.setErrorMessage(userMessage);
 
@@ -83,4 +78,17 @@ void main() {
       FirebaseCrashlytics.instance.recordError(error, stackTrace);
     },
   );
+}
+
+class LifecycleEventHandler extends WidgetsBindingObserver {
+  final Future<void> Function()? onAppExit;
+
+  LifecycleEventHandler({this.onAppExit});
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.detached) {
+      onAppExit?.call();
+    }
+  }
 }

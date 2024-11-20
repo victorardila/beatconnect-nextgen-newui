@@ -1,6 +1,4 @@
-import 'package:beatconnect_app/ui/constants.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:beatconnect_app/imports.dart';
 
 class AnimatedTextField extends StatefulWidget {
   final TextEditingController controller;
@@ -70,7 +68,7 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
             animation: _animation,
             builder: (context, child) {
               return CustomPaint(
-                painter: BorderPainter(_animation.value),
+                painter: BorderPainterTextField(_animation.value),
                 child: child,
               );
             },
@@ -108,10 +106,10 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
   }
 }
 
-class BorderPainter extends CustomPainter {
+class BorderPainterTextField extends CustomPainter {
   final double progress;
 
-  BorderPainter(this.progress);
+  BorderPainterTextField(this.progress);
 
   @override
   void paint(Canvas canvas, Size size) {

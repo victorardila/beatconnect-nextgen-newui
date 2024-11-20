@@ -1,5 +1,4 @@
-import 'package:beatconnect_app/service/firebase/user_auth_service.dart';
-import 'package:get/get.dart';
+import 'package:beatconnect_app/imports.dart';
 
 class UserAuthController extends GetxController {
   final UserAuthService _userAuthService = UserAuthService();

@@ -1,14 +1,4 @@
-// Agrega esta importación al principio de tu archivo
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:beatconnect_app/controller/user_auth_controller.dart';
-import 'package:beatconnect_app/ui/constants.dart';
-import 'package:beatconnect_app/ui/widgets/animated_textfield.dart';
-import 'package:beatconnect_app/ui/widgets/button_gradient.dart';
-import 'package:beatconnect_app/ui/widgets/button_otherlogins.dart';
-import 'package:beatconnect_app/ui/widgets/logo_image.dart';
-import 'package:beatconnect_app/ui/widgets/logo_type.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:beatconnect_app/imports.dart';
 
 class SigninView extends StatefulWidget {
   final VoidCallback onForgotPassword; // Callback para olvidar la contraseña

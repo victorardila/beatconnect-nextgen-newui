@@ -1,6 +1,4 @@
-import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:visibility_detector/visibility_detector.dart';
+import 'package:beatconnect_app/imports.dart';
 
 class AnimatedTooltip extends StatefulWidget {
   final Widget child;

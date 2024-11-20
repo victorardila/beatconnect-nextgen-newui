@@ -1,5 +1,4 @@
-import 'package:beatconnect_app/ui/constants.dart';
-import 'package:flutter/material.dart';
+import 'package:beatconnect_app/imports.dart';
 
 class AnimatedDropdown<T> extends StatefulWidget {
   final double height;
@@ -98,7 +97,7 @@ class _AnimatedDropdownState<T> extends State<AnimatedDropdown<T>>
           return ClipRect(
             // Agregar ClipRect aquí
             child: CustomPaint(
-              painter: BorderPainter(_borderAnimation.value),
+              painter: BorderPainterDropdown(_borderAnimation.value),
               child: child,
             ),
           );
@@ -169,10 +168,10 @@ class _AnimatedDropdownState<T> extends State<AnimatedDropdown<T>>
   }
 }
 
-class BorderPainter extends CustomPainter {
+class BorderPainterDropdown extends CustomPainter {
   final double progress;
 
-  BorderPainter(this.progress);
+  BorderPainterDropdown(this.progress);
 
   @override
   void paint(Canvas canvas, Size size) {

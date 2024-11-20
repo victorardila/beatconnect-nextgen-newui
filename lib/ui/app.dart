@@ -2,8 +2,7 @@ import 'package:beatconnect_app/ui/auth/auth_view.dart';
 import 'package:beatconnect_app/ui/intro/intro_view.dart';
 import 'package:beatconnect_app/ui/root/root_view.dart';
 import 'package:beatconnect_app/ui/root/views/error_view.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:beatconnect_app/imports.dart';
 
 class App extends StatelessWidget {
   const App({super.key});

@@ -1,13 +1,5 @@
-import 'dart:async';
 import 'package:beatconnect_app/ui/auth/auth_view.dart';
-import 'package:beatconnect_app/ui/widgets/button_gradient.dart';
-import 'package:beatconnect_app/ui/widgets/logo_type.dart';
-import 'package:beatconnect_app/ui/widgets/switch_theme.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:fade_out_particle/fade_out_particle.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'dart:ui';
+import 'package:beatconnect_app/imports.dart';
 
 class IntroView extends StatefulWidget {
   const IntroView({super.key});

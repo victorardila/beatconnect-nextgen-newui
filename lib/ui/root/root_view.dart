@@ -1,14 +1,4 @@
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:beatconnect_app/controller/user_auth_controller.dart';
-import 'package:beatconnect_app/ui/constants.dart';
-import 'package:beatconnect_app/ui/widgets/logo_image.dart';
-import 'package:beatconnect_app/ui/widgets/logo_type.dart';
-import 'package:beatconnect_app/ui/root/views/spinner_load_view.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter/material.dart';
-import 'dart:math';
-
-import 'package:get/get.dart';
+import 'package:beatconnect_app/imports.dart';
 
 class RootView extends StatefulWidget {
   const RootView({super.key});
@@ -29,18 +19,18 @@ class _RootViewState extends State<RootView>
   void _handleLogout() {
     _userAuthC.logout().then((value) {
       if (_userAuthC.userMessage.contains('correctamente')) {
-        // Mostrar Snackbar de éxito
-        final successSnackbar = SnackBar(
-          elevation: 0,
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: Colors.transparent,
-          content: AwesomeSnackbarContent(
-            title: _userAuthC.userMessage,
-            message: '¡Vuelve pronto!',
-            contentType: ContentType.success,
-          ),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(successSnackbar);
+        // // Mostrar Snackbar de éxito
+        // final successSnackbar = SnackBar(
+        //   elevation: 0,
+        //   behavior: SnackBarBehavior.floating,
+        //   backgroundColor: Colors.transparent,
+        //   content: AwesomeSnackbarContent(
+        //     title: _userAuthC.userMessage,
+        //     message: '¡Vuelve pronto!',
+        //     contentType: ContentType.success,
+        //   ),
+        // );
+        // ScaffoldMessenger.of(context).showSnackBar(successSnackbar);
         Navigator.pop(context);
       }
     });

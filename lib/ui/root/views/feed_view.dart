@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:beatconnect_app/imports.dart';
 
 class FeedView extends StatefulWidget {
   const FeedView({super.key});

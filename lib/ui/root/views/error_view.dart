@@ -1,7 +1,4 @@
-import 'package:beatconnect_app/ui/constants.dart';
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:particles_fly/particles_fly.dart';
+import 'package:beatconnect_app/imports.dart';
 
 class ErrorView extends StatelessWidget {
   final String message;

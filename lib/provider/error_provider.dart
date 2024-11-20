@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:beatconnect_app/imports.dart';
 
 class ErrorProvider extends ChangeNotifier {
   String _errorMessage = '';

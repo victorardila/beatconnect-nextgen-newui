@@ -1,7 +1,5 @@
-import 'dart:math';
-import 'dart:typed_data';
 import 'package:argon2/argon2.dart';
-import 'package:convert/convert.dart'; // Agrega esta línea
+import 'package:beatconnect_app/imports.dart';
 
 class PasswordSecurityService {
   // Generar una sal aleatoria única para cada usuario

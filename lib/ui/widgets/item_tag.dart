@@ -1,6 +1,4 @@
-import 'package:beatconnect_app/ui/constants.dart';
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:beatconnect_app/imports.dart';
 
 class ItemTag extends StatefulWidget {
   final String text; // Texto dentro del tag
