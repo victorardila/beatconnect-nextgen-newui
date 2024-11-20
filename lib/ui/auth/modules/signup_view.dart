@@ -9,7 +9,7 @@ class SignupView extends StatefulWidget {
 }
 
 class _SignupViewState extends State<SignupView> {
-  UserAuthController _userAuthC = Get.put(UserAuthController());
+  final UserAuthController _userAuthC = Get.find<UserAuthController>();
   TextEditingController user = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController pass = TextEditingController();
@@ -31,30 +31,12 @@ class _SignupViewState extends State<SignupView> {
     if (repeatPass.text != pass.text) {
       // Validación de los campos
       if (user.text.isEmpty || !user.text.contains('@')) {
-        final snackBar = SnackBar(
-          elevation: 0,
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: Colors.transparent,
-          content: AwesomeSnackbarContent(
-            title: 'Error de campos',
-            message: 'Por favor ingresa un correo electrónico válido.',
-            contentType: ContentType.failure,
-          ),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        SnackbarMessage.showSnackbar(context, 'Error de campos',
+            'Por favor ingresa un correo electrónico válido.', 'failure');
         return; // Termina la ejecución si hay error
-      } else if (pass.text.isEmpty || pass.text.length < 6) {
-        final snackBar = SnackBar(
-          elevation: 0,
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: Colors.transparent,
-          content: AwesomeSnackbarContent(
-            title: 'Error de campos',
-            message: 'La contraseña debe tener al menos 6 caracteres.',
-            contentType: ContentType.failure,
-          ),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else if (pass.text.isEmpty || pass.text.length < 8) {
+        SnackbarMessage.showSnackbar(context, 'Error de campos',
+            'La contraseña debe tener al menos 6 caracteres.', 'failure');
         return; // Termina la ejecución si hay error
       }
     }
@@ -67,32 +49,12 @@ class _SignupViewState extends State<SignupView> {
         .then((value) {
       if (_userAuthC.validUser != null &&
           _userAuthC.userMessage.contains('exitosamente')) {
-        // Mostrar Snackbar de éxito
-        final successSnackbar = SnackBar(
-          elevation: 0,
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: Colors.transparent,
-          content: AwesomeSnackbarContent(
-            title: 'Registro de usuario exitoso',
-            message: _userAuthC.userMessage,
-            contentType: ContentType.success,
-          ),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(successSnackbar);
+        SnackbarMessage.showSnackbar(context, 'Registro de usuario exitoso',
+            _userAuthC.userMessage, 'success');
         widget.onSignupSuccess(isCompany);
       } else {
-        // Manejar el caso de error en autenticación
-        final errorSnackbar = SnackBar(
-          elevation: 0,
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: Colors.transparent,
-          content: AwesomeSnackbarContent(
-            title: 'No se pudo crear el usuario.',
-            message: _userAuthC.userMessage,
-            contentType: ContentType.failure,
-          ),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(errorSnackbar);
+        SnackbarMessage.showSnackbar(context, 'No se pudo crear el usuario.',
+            _userAuthC.userMessage, 'failure');
       }
     });
   }

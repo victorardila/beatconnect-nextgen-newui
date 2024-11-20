@@ -10,98 +10,98 @@ class SigninView extends StatefulWidget {
 }
 
 class _SigninViewState extends State<SigninView> {
-  UserAuthController _userAuthC = Get.put(UserAuthController());
+  final UserAuthController _userAuthC = Get.find<UserAuthController>();
   TextEditingController user = TextEditingController();
   TextEditingController pass = TextEditingController();
   bool _rememberMe = false;
   bool _isUserFocused = false;
   bool _isPassFocused = false;
   bool _isForgotPasswordPressed = false;
+  late Box box; // Variable para almacenar la caja
 
-  void _handleSignIn() {
+  void _handleSignIn() async {
     // Expresión regular para validar un nombre de usuario (letras, números y un punto opcional)
     final userRegex = RegExp(r'^[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)?$');
-
-    // Validación para correo o nombre de usuario
     if (user.text.isEmpty ||
         (!user.text.contains('@') && !userRegex.hasMatch(user.text))) {
-      final snackBar = SnackBar(
-        elevation: 0,
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.transparent,
-        content: AwesomeSnackbarContent(
-          title: 'Error de campos',
-          message:
-              'Por favor ingresa un correo electrónico o un nombre de usuario válido.',
-          contentType: ContentType.failure,
-        ),
+      SnackbarMessage.showSnackbar(
+        context,
+        'Error de campos',
+        'Por favor ingresa un correo electrónico o un nombre de usuario válido.',
+        'failure',
       );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      return; // Termina la ejecución si hay error
+      return;
     } else if (pass.text.isEmpty || pass.text.length <= 8) {
-      final snackBar = SnackBar(
-        elevation: 0,
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.transparent,
-        content: AwesomeSnackbarContent(
-          title: 'Error de campos',
-          message: 'La contraseña debe tener al menos 6 caracteres.',
-          contentType: ContentType.failure,
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      return; // Termina la ejecución si hay error
+      SnackbarMessage.showSnackbar(context, 'Error de campos',
+          'La contraseña debe tener al menos 8 caracteres.', 'failure');
+      return;
     }
 
-    // Intento de login
-    _userAuthC.login(user.text, pass.text).then((value) {
-      if (_userAuthC.validUser != null &&
-          _userAuthC.userMessage.contains('exitoso')) {
-        // Mostrar Snackbar de éxito
-        final successSnackbar = SnackBar(
-          elevation: 0,
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: Colors.transparent,
-          content: AwesomeSnackbarContent(
-            title: _userAuthC.userMessage,
-            message: 'Has iniciado sesión correctamente.',
-            contentType: ContentType.success,
-          ),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(successSnackbar);
+    try {
+      // Intento de login
+      _userAuthC.login(user.text, pass.text).then((value) async {
+        if (_userAuthC.validUser != null &&
+            _userAuthC.userMessage.contains('exitoso')) {
+          if (_rememberMe) {
+            // Guardar usuario y contraseña en Hive si "Recordarme" está activado
+            var box = Hive.box('sesion');
+            String storedPassword = box.get('password', defaultValue: '');
 
-        // Navegar a la ruta principal
-        Navigator.pushNamed(context, '/root');
-      } else {
-        if (_userAuthC.userMessage.contains('incorrecta')) {
-          // Manejar el caso de error en autenticación
-          final errorSnackbar = SnackBar(
-            elevation: 0,
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: Colors.transparent,
-            content: AwesomeSnackbarContent(
-              title: _userAuthC.userMessage,
-              message: 'Por favor verifique y vuelva a intentarlo',
-              contentType: ContentType.failure,
-            ),
+            // Solo actualizar si la contraseña es diferente
+            if (pass.text != storedPassword) {
+              await box.put('username', user.text);
+              await box.put('password', pass.text);
+            }
+          } else {
+            // Limpiar los campos si no está activado "Recordarme"
+            setState(() {
+              user.clear();
+              pass.clear();
+            });
+          }
+          SnackbarMessage.showSnackbar(
+            context,
+            _userAuthC.userMessage,
+            'Has iniciado sesión correctamente.',
+            'success',
+            route: '/root', // Ruta opcional
           );
-          ScaffoldMessenger.of(context).showSnackBar(errorSnackbar);
         } else {
-          // Manejar el caso de error en autenticación
-          final errorSnackbar = SnackBar(
-            elevation: 0,
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: Colors.transparent,
-            content: AwesomeSnackbarContent(
-              title: 'Error de autenticación',
-              message: 'Usuario o contraseña incorrectos.',
-              contentType: ContentType.failure,
-            ),
-          );
-          ScaffoldMessenger.of(context).showSnackBar(errorSnackbar);
+          String errorMessage = _userAuthC.userMessage.contains('incorrecta')
+              ? 'Por favor verifique y vuelva a intentarlo.'
+              : 'Usuario o contraseña incorrectos.';
+          SnackbarMessage.showSnackbar(
+              context, 'Error de autenticación', errorMessage, 'failure');
         }
-      }
+      });
+    } catch (e) {
+      SnackbarMessage.showSnackbar(
+          context,
+          'Error de inicio de sesión',
+          'Hubo un problema al intentar iniciar sesión. Inténtalo de nuevo.',
+          'failure');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Abrir la caja de Hive antes de acceder a ella
+    Hive.openBox('sesion').then((openedBox) {
+      setState(() {
+        box = openedBox;
+        user.text = box.get('username', defaultValue: '');
+        pass.text = box.get('password', defaultValue: '');
+      });
     });
+  }
+
+  @override
+  void dispose() {
+    user.dispose();
+    pass.dispose();
+    super.dispose();
   }
 
   @override
@@ -154,6 +154,7 @@ class _SigninViewState extends State<SigninView> {
                                 });
                               },
                               isFocused: _isUserFocused,
+                              autofillHints: [AutofillHints.email],
                             ),
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.01,
@@ -169,6 +170,7 @@ class _SigninViewState extends State<SigninView> {
                                 });
                               },
                               isFocused: _isPassFocused,
+                              autofillHints: [AutofillHints.password],
                             ),
                             Container(
                               margin: const EdgeInsets.only(top: 20),

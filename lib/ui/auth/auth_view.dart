@@ -1,7 +1,3 @@
-import 'package:beatconnect_app/ui/auth/modules/forgotpassword_view.dart';
-import 'package:beatconnect_app/ui/auth/modules/signup_view.dart';
-import 'package:beatconnect_app/ui/auth/modules/sigin_view.dart';
-import 'package:beatconnect_app/ui/auth/modules/profile_view.dart';
 import 'package:beatconnect_app/imports.dart';
 
 class AuthenticationView extends StatefulWidget {

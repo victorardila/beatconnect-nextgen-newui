@@ -53,6 +53,7 @@ export 'package:beatconnect_app/ui/widgets/animated_textfield.dart';
 export 'package:beatconnect_app/ui/widgets/button_otherlogins.dart';
 export 'package:beatconnect_app/ui/widgets/animated_dropdown.dart';
 export 'package:beatconnect_app/ui/widgets/animated_tooltip.dart';
+export 'package:beatconnect_app/ui/widgets/snackbar_message.dart';
 export 'package:beatconnect_app/ui/widgets/button_gradient.dart';
 export 'package:beatconnect_app/ui/widgets/emoji_selector.dart';
 export 'package:beatconnect_app/ui/widgets/map_container.dart';
@@ -66,3 +67,9 @@ export 'package:beatconnect_app/controller/user_auth_controller.dart';
 
 // Services
 export 'package:beatconnect_app/service/firebase/user_auth_service.dart';
+
+// Views
+export 'package:beatconnect_app/ui/auth/modules/forgotpassword_view.dart';
+export 'package:beatconnect_app/ui/auth/modules/signup_view.dart';
+export 'package:beatconnect_app/ui/auth/modules/sigin_view.dart';
+export 'package:beatconnect_app/ui/auth/modules/profile_view.dart';

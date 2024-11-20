@@ -1,4 +1,4 @@
-import 'imports.dart';
+import 'package:beatconnect_app/imports.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 Future<void> initializeApp() async {
@@ -45,6 +45,8 @@ void main() {
       await initializeApp();
       await Hive.initFlutter();
       await Hive.openBox('sesion');
+      // Registro de controladores
+      Get.lazyPut<UserAuthController>(() => UserAuthController());
 
       runApp(
         ChangeNotifierProvider(

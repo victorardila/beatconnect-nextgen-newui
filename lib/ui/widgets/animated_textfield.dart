@@ -6,6 +6,7 @@ class AnimatedTextField extends StatefulWidget {
   final IconData prefixIcon;
   final bool obscureText;
   final bool isFocused;
+  final List<String>? autofillHints; // Cambiado a List<String>?
   final ValueChanged<bool> onFocusChange;
 
   const AnimatedTextField({
@@ -15,6 +16,7 @@ class AnimatedTextField extends StatefulWidget {
     required this.prefixIcon,
     this.obscureText = false,
     required this.onFocusChange,
+    this.autofillHints,
     required this.isFocused,
   });
 
@@ -26,7 +28,6 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
-  bool _isFocused = false;
 
   @override
   void initState() {
@@ -51,9 +52,8 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
     return Focus(
       onFocusChange: (isFocused) {
         setState(() {
-          _isFocused = isFocused;
-          widget.onFocusChange(_isFocused); // Trigger callback
-          if (_isFocused) {
+          widget.onFocusChange(isFocused);
+          if (isFocused) {
             _controller.forward();
           } else {
             _controller.reverse();
@@ -63,7 +63,6 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // CustomPaint for animated border
           AnimatedBuilder(
             animation: _animation,
             builder: (context, child) {
@@ -80,14 +79,16 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
               child: TextFormField(
                 controller: widget.controller,
                 obscureText: widget.obscureText,
+                autofillHints:
+                    widget.autofillHints, // Aquí se pasa correctamente
                 decoration: InputDecoration(
                   labelText: widget.labelText,
                   labelStyle: TextStyle(
-                    color: _isFocused ? Color(0xFF6BA5F2) : Colors.grey,
+                    color: widget.isFocused ? Color(0xFF6BA5F2) : Colors.grey,
                   ),
                   prefixIcon: Icon(
                     widget.prefixIcon,
-                    color: _isFocused ? Color(0xFF6BA5F2) : Colors.grey,
+                    color: widget.isFocused ? Color(0xFF6BA5F2) : Colors.grey,
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),

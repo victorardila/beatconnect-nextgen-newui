@@ -31,7 +31,7 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView>
     with SingleTickerProviderStateMixin {
-  UserAuthController _userAuthC = Get.put(UserAuthController());
+  final UserAuthController _userAuthC = Get.find<UserAuthController>();
   late AnimationController _animationController;
   late ScrollController _scrollController;
   var user;
@@ -143,50 +143,18 @@ class _ProfileViewState extends State<ProfileView>
       _userAuthC.updateProfile(user).then((value) {
         if (_userAuthC.validUser != null &&
             _userAuthC.userMessage.contains('exitosamente')) {
-          // Mostrar Snackbar de éxito
-          final successSnackbar = SnackBar(
-            elevation: 0,
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: Colors.transparent,
-            content: AwesomeSnackbarContent(
-              title: _userAuthC.userMessage,
-              message: 'Puedes revisar tu perfil mas adelante',
-              contentType: ContentType.success,
-            ),
-          );
-          ScaffoldMessenger.of(context).showSnackBar(successSnackbar);
-
-          // Navegar a la ruta principal
-          Navigator.pushNamed(context, '/root');
+          SnackbarMessage.showSnackbar(context, 'Ocurrio un error interno',
+              _userAuthC.userMessage, 'success',
+              route: '/root');
         }
       });
     } else {
       if (_userAuthC.userMessage.contains('existe')) {
-        // Manejar el caso de error en autenticación
-        final errorSnackbar = SnackBar(
-          elevation: 0,
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: Colors.transparent,
-          content: AwesomeSnackbarContent(
-            title: _userAuthC.userMessage,
-            message: 'Por favor verifique y vuelva a intentarlo',
-            contentType: ContentType.failure,
-          ),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(errorSnackbar);
+        SnackbarMessage.showSnackbar(context, _userAuthC.userMessage,
+            'Por favor verifique y vuelva a intentarlo', 'failure');
       } else {
-        // Manejar el caso de error en autenticación
-        final errorSnackbar = SnackBar(
-          elevation: 0,
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: Colors.transparent,
-          content: AwesomeSnackbarContent(
-            title: 'Ocurrio un error interno',
-            message: _userAuthC.userMessage,
-            contentType: ContentType.failure,
-          ),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(errorSnackbar);
+        SnackbarMessage.showSnackbar(context, 'Ocurrio un error interno',
+            _userAuthC.userMessage, 'failure');
       }
     }
   }

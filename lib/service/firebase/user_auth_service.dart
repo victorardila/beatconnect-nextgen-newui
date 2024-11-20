@@ -77,7 +77,6 @@ class UserAuthService {
       );
 
       final User? user = userCredential.user;
-      print("Usuario creado: $user"); // Agregar esta línea para depuración
 
       if (user != null) {
         // Genera una sal aleatoria única
@@ -99,8 +98,9 @@ class UserAuthService {
         });
 
         return [user, "Usuario registrado exitosamente en Firestore."];
+      } else {
+        return [null, "No se pudo obtener la información del usuario."];
       }
-      return [null, "No se pudo obtener la información del usuario."];
     } on FirebaseAuthException catch (e) {
       return [null, _handleFirebaseAuthError(e)];
     } catch (e) {

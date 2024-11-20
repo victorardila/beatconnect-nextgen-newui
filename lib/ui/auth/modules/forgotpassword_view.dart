@@ -34,6 +34,7 @@ class ForgotPasswordView extends StatefulWidget {
 }
 
 class _ForgotPasswordViewState extends State<ForgotPasswordView> {
+  final UserAuthController _userAuthC = Get.find<UserAuthController>();
   TextEditingController email = TextEditingController();
   TextEditingController codeController =
       TextEditingController(); // Controlador para el código
