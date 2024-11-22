@@ -112,48 +112,54 @@ class _ProfileViewState extends State<ProfileView>
     });
   }
 
+  void clearFields() {
+    name.clear();
+    lastname.clear();
+    avatarImagePath = null;
+    coverImagePath = null;
+    selectedEmoji = null;
+    selectedMusicalStyle = null;
+    selectedStyles.clear();
+  }
+
   void handleProfile() {
-    print('Vino aca a profile');
     user = _userAuthC.validUser;
     // Asegúrate de que user no sea nulo
     if (user != null) {
-      // Crear un nuevo mapa para el perfil
-      Map<String, dynamic> newUser = {
-        ...user, // Expande las propiedades de user
-        'profile': {
-          'name': name
-              .text, // Asumiendo que estás utilizando un TextEditingController
-          'lastname': lastname.text,
-          'avatarImagePath': avatarImagePath ??
-              '', // Proporciona un valor por defecto si es nulo
-          'coverImagePath': coverImagePath ??
-              '', // Proporciona un valor por defecto si es nulo
-          'selectedEmoji': selectedEmoji ??
-              '', // Proporciona un valor por defecto si es nulo
-          'musicalStyles': [
-            ...selectedStyles.map((style) => {
-                  'id': style.id,
-                  'name': style.name,
-                  'description': style.description,
-                })
-          ],
-        }
+      Map<String, dynamic> userFull = {
+        'name': name.text,
+        'lastname': lastname.text,
+        'avatarImagePath': avatarImagePath ?? '',
+        'coverImagePath': coverImagePath ?? '',
+        'selectedEmoji': selectedEmoji ?? '',
+        'musicalStyles': [
+          ...selectedStyles.map((style) => {
+                'id': style.id,
+                'name': style.name,
+                'description': style.description,
+              })
+        ],
       };
-      print(newUser);
-      _userAuthC.updateProfile(user).then((value) {
+      _userAuthC
+          .createUser(user['accountType'], user['username'], user['email'],
+              user['password'], userFull)
+          .then((value) {
         if (_userAuthC.validUser != null &&
             _userAuthC.userMessage.contains('exitosamente')) {
-          SnackbarMessage.showSnackbar(context, 'Ocurrio un error interno',
+          SnackbarMessage.showSnackbar(context, 'Usuario creado exitosamente',
               _userAuthC.userMessage, 'success',
               route: '/root');
+          widget.onClose();
+          clearFields();
         }
       });
     } else {
+      // Manejo de errores
       if (_userAuthC.userMessage.contains('existe')) {
         SnackbarMessage.showSnackbar(context, _userAuthC.userMessage,
             'Por favor verifique y vuelva a intentarlo', 'failure');
       } else {
-        SnackbarMessage.showSnackbar(context, 'Ocurrio un error interno',
+        SnackbarMessage.showSnackbar(context, 'Ocurrió un error interno',
             _userAuthC.userMessage, 'failure');
       }
     }

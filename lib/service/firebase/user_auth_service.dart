@@ -59,9 +59,10 @@ class UserAuthService {
     }
   }
 
-  // Método para registrar un nuevo usuario con sal aleatoria
-  Future<List<dynamic>> register(String userId, String userType,
-      String username, String email, String password) async {
+  //
+  Future<List<dynamic>> register(
+      String userType, String username, String email, String password,
+      [Map<String, dynamic>? profileData]) async {
     // Validar email, username y contraseña
     if (!_isValidEmail(email) ||
         !_isValidPassword(password) ||
@@ -70,36 +71,50 @@ class UserAuthService {
     }
 
     try {
-      final UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      if (profileData != null) {
+        final UserCredential userCredential =
+            await _auth.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
 
-      final User? user = userCredential.user;
+        final User? user = userCredential.user;
 
-      if (user != null) {
-        // Genera una sal aleatoria única
-        String salt = PasswordSecurityService.generateSalt();
+        if (user != null) {
+          // Genera una sal aleatoria única
+          String salt = PasswordSecurityService.generateSalt();
 
-        // Cifra la contraseña con la sal generada
-        String encryptedPassword =
-            await PasswordSecurityService.encryptPassword(password, salt);
-
-        // Guarda los datos en Firestore con el hash, la sal y el username
-        await _firestore.collection('users').doc(user.uid).set({
-          'uid': userId,
+          // Cifra la contraseña con la sal generada
+          String encryptedPassword =
+              await PasswordSecurityService.encryptPassword(password, salt);
+          // Guarda los datos en Firestore con el hash, la sal y el username
+          await _firestore.collection('users').doc(user.uid).set({
+            'uid': user.uid,
+            'accountType': userType,
+            'username': username,
+            'email': email,
+            'password': encryptedPassword,
+            'salt': salt, // Almacena la sal
+            ...profileData,
+            'createdAt': FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true)); // Aquí se asegura que se haga un merge
+          // Utiliza el método getUserById para obtener los datos del usuario
+          List<dynamic> userResponse = await getUserById(user.uid);
+          return [
+            userResponse[0],
+            "Usuario registrado exitosamente en Firestore."
+          ];
+        } else {
+          return [null, "No se pudo obtener la información del usuario."];
+        }
+      } else {
+        final userResponse = {
           'accountType': userType,
           'username': username,
           'email': email,
-          'password': encryptedPassword, // Contraseña cifrada
-          'salt': salt, // Almacena la sal
-          'createdAt': FieldValue.serverTimestamp(),
-        });
-
-        return [user, "Usuario registrado exitosamente en Firestore."];
-      } else {
-        return [null, "No se pudo obtener la información del usuario."];
+          'password': password,
+        };
+        return [userResponse, "Usuario registrado exitosamente en Firestore."];
       }
     } on FirebaseAuthException catch (e) {
       return [null, _handleFirebaseAuthError(e)];
@@ -124,19 +139,33 @@ class UserAuthService {
     }
   }
 
-  // Método para consultar un usuario por ID
-  Future<List<dynamic>> getUserById(String userId) async {
+  // Método para consultar un usuario por ID (uid)
+  Future<List<dynamic>> getUserById(String uid) async {
     try {
-      final user = _auth.currentUser;
-      if (user?.uid == userId) {
-        response = [user, "Usuario encontrado."];
+      // Realiza una consulta en Firestore para obtener el usuario por uid
+      DocumentSnapshot userDoc =
+          await _firestore.collection('users').doc(uid).get();
+
+      if (userDoc.exists) {
+        // Obtén los datos del documento como un Map<String, dynamic>
+        final user = userDoc.data()
+            as Map<String, dynamic>?; // Asegúrate de que sea nullable
+        if (user != null) {
+          return [user, 'Usuario filtrado exitosamente'];
+        } else {
+          return [null, "No se pudo convertir los datos del usuario."];
+        }
       } else {
-        response = [null, "Usuario no encontrado."];
+        return [null, "Usuario no encontrado."];
       }
+    } on FirebaseAuthException catch (e) {
+      return [null, _handleFirebaseAuthError(e)];
     } catch (e) {
-      response = [null, "Ocurrió un error al obtener el usuario."];
+      return [
+        null,
+        "Ocurrió un error desconocido. Por favor intenta de nuevo."
+      ];
     }
-    return response;
   }
 
   // Método para eliminar un usuario

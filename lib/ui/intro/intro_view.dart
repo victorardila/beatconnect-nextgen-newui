@@ -41,7 +41,7 @@ class _IntroViewState extends State<IntroView>
 
   void _startFadeAnimationLoop() {
     // Configura un bucle de animación cada 5 segundos
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(Duration(milliseconds: 1800), () {
       setState(() {
         _isFaded = !_isFaded; // Alterna la visibilidad del logo
       });

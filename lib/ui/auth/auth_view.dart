@@ -37,12 +37,6 @@ class _AuthenticationViewState extends State<AuthenticationView>
     });
   }
 
-  void _hideProfileView() {
-    setState(() {
-      _isProfileViewVisible = false;
-    });
-  }
-
   void _showForgotPasswordView() {
     setState(() {
       _isForgotPasswordVisible = true;
@@ -50,9 +44,17 @@ class _AuthenticationViewState extends State<AuthenticationView>
     });
   }
 
+  void _hideProfileView() {
+    setState(() {
+      _isProfileViewVisible = false;
+      _tabController.index = 0; // Cambia a la primera pestaña
+    });
+  }
+
   void _hideForgotPasswordView() {
     setState(() {
       _isForgotPasswordVisible = false;
+      _tabController.index = 0; // Cambia a la primera pestaña
     });
   }
 

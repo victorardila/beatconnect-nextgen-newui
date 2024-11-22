@@ -19,11 +19,25 @@ class _SigninViewState extends State<SigninView> {
   bool _isForgotPasswordPressed = false;
   late Box box; // Variable para almacenar la caja
 
+  String normalizeUsername(String username) {
+    // Eliminar acentos sin cambiar el caso
+    String normalized = username;
+    normalized = normalized.replaceAll(RegExp(r'[áàäâ]'), 'a');
+    normalized = normalized.replaceAll(RegExp(r'[éèëê]'), 'e');
+    normalized = normalized.replaceAll(RegExp(r'[íìïî]'), 'i');
+    normalized = normalized.replaceAll(RegExp(r'[óòöô]'), 'o');
+    normalized = normalized.replaceAll(RegExp(r'[úùüû]'), 'u');
+    normalized = normalized.replaceAll(RegExp(r'[ñ]'), 'n');
+    return normalized;
+  }
+
   void _handleSignIn() async {
+    String normalizedUser = normalizeUsername(user.text);
     // Expresión regular para validar un nombre de usuario (letras, números y un punto opcional)
-    final userRegex = RegExp(r'^[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)?$');
-    if (user.text.isEmpty ||
-        (!user.text.contains('@') && !userRegex.hasMatch(user.text))) {
+    final userRegex = RegExp(r'^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)?$');
+    if (normalizedUser == '' ||
+        (!normalizedUser.contains('@') &&
+            !userRegex.hasMatch(normalizedUser))) {
       SnackbarMessage.showSnackbar(
         context,
         'Error de campos',
@@ -31,15 +45,16 @@ class _SigninViewState extends State<SigninView> {
         'failure',
       );
       return;
-    } else if (pass.text.isEmpty || pass.text.length <= 8) {
+    } else if (pass.text.isEmpty || pass.text.length < 8) {
       SnackbarMessage.showSnackbar(context, 'Error de campos',
           'La contraseña debe tener al menos 8 caracteres.', 'failure');
       return;
     }
 
     try {
+      print(normalizedUser);
       // Intento de login
-      _userAuthC.login(user.text, pass.text).then((value) async {
+      _userAuthC.login(normalizedUser, pass.text).then((value) async {
         if (_userAuthC.validUser != null &&
             _userAuthC.userMessage.contains('exitoso')) {
           if (_rememberMe) {
@@ -49,7 +64,7 @@ class _SigninViewState extends State<SigninView> {
 
             // Solo actualizar si la contraseña es diferente
             if (pass.text != storedPassword) {
-              await box.put('username', user.text);
+              await box.put('username', normalizedUser);
               await box.put('password', pass.text);
             }
           } else {

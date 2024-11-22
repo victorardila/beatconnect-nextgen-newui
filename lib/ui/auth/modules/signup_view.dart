@@ -27,6 +27,29 @@ class _SignupViewState extends State<SignupView> {
   // Nueva variable para guardar el tipo de usuario
   String userType = 'personal';
 
+  void clearFields() {
+    user.clear();
+    email.clear();
+    pass.clear();
+    repeatPass.clear();
+    isCompany = false; // Reinicia el estado de la empresa
+    isTypeSelected = false; // Reinicia la selección de tipo
+    showRepeatPass = false; // Oculta el campo de repetir contraseña
+    userType = 'personal'; // Restablece el tipo de usuario
+  }
+
+  String normalizeUsername(String username) {
+    // Eliminar acentos sin cambiar el caso
+    String normalized = username;
+    normalized = normalized.replaceAll(RegExp(r'[áàäâ]'), 'a');
+    normalized = normalized.replaceAll(RegExp(r'[éèëê]'), 'e');
+    normalized = normalized.replaceAll(RegExp(r'[íìïî]'), 'i');
+    normalized = normalized.replaceAll(RegExp(r'[óòöô]'), 'o');
+    normalized = normalized.replaceAll(RegExp(r'[úùüû]'), 'u');
+    normalized = normalized.replaceAll(RegExp(r'[ñ]'), 'n');
+    return normalized;
+  }
+
   void _handleSignUp() {
     if (repeatPass.text != pass.text) {
       // Validación de los campos
@@ -40,18 +63,17 @@ class _SignupViewState extends State<SignupView> {
         return; // Termina la ejecución si hay error
       }
     }
-    final userId =
-        Uuid().v4(); // Genera un UUID único para el usuario en una sola línea
-
-    // Intento de registro
+    // final userId =
+    //     Uuid().v4(); // Genera un UUID único para el usuario en una sola línea
+    String normalizedUser = normalizeUsername(user.text);
     _userAuthC
-        .createUser(userId, userType, user.text, email.text, pass.text)
+        .createUser(userType, normalizedUser, email.text, pass.text)
         .then((value) {
-      if (_userAuthC.validUser != null &&
-          _userAuthC.userMessage.contains('exitosamente')) {
-        SnackbarMessage.showSnackbar(context, 'Registro de usuario exitoso',
-            _userAuthC.userMessage, 'success');
+      if (_userAuthC.validUser != null) {
+        // SnackbarMessage.showSnackbar(context, 'Registro de usuario exitoso',
+        //     _userAuthC.userMessage, 'success');
         widget.onSignupSuccess(isCompany);
+        clearFields();
       } else {
         SnackbarMessage.showSnackbar(context, 'No se pudo crear el usuario.',
             _userAuthC.userMessage, 'failure');
@@ -82,6 +104,9 @@ class _SignupViewState extends State<SignupView> {
   void _toggleRepeatPassVisibility() {
     setState(() {
       showRepeatPass = pass.text.isNotEmpty;
+      if (!showRepeatPass) {
+        repeatPass.clear();
+      }
     });
   }
 
