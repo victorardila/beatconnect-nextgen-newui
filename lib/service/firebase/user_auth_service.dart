@@ -59,7 +59,18 @@ class UserAuthService {
     }
   }
 
-  //
+  // Método para enviar saber si un usuario existe en Auth (Firebase Auth)
+  Future<bool> checkUserExists(String email) async {
+    final userSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('email', isEqualTo: email)
+        .limit(1)
+        .get();
+
+    return userSnapshot.docs.isNotEmpty;
+  }
+
+  // Metodo para registrar un usuario
   Future<List<dynamic>> register(
       String userType, String username, String email, String password,
       [Map<String, dynamic>? profileData]) async {
@@ -108,13 +119,21 @@ class UserAuthService {
           return [null, "No se pudo obtener la información del usuario."];
         }
       } else {
-        final userResponse = {
-          'accountType': userType,
-          'username': username,
-          'email': email,
-          'password': password,
-        };
-        return [userResponse, "Usuario registrado exitosamente en Firestore."];
+        final response = await checkUserExists(email);
+        if (response) {
+          return [null, "El usuario ya existe."];
+        } else {
+          final userResponse = {
+            'accountType': userType,
+            'username': username,
+            'email': email,
+            'password': password,
+          };
+          return [
+            userResponse,
+            "Usuario registrado exitosamente en Firestore."
+          ];
+        }
       }
     } on FirebaseAuthException catch (e) {
       return [null, _handleFirebaseAuthError(e)];
@@ -267,6 +286,10 @@ class UserAuthService {
         return "El correo electrónico es inválido.";
       case 'weak-password':
         return "La contraseña es demasiado débil.";
+      case 'user-not-found':
+        return "Usuario no encontrado.";
+      case 'wrong-password':
+        return "Contraseña incorrecta.";
       default:
         return "Ocurrió un error desconocido. Por favor intenta de nuevo.";
     }

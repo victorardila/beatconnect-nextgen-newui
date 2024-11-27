@@ -58,6 +58,12 @@ class _AnimatedDropdownState<T> extends State<AnimatedDropdown<T>>
         _controller.reverse();
       }
     });
+    print(
+      widget.items
+          .map((item) => widget.itemLabelBuilder(item))
+          .toList()
+          .toString(),
+    );
   }
 
   @override

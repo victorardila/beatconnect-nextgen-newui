@@ -53,7 +53,8 @@ class _SignupViewState extends State<SignupView> {
   void _handleSignUp() {
     if (repeatPass.text != pass.text) {
       // Validación de los campos
-      if (user.text.isEmpty || !user.text.contains('@')) {
+      if (email.text.isEmpty || !email.text.contains('@')) {
+        print(user.text);
         SnackbarMessage.showSnackbar(context, 'Error de campos',
             'Por favor ingresa un correo electrónico válido.', 'failure');
         return; // Termina la ejecución si hay error
@@ -74,9 +75,12 @@ class _SignupViewState extends State<SignupView> {
         //     _userAuthC.userMessage, 'success');
         widget.onSignupSuccess(isCompany);
         clearFields();
+      } else if (_userAuthC.userMessage.contains('existe')) {
+        SnackbarMessage.showSnackbar(
+            context, 'Error de registro', _userAuthC.userMessage, 'failure');
       } else {
-        SnackbarMessage.showSnackbar(context, 'No se pudo crear el usuario.',
-            _userAuthC.userMessage, 'failure');
+        SnackbarMessage.showSnackbar(
+            context, 'Error de registro', _userAuthC.userMessage, 'failure');
       }
     });
   }
@@ -149,7 +153,7 @@ class _SignupViewState extends State<SignupView> {
               )),
           AnimatedTextField(
             controller: user,
-            labelText: isCompany ? 'Nombre de negocio' : 'Usuario',
+            labelText: 'Usuario',
             prefixIcon: isCompany ? Icons.business : Icons.person,
             isFocused: userFocusNode.hasFocus,
             onFocusChange: (hasFocus) {
@@ -276,6 +280,18 @@ class _SignupViewState extends State<SignupView> {
                               fontSize:
                                   MediaQuery.of(context).size.height * 0.04,
                             ),
+                            isTypeSelected
+                                ? Text(
+                                    'Usuario ${isCompany ? 'de empresa' : 'personal'}',
+                                    style: TextStyle(
+                                      color: letterColor,
+                                      fontSize:
+                                          MediaQuery.of(context).size.height *
+                                              0.02,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
+                                : Container(),
                           ],
                         ),
                       ),

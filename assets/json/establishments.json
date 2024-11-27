@@ -1,0 +1,102 @@
+[
+    {
+        "name": "Discoteca",
+        "category": "Clubs"
+    },
+    {
+        "name": "Restobar",
+        "category": "Bars"
+    },
+    {
+        "name": "Karaoke",
+        "category": "Bars"
+    },
+    {
+        "name": "Lounge",
+        "category": "Bars"
+    },
+    {
+        "name": "Rooftop",
+        "category": "Bars"
+    },
+    {
+        "name": "Festival de Música",
+        "category": "Eventos"
+    },
+    {
+        "name": "Pub Irlandés",
+        "category": "Bars"
+    },
+    {
+        "name": "Salón de Salsa",
+        "category": "Baile"
+    },
+    {
+        "name": "Casino",
+        "category": "Entretenimiento"
+    },
+    {
+        "name": "Beach Club",
+        "category": "Fiesta"
+    },
+    {
+        "name": "Discoteca Eclipse",
+        "category": "Clubs"
+    },
+    {
+        "name": "Nightlife Club",
+        "category": "Clubs"
+    },
+    {
+        "name": "The Groove Room",
+        "category": "Clubs"
+    },
+    {
+        "name": "Electric Beats Club",
+        "category": "Clubs"
+    },
+    {
+        "name": "Velvet Underground",
+        "category": "Clubs"
+    },
+    {
+        "name": "Retro Dance Hall",
+        "category": "Clubs"
+    },
+    {
+        "name": "High Voltage Club",
+        "category": "Clubs"
+    },
+    {
+        "name": "Neon Nights",
+        "category": "Clubs"
+    },
+    {
+        "name": "Infinity Dance Club",
+        "category": "Clubs"
+    },
+    {
+        "name": "Starlight Club",
+        "category": "Clubs"
+    },
+    {
+        "name": "Summer Music Festival",
+        "category": "Events"
+    },
+    {
+        "name": "Art & Wine Night",
+        "category": "Events"
+    },
+    {
+        "name": "Tech Expo 2024",
+        "category": "Events"
+    },
+    {
+        "name": "Food Truck Fest",
+        "category": "Events"
+    },
+    {
+        "name": "Comedy Stand-Up Night",
+        "category": "Events"
+    }
+]

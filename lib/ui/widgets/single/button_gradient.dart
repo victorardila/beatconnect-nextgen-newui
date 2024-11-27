@@ -3,16 +3,20 @@ import 'package:beatconnect_app/imports.dart';
 class ButtonGradient extends StatelessWidget {
   final String? text;
   final IconData? icon;
+  final String? iconDirection;
   final VoidCallback onPressed;
   final double? width; // Ancho opcional
   final double? height; // Alto opcional
+  final double? fontSIze;
 
   const ButtonGradient({
     this.text,
     required this.onPressed,
     this.icon,
+    this.iconDirection = 'left',
     this.width, // Ancho opcional en el constructor
     this.height, // Alto opcional en el constructor
+    this.fontSIze = 18,
     Key? key,
   }) : super(key: key);
 
@@ -26,7 +30,7 @@ class ButtonGradient extends StatelessWidget {
     final buttonWidth =
         width ?? screenWidth * 0.5; // 50% del ancho de la pantalla
     final buttonHeight =
-        height ?? screenHeight * 0.05; // 8% del alto de la pantalla
+        height ?? screenHeight * 0.05; // 5% del alto de la pantalla
 
     return Container(
       width: buttonWidth, // Usar ancho proporcionado o predeterminado
@@ -71,22 +75,34 @@ class ButtonGradient extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min, // Ajustar al contenido
           children: [
-            Icon(
-              icon,
-              color: letterColor, // Color del ícono
-              size: 18, // Tamaño del ícono
-            ),
+            if (iconDirection == 'left')
+              Icon(
+                icon,
+                color: Colors.white, // color: "white"
+                size: buttonWidth * 0.12, // size: "12px"
+              ),
             SizedBox(width: 8), // Espacio entre ícono y texto
-            text != null
-                ? Text(
-                    text!,
-                    style: TextStyle(
-                      color: letterColor, // color: "white"
-                      fontWeight: FontWeight.bold, // fontWeight: "bold"
-                      fontSize: 18, // Tamaño del texto
-                    ),
-                  )
-                : Container(),
+            if (text != null)
+              Flexible(
+                // Permitir que el texto se ajuste
+                child: Text(
+                  text!,
+                  style: TextStyle(
+                    color: Colors.white, // color: "white"
+                    fontWeight: FontWeight.bold, // fontWeight: "bold"
+                    fontSize: width != null ? (buttonWidth * 0.12) : fontSIze,
+                  ),
+                  overflow: TextOverflow.ellipsis, // Cortar si es muy largo
+                  maxLines: 1, // Limitar a una línea
+                ),
+              ),
+            SizedBox(width: 8), // Espacio entre ícono y texto
+            if (iconDirection == 'right')
+              Icon(
+                icon,
+                color: Colors.white, // color: "white"
+                size: buttonWidth * 0.12, // size: "12px"
+              ),
           ],
         ),
       ),
