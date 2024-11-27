@@ -18,19 +18,7 @@ class _RootViewState extends State<RootView>
 
   void _handleLogout() {
     _userAuthC.logout().then((value) {
-      if (_userAuthC.userMessage.contains('correctamente')) {
-        // // Mostrar Snackbar de éxito
-        // final successSnackbar = SnackBar(
-        //   elevation: 0,
-        //   behavior: SnackBarBehavior.floating,
-        //   backgroundColor: Colors.transparent,
-        //   content: AwesomeSnackbarContent(
-        //     title: _userAuthC.userMessage,
-        //     message: '¡Vuelve pronto!',
-        //     contentType: ContentType.success,
-        //   ),
-        // );
-        // ScaffoldMessenger.of(context).showSnackBar(successSnackbar);
+      if (_userAuthC.userMessage.contains('exitosamente')) {
         Navigator.pop(context);
       }
     });

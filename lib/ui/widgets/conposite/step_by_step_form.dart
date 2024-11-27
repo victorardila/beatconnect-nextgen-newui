@@ -56,18 +56,6 @@ class _StepByStepFormState extends State<StepByStepForm> {
 
   @override
   Widget build(BuildContext context) {
-    // Check that _currentStep is within bounds before accessing stepWidgets
-    final currentStepWidget = _currentStep < stepDataList.length
-        ? stepDataList[_currentStep]
-        : Container(); // Show an empty container if out of bounds
-    List<Widget> stepWidgets = stepDataList
-        .map(
-          (stepData) => Column(
-            children: [stepData],
-          ),
-        )
-        .toList();
-
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: LayoutBuilder(
@@ -91,14 +79,26 @@ class _StepByStepFormState extends State<StepByStepForm> {
                         iconsStep: widget.iconsStep,
                         currentStep: _currentStep, // Pasar el paso actual
                       ),
-
                       Flexible(
-                        child: Container(
-                          padding: EdgeInsets.all(10.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
+                        child: SizedBox(
+                          height: double.infinity,
+                          child: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 500),
+                            transitionBuilder: (child, animation) {
+                              return FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              );
+                            },
+                            child: // Aquí está el cambio crucial
+                                _currentStep < widget.steps.length
+                                    ? KeyedSubtree(
+                                        key: ValueKey(
+                                            _currentStep), // Clave única para cada paso
+                                        child: widget.steps[_currentStep],
+                                      )
+                                    : Container(), // Maneja el caso de _currentStep fuera de rango
                           ),
-                          child: currentStepWidget,
                         ),
                       ),
                       Row(
