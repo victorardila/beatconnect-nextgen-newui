@@ -5,7 +5,6 @@ export 'package:font_awesome_flutter/font_awesome_flutter.dart';
 export 'package:firebase_crashlytics/firebase_crashlytics.dart';
 export 'package:beatconnect_app/ui/root/views/error_view.dart';
 export 'package:visibility_detector/visibility_detector.dart';
-export 'package:beatconnect_app/provider/error_provider.dart';
 export 'package:firebase_app_check/firebase_app_check.dart';
 export 'package:fade_out_particle/fade_out_particle.dart';
 export 'package:firebase_auth/firebase_auth.dart';
@@ -77,3 +76,7 @@ export 'package:beatconnect_app/ui/auth/modules/forgotpassword_view.dart';
 export 'package:beatconnect_app/ui/auth/modules/signup_view.dart';
 export 'package:beatconnect_app/ui/auth/modules/sigin_view.dart';
 export 'package:beatconnect_app/ui/auth/modules/profile_view.dart';
+
+// Providers
+export 'package:beatconnect_app/provider/error_provider.dart';
+export 'package:beatconnect_app/provider/connectivity_provider.dart';

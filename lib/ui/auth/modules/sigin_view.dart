@@ -52,41 +52,50 @@ class _SigninViewState extends State<SigninView> {
     }
 
     try {
-      print(normalizedUser);
       // Intento de login
       _userAuthC.login(normalizedUser, pass.text).then((value) async {
-        if (_userAuthC.validUser != null &&
-            _userAuthC.userMessage.contains('exitoso')) {
-          if (_rememberMe) {
-            // Guardar usuario y contraseña en Hive si "Recordarme" está activado
-            var box = Hive.box('sesion');
-            String storedPassword = box.get('password', defaultValue: '');
-
-            // Solo actualizar si la contraseña es diferente
-            if (pass.text != storedPassword) {
-              await box.put('username', normalizedUser);
-              await box.put('password', pass.text);
-            }
-          } else {
-            // Limpiar los campos si no está activado "Recordarme"
-            setState(() {
-              user.clear();
-              pass.clear();
-            });
-          }
+        if (_userAuthC.userMessage.contains('No hay conexión')) {
           SnackbarMessage.showSnackbar(
             context,
-            _userAuthC.userMessage,
-            'Has iniciado sesión correctamente.',
-            'success',
-            route: '/root', // Ruta opcional
+            'Error de conexión',
+            'No hay conexión a Internet.',
+            'failure',
           );
+          return;
         } else {
-          String errorMessage = _userAuthC.userMessage.contains('incorrecta')
-              ? 'Por favor verifique y vuelva a intentarlo.'
-              : 'Usuario o contraseña incorrectos.';
-          SnackbarMessage.showSnackbar(
-              context, 'Error de autenticación', errorMessage, 'failure');
+          if (_userAuthC.validUser != null &&
+              _userAuthC.userMessage.contains('exitoso')) {
+            if (_rememberMe) {
+              // Guardar usuario y contraseña en Hive si "Recordarme" está activado
+              var box = Hive.box('sesion');
+              String storedPassword = box.get('password', defaultValue: '');
+
+              // Solo actualizar si la contraseña es diferente
+              if (pass.text != storedPassword) {
+                await box.put('username', normalizedUser);
+                await box.put('password', pass.text);
+              }
+            } else {
+              // Limpiar los campos si no está activado "Recordarme"
+              setState(() {
+                user.clear();
+                pass.clear();
+              });
+            }
+            SnackbarMessage.showSnackbar(
+              context,
+              _userAuthC.userMessage,
+              'Has iniciado sesión correctamente.',
+              'success',
+              route: '/root', // Ruta opcional
+            );
+          } else {
+            String errorMessage = _userAuthC.userMessage.contains('incorrecta')
+                ? 'Por favor verifique y vuelva a intentarlo.'
+                : 'Usuario o contraseña incorrectos.';
+            SnackbarMessage.showSnackbar(
+                context, 'Error de autenticación', errorMessage, 'failure');
+          }
         }
       });
     } catch (e) {

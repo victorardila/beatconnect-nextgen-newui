@@ -275,13 +275,26 @@ class _ProfileViewState extends State<ProfileView>
           .createUser(user['accountType'], user['username'], user['email'],
               user['password'], userFull)
           .then((value) {
-        if (_userAuthC.validUser != null &&
-            _userAuthC.userMessage.contains('exitosamente')) {
-          SnackbarMessage.showSnackbar(context, 'Usuario creado exitosamente',
-              _userAuthC.userMessage, 'success',
-              route: '/root');
-          widget.onClose();
-          clearFields();
+        if (_userAuthC.userMessage.contains('No hay conexión')) {
+          SnackbarMessage.showSnackbar(
+            context,
+            'Error de conexión',
+            'No hay conexión a Internet.',
+            'failure',
+          );
+          return;
+        } else {
+          if (_userAuthC.validUser != null &&
+              _userAuthC.userMessage.contains('exitosamente')) {
+            SnackbarMessage.showSnackbar(context, 'Usuario creado exitosamente',
+                _userAuthC.userMessage, 'success',
+                route: '/root');
+            widget.onClose();
+            clearFields();
+          } else {
+            SnackbarMessage.showSnackbar(context, 'Ocurrió un error interno',
+                _userAuthC.userMessage, 'failure');
+          }
         }
       });
     } else {
@@ -289,9 +302,6 @@ class _ProfileViewState extends State<ProfileView>
       if (_userAuthC.userMessage.contains('existe')) {
         SnackbarMessage.showSnackbar(context, _userAuthC.userMessage,
             'Por favor verifique y vuelva a intentarlo', 'failure');
-      } else {
-        SnackbarMessage.showSnackbar(context, 'Ocurrió un error interno',
-            _userAuthC.userMessage, 'failure');
       }
     }
   }

@@ -70,17 +70,27 @@ class _SignupViewState extends State<SignupView> {
     _userAuthC
         .createUser(userType, normalizedUser, email.text, pass.text)
         .then((value) {
-      if (_userAuthC.validUser != null) {
-        // SnackbarMessage.showSnackbar(context, 'Registro de usuario exitoso',
-        //     _userAuthC.userMessage, 'success');
-        widget.onSignupSuccess(isCompany);
-        clearFields();
-      } else if (_userAuthC.userMessage.contains('existe')) {
+      if (_userAuthC.userMessage.contains('No hay conexión')) {
         SnackbarMessage.showSnackbar(
-            context, 'Error de registro', _userAuthC.userMessage, 'failure');
+          context,
+          'Error de conexión',
+          'No hay conexión a Internet.',
+          'failure',
+        );
+        return;
       } else {
-        SnackbarMessage.showSnackbar(
-            context, 'Error de registro', _userAuthC.userMessage, 'failure');
+        if (_userAuthC.validUser != null) {
+          // SnackbarMessage.showSnackbar(context, 'Registro de usuario exitoso',
+          //     _userAuthC.userMessage, 'success');
+          widget.onSignupSuccess(isCompany);
+          clearFields();
+        } else if (_userAuthC.userMessage.contains('existe')) {
+          SnackbarMessage.showSnackbar(
+              context, 'Error de registro', _userAuthC.userMessage, 'failure');
+        } else {
+          SnackbarMessage.showSnackbar(
+              context, 'Error de registro', _userAuthC.userMessage, 'failure');
+        }
       }
     });
   }

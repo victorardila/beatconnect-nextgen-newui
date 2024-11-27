@@ -45,8 +45,11 @@ void main() {
       await initializeApp();
       await Hive.initFlutter();
       await Hive.openBox('sesion');
+
       // Registro de controladores
       Get.lazyPut<UserAuthController>(() => UserAuthController());
+      // Registro de proveedores
+      Get.put(ConnectivityProvider()); // Registra ConnectivityService aquí
 
       runApp(
         ChangeNotifierProvider(

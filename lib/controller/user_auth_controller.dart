@@ -2,120 +2,70 @@ import 'package:beatconnect_app/imports.dart';
 
 class UserAuthController extends GetxController {
   final UserAuthService _userAuthService = UserAuthService();
+  final ConnectivityProvider _connectivityService =
+      Get.find<ConnectivityProvider>(); // Corregido
   final _response = Rxn<List<dynamic>>();
   final _message = "".obs;
   final Rxn<dynamic> _user = Rxn<dynamic>();
   final _isLoading = false.obs;
 
-  Future<void> login(String email, String password) async {
-    _isLoading.value = true;
-    try {
-      // Llamamos al servicio de autenticación
-      _response.value = await _userAuthService.login(email, password);
-      await handleLoginResponse(_response.value);
-    } catch (e) {
-      _handleError(e);
-    } finally {
-      _isLoading.value = false;
-    }
-  }
+  Future<void> login(String email, String password) async =>
+      _executeWithConnectionCheck(
+          () async => await _userAuthService.login(email, password));
 
-  Future<void> logout() async {
-    _isLoading.value = true;
-    try {
-      // Llamamos al servicio de logout
-      await _userAuthService.logout();
-      _message.value = "Sesión cerrada correctamente.";
-    } catch (e) {
-      _handleError(e);
-    } finally {
-      _isLoading.value = false;
-    }
-  }
+  Future<void> logout() async =>
+      _executeWithConnectionCheck(() async => await _userAuthService.logout());
 
   Future<void> createUser(
-      String userType, String username, String email, String password,
-      [Map<String, dynamic>? profileData]) async {
-    _isLoading.value = true;
-    try {
-      _response.value = await _userAuthService.register(
-          userType, username, email, password, profileData);
-      await handleUserResponse(_response.value);
-    } catch (e) {
-      _handleError(e);
-    } finally {
-      _isLoading.value = false;
-    }
-  }
+          String userType, String username, String email, String password,
+          [Map<String, dynamic>? profileData]) async =>
+      _executeWithConnectionCheck(() async => await _userAuthService.register(
+          userType, username, email, password, profileData));
 
-  Future<void> getUser(String id) async {
-    _isLoading.value = true;
-    try {
-      _response.value = await _userAuthService.getUserById(id);
-      await handleUserResponse(_response.value);
-    } catch (e) {
-      _handleError(e);
-    } finally {
-      _isLoading.value = false;
-    }
-  }
+  Future<void> getUser(String id) async => _executeWithConnectionCheck(
+      () async => await _userAuthService.getUserById(id));
 
-  Future<void> getUsers() async {
-    _isLoading.value = true;
-    try {
-      _response.value = await _userAuthService.getAllUsers();
-      await handleUserResponse(_response.value);
-    } catch (e) {
-      _handleError(e);
-    } finally {
-      _isLoading.value = false;
-    }
-  }
+  Future<void> getUsers() async => _executeWithConnectionCheck(
+      () async => await _userAuthService.getAllUsers());
 
-  Future<void> deleteUser() async {
-    _isLoading.value = true;
-    try {
-      _response.value = await _userAuthService.deleteUser();
-      await handleUserResponse(_response.value);
-    } catch (e) {
-      _handleError(e);
-    } finally {
-      _isLoading.value = false;
-    }
-  }
+  Future<void> deleteUser() async => _executeWithConnectionCheck(
+      () async => await _userAuthService.deleteUser()); // Refactorizado
 
-  Future<void> updateUser(String email, String password) async {
-    _isLoading.value = true;
-    try {
-      _response.value = await _userAuthService.updateUser(email, password);
-      await handleUserResponse(_response.value);
-    } catch (e) {
-      _handleError(e);
-    } finally {
-      _isLoading.value = false;
-    }
-  }
+  Future<void> updateUser(String email, String password) async =>
+      _executeWithConnectionCheck(() async =>
+          await _userAuthService.updateUser(email, password)); // Refactorizado
 
   Future<void> updateProfile(Map<String, dynamic> user) async {
     var uid = user['uid'];
+    return _executeWithConnectionCheck(() async =>
+        await _userAuthService.updateProfile(uid, user)); // Refactorizado
+  }
+
+  Future<void> _executeWithConnectionCheck(
+      Future<List<dynamic>> Function() action) async {
     _isLoading.value = true;
-    try {
-      _response.value = await _userAuthService.updateProfile(uid, user);
-      await handleUserResponse(_response.value);
-    } catch (e) {
-      _handleError(e);
-    } finally {
-      _isLoading.value = false;
+    if (await _connectivityService.checkConnection()) {
+      try {
+        _response.value = await action();
+        handleUserResponse(_response.value);
+      } catch (e) {
+        _handleError(e);
+      }
+    } else {
+      _message.value = "No hay conexión a Internet.";
     }
+    _isLoading.value =
+        false; // Asegúrate que isLoading se pone en false, incluso si hay error
   }
 
   // Método para manejar la respuesta del login
   Future<void> handleLoginResponse(List<dynamic>? response) async {
-    if (response != null && response[0] != null && response[1] != null) {
-      // Verificamos si response[0] es un booleano
+    if (response != null &&
+        response.length >= 2 &&
+        response[0] != null &&
+        response[1] != null) {
       if (response[0] is! bool) {
-        _user.value =
-            response[0]; // Aquí asumo que response[0] debería ser un User
+        _user.value = response[0];
       }
       _message.value = response[1];
     } else {
@@ -125,11 +75,12 @@ class UserAuthController extends GetxController {
   }
 
   Future<void> handleUserResponse(List<dynamic>? response) async {
-    if (response != null && response[0] != null && response[1] != null) {
-      // Verificamos si response[0] es un booleano
+    if (response != null &&
+        response.length >= 2 &&
+        response[0] != null &&
+        response[1] != null) {
       if (response[0] is! bool) {
-        _user.value =
-            response[0]; // Aquí asumo que response[0] debería ser un User
+        _user.value = response[0];
       }
       _message.value = response[1];
     } else {
@@ -139,6 +90,7 @@ class UserAuthController extends GetxController {
   }
 
   void _handleError(dynamic error) {
+    // Aquí puedes mejorar el manejo de errores como se sugirió anteriormente.
     _message.value = error.toString().isNotEmpty
         ? "Error: ${error.toString()}"
         : "An error occurred, please try again.";
