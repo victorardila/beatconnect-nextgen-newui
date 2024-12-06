@@ -1,10 +1,16 @@
 # BeatConnect App
 
-Aplicacion red social para conectar usaurios con la misma preferncia musical para parchear en establecimientos publicos de musica nocturna
+Nueva version de la aplicacion red social para conectar usaurios con la misma preferncia musical para parchear en establecimientos publicos de musica nocturna
 
-![logo](https://github.com/user-attachments/assets/33d03376-f4b0-4655-a650-2d0aed790f76)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/03290ff4-84a1-4f9c-be8c-bfbb0a81b561" alt="logo" width="500"/>
+</p>
 
-A new Flutter project.
+## Stack de Tecologia
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/270667a7-40ad-4267-9d33-478aca7e2bbf" alt="flutter firebase" width="500"/>
+</p>
 
 ## Getting Started
 
