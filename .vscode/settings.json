@@ -2,5 +2,6 @@
     "java.configuration.updateBuildConfiguration": "interactive",
     "cSpell.words": [
         "beatconnect"
-    ]
+    ],
+    "java.compile.nullAnalysis.mode": "automatic"
 }

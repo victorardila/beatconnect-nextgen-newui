@@ -1,4 +1,4 @@
-import 'package:beatconnect_app/imports.dart';
+import 'package:beatconnect_nextgen_newui/imports.dart';
 
 class SignupView extends StatefulWidget {
   final Function(bool isCompany) onSignupSuccess;

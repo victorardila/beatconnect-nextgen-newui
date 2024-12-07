@@ -1,5 +1,5 @@
 import 'package:argon2/argon2.dart';
-import 'package:beatconnect_app/imports.dart';
+import 'package:beatconnect_nextgen_newui/imports.dart';
 
 class PasswordSecurityService {
   // Generar una sal aleatoria única para cada usuario

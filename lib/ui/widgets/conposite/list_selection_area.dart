@@ -1,4 +1,4 @@
-import 'package:beatconnect_app/imports.dart';
+import 'package:beatconnect_nextgen_newui/imports.dart';
 
 class ListSelectionArea extends StatefulWidget {
   final List<MusicalStyle> musicalStyles;

@@ -1,8 +1,8 @@
-import 'package:beatconnect_app/ui/auth/auth_view.dart';
-import 'package:beatconnect_app/ui/intro/intro_view.dart';
-import 'package:beatconnect_app/ui/root/root_view.dart';
-import 'package:beatconnect_app/ui/root/views/error_view.dart';
-import 'package:beatconnect_app/imports.dart';
+import 'package:beatconnect_nextgen_newui/ui/auth/auth_view.dart';
+import 'package:beatconnect_nextgen_newui/ui/intro/intro_view.dart';
+import 'package:beatconnect_nextgen_newui/ui/root/root_view.dart';
+import 'package:beatconnect_nextgen_newui/ui/root/views/error_view.dart';
+import 'package:beatconnect_nextgen_newui/imports.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
