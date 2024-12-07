@@ -1,6 +1,6 @@
-# BeatConnect App
+# Beatconnect NextGen (NEW UI)
 
-Nueva version de la aplicacion red social para conectar usaurios con la misma preferncia musical para parchear en establecimientos publicos de musica nocturna
+Segunda versión de BeatConnect con interfaz mejorada y funcionalidades avanzadas. Conecta usuarios según preferencias musicales y permite localizar sitios nocturnos en mapas. Incluye herramientas de administración para negocios, gestión de publicidad, y una experiencia de usuario optimizada.
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/03290ff4-84a1-4f9c-be8c-bfbb0a81b561" alt="logo" width="500"/>
